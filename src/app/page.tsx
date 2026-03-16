@@ -25,6 +25,7 @@ import {
   TrainIcon,
   CompassIcon,
   InstagramIcon,
+  AppStoreIcon,
 } from "@/components/Icons";
 
 /* note.com thumbnail URLs */
@@ -274,7 +275,7 @@ export default function Home() {
 
                   <div>
                     <p className="text-[10px] text-ink-muted uppercase tracking-[0.15em] mb-2 font-bold">名前</p>
-                    <p className="font-bold text-ink">佐藤 翔介（Shosuke Sato）</p>
+                    <p className="font-bold text-ink">佐藤 咲祐（Shosuke Sato）</p>
                   </div>
 
                   <div>
@@ -435,16 +436,42 @@ export default function Home() {
                 />
                 <div className="md:mt-8">
                   <BoardingPass
-                    destination="CODE → WORLD"
+                    destination="EYES → SPEED"
                     flight="SS-002"
-                    title="Coming Soon"
-                    description="世界一周中に生まれるプロジェクト。旅の中で感じたことを形にしていく。"
-                    tags={["Travel", "App"]}
-                    href="#"
-                    icon={<SuitcaseIcon className="w-8 h-8" />}
-                    gate="??"
+                    title="動体視力道場"
+                    description="動体視力を鍛えるトレーニングアプリ。ゲーム感覚で楽しく視覚能力を向上。"
+                    tags={["iOS", "Game"]}
+                    href="https://apps.apple.com/jp/app/動体視力道場/id6476528461?l=en-US"
+                    icon={<AppStoreIcon className="w-8 h-8" />}
+                    gate="A2"
                     accentColor="text-rose"
                     rotate={2}
+                  />
+                </div>
+                <BoardingPass
+                  destination="LIFE → PHYSICS"
+                  flight="SS-003"
+                  title="日常物理"
+                  description="日常の中に潜む物理法則を学べるアプリ。身近な現象を物理の視点で楽しむ。"
+                  tags={["iOS", "Education"]}
+                  href="https://apps.apple.com/jp/app/日常物理/id6475620635?l=en-US"
+                  icon={<AppStoreIcon className="w-8 h-8" />}
+                  gate="A3"
+                  accentColor="text-violet"
+                  rotate={-1}
+                />
+                <div className="md:mt-8">
+                  <BoardingPass
+                    destination="MONEY → SIMPLE"
+                    flight="SS-004"
+                    title="一番シンプルな家計簿"
+                    description="余計な機能を削ぎ落とした、シンプルさを追求した家計簿アプリ。"
+                    tags={["iOS", "Finance"]}
+                    href="https://apps.apple.com/jp/app/一番シンプルな家計簿/id6468492832?l=en-US"
+                    icon={<AppStoreIcon className="w-8 h-8" />}
+                    gate="A4"
+                    accentColor="text-golden"
+                    rotate={1.5}
                   />
                 </div>
               </div>
@@ -512,13 +539,6 @@ export default function Home() {
                   desc: "世界一周の準備として、旅行予約管理アプリTabi-Boxを開発。noteでの発信も本格化。",
                   side: "right" as const,
                   color: "golden",
-                },
-                {
-                  year: "2024",
-                  title: "ヨーロッパ周遊",
-                  desc: "スペイン、ギリシャ、トルコ、イギリスなどを巡る。世界一周への想いが確信に変わった。",
-                  side: "left" as const,
-                  color: "turquoise",
                 },
                 {
                   year: "2022",
@@ -667,7 +687,7 @@ export default function Home() {
                   {
                     name: "YouTube",
                     desc: "旅の動画",
-                    href: "https://youtube.com/@shosuke240557",
+                    href: "https://www.youtube.com/@satou_jouyu",
                     icon: <YouTubeIcon className="w-7 h-7" />,
                     bg: "hover:bg-coral hover:text-white hover:border-coral",
                     rotate: 1,
@@ -675,7 +695,7 @@ export default function Home() {
                   {
                     name: "Instagram",
                     desc: "旅の写真",
-                    href: "https://instagram.com/shosuke240557",
+                    href: "https://www.instagram.com/shosuke0401/",
                     icon: <InstagramIcon className="w-7 h-7" />,
                     bg: "hover:bg-rose hover:text-white hover:border-rose",
                     rotate: -2,
@@ -683,7 +703,7 @@ export default function Home() {
                   {
                     name: "X",
                     desc: "つぶやき",
-                    href: "https://x.com/shosuke240557",
+                    href: "https://x.com/satou_jouyu__",
                     icon: <XIcon className="w-7 h-7" />,
                     bg: "hover:bg-sky hover:text-white hover:border-sky",
                     rotate: 1.5,
