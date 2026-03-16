@@ -1,0 +1,735 @@
+import Navigation from "@/components/Navigation";
+import WorldMap from "@/components/WorldMap";
+import FlyingPlane from "@/components/FlyingPlane";
+import Stars from "@/components/Stars";
+import TrainScene from "@/components/TrainScene";
+import BoardingPass from "@/components/BoardingPass";
+import ScrollReveal from "@/components/ScrollReveal";
+import {
+  Polaroid,
+  Postcard,
+  PhotoCard,
+  Sticker,
+  WashiTape,
+  PassportStamp,
+} from "@/components/Decorations";
+import {
+  PlaneIcon,
+  GlobeIcon,
+  SuitcaseIcon,
+  NoteIcon,
+  GitHubIcon,
+  XIcon,
+  YouTubeIcon,
+  MapPinIcon,
+  TrainIcon,
+  CompassIcon,
+  InstagramIcon,
+} from "@/components/Icons";
+
+/* note.com thumbnail URLs */
+const NOTE_IMAGES = {
+  ai: "https://assets.st-note.com/production/uploads/images/256781095/rectangle_large_type_2_d2fa8fb70bd2a46eb068cfb45b6cc3d8.png",
+  marathon: "https://assets.st-note.com/production/uploads/images/256521161/rectangle_large_type_2_e7134c8aef5185de9c8ad7c74d5329f0.png",
+  risk: "https://assets.st-note.com/production/uploads/images/251524837/rectangle_large_type_2_8e1bc27627e5d0526657a683b20cc4a5.png",
+  tabibox: "https://assets.st-note.com/production/uploads/images/251432056/rectangle_large_type_2_fa5b974efd0c4fc1b61e8f85ac7d1dd8.png",
+  aiStrategy: "https://assets.st-note.com/production/uploads/images/250627808/rectangle_large_type_2_eae272fe373a3155e2783e519cb3db87.png",
+  research: "https://assets.st-note.com/production/uploads/images/250343508/rectangle_large_type_2_123b07c3305dee47f8dd9457d91b8eb2.png",
+  inventor: "https://assets.st-note.com/production/uploads/images/182495927/rectangle_large_type_2_05d702049c5b69463201cb3b2c9983ad.png",
+};
+
+export default function Home() {
+  return (
+    <>
+      <Navigation />
+
+      <main className="min-h-screen overflow-x-hidden">
+        {/* ═══════════════════════════════════════════
+            HERO — Giant Map + Scattered Art + Photos
+        ═══════════════════════════════════════════ */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero-art">
+          <Stars />
+          <FlyingPlane />
+
+          {/* GIANT World Map */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-60">
+            <div className="w-[140%] max-w-none -mt-12">
+              <WorldMap />
+            </div>
+          </div>
+
+          {/* Paint blobs */}
+          <div className="absolute top-12 left-6 w-36 h-36 bg-coral/12 paint-splash animate-drift" style={{ ["--drift-rotate" as string]: "5deg" }} />
+          <div className="absolute top-1/4 right-8 w-44 h-44 bg-violet/12 paint-splash-2 animate-drift" style={{ ["--drift-rotate" as string]: "-8deg", animationDelay: "2s" }} />
+          <div className="absolute bottom-1/3 left-12 w-32 h-32 bg-turquoise/10 paint-splash-3 animate-drift" style={{ ["--drift-rotate" as string]: "12deg", animationDelay: "4s" }} />
+          <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-golden/8 paint-splash animate-drift" style={{ ["--drift-rotate" as string]: "-3deg", animationDelay: "6s" }} />
+          <div className="absolute top-1/3 left-1/3 w-28 h-28 bg-rose/8 paint-splash-2 animate-drift" style={{ ["--drift-rotate" as string]: "7deg", animationDelay: "3s" }} />
+
+          {/* ===== Scattered REAL photos from note ===== */}
+          <div className="absolute top-20 right-4 md:right-16 w-32 md:w-40 animate-fade-in [animation-delay:0.8s] opacity-0 z-20 hidden sm:block">
+            <PhotoCard
+              rotate={7}
+              src={NOTE_IMAGES.ai}
+              label="AIに全部やらせてる自分に価値なんてない…"
+              href="https://note.com/shosuke240557"
+              color="#7C3AED"
+            />
+          </div>
+          <div className="absolute bottom-36 left-4 md:left-12 w-32 md:w-40 animate-fade-in [animation-delay:1.2s] opacity-0 z-20 hidden sm:block">
+            <PhotoCard
+              rotate={-5}
+              src={NOTE_IMAGES.marathon}
+              label="初マラソンで同じ失敗をしてほしくない"
+              href="https://note.com/shosuke240557"
+              color="#00D4AA"
+            />
+          </div>
+          <div className="absolute top-44 left-4 md:left-10 w-28 md:w-32 animate-fade-in [animation-delay:1.5s] opacity-0 z-20 hidden md:block">
+            <Polaroid rotate={-12} src={NOTE_IMAGES.risk} label="ESSAY" />
+          </div>
+          <div className="absolute bottom-44 right-4 md:right-12 w-28 md:w-36 animate-fade-in [animation-delay:1.8s] opacity-0 z-20 hidden md:block">
+            <Polaroid rotate={8} src={NOTE_IMAGES.inventor} label="INTERVIEW" />
+          </div>
+
+          {/* Passport stamps */}
+          <div className="absolute top-28 right-[42%] w-20 animate-fade-in [animation-delay:1s] opacity-0 hidden lg:block">
+            <PassportStamp text="TOKYO" subtext="JAPAN" date="HOME" color="#FF4545" rotate={15} />
+          </div>
+          <div className="absolute bottom-48 left-[28%] w-16 animate-fade-in [animation-delay:1.4s] opacity-0 hidden lg:block">
+            <PassportStamp text="PARIS" subtext="FRANCE" date="2024" color="#7C3AED" rotate={-10} />
+          </div>
+
+          {/* Stickers */}
+          <div className="absolute top-32 left-[52%] animate-fade-in [animation-delay:2s] opacity-0 hidden md:block">
+            <Sticker text="✈ 2026" color="#00D4AA" className="w-14 h-14 p-1" rotate={-8} />
+          </div>
+          <div className="absolute bottom-36 right-[32%] animate-fade-in [animation-delay:2.2s] opacity-0 hidden md:block">
+            <Sticker text="世界 一周" color="#F43F5E" className="w-14 h-14 p-1 text-[9px]" rotate={5} />
+          </div>
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-cream/40 via-cream/20 to-cream/60" />
+
+          {/* Hero Content */}
+          <div className="relative z-20 text-center px-6 max-w-5xl mx-auto">
+            <div className="inline-block mb-6 animate-fade-in-up">
+              <div className="stamp border-coral text-coral animate-stamp" style={{ ["--stamp-rotate" as string]: "-5deg" }}>
+                2026.05 — 世界一周へ
+              </div>
+            </div>
+
+            <h1 className="text-6xl sm:text-7xl md:text-9xl font-extrabold mb-6 animate-fade-in-up [animation-delay:0.15s] opacity-0 leading-[0.9]">
+              <span className="text-gradient">Shosuke</span>
+              <br />
+              <span className="text-gradient-wild">Sato</span>
+            </h1>
+
+            <p className="text-xl sm:text-2xl md:text-3xl text-ink-light mb-3 animate-fade-in-up [animation-delay:0.3s] opacity-0 leading-relaxed font-medium">
+              2026年5月、東大院を休学して
+              <br className="hidden sm:block" />
+              <span className="text-coral font-extrabold">世界一周</span>の旅に出る
+            </p>
+
+            <p className="text-sm text-ink-muted font-mono mb-10 animate-fade-in-up [animation-delay:0.45s] opacity-0 tracking-[0.2em]">
+              16 COUNTRIES VISITED &nbsp;/&nbsp; ∞ MORE TO GO
+            </p>
+
+            <div className="animate-fade-in-up [animation-delay:0.6s] opacity-0 flex gap-4 justify-center flex-wrap">
+              <a
+                href="#journey"
+                className="group px-8 py-3.5 bg-coral text-white font-extrabold rounded-full transition-all hover:scale-105 hover:shadow-lg hover:shadow-coral/25 flex items-center gap-2"
+              >
+                <PlaneIcon className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+                My Journey
+              </a>
+              <a
+                href="#connect"
+                className="px-8 py-3.5 border-3 border-violet text-violet font-extrabold rounded-full transition-all hover:bg-violet hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-violet/25"
+              >
+                Follow the Trip
+              </a>
+            </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-float z-20">
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-[10px] text-ink-muted uppercase tracking-[0.3em] font-bold">Scroll</span>
+              <div className="w-6 h-9 border-2 border-ink/20 rounded-full flex justify-center">
+                <div className="w-1 h-2.5 bg-coral rounded-full mt-2 animate-bounce" />
+              </div>
+            </div>
+          </div>
+
+          <TrainScene />
+        </section>
+
+        {/* ═══════════════════════════════════════════
+            MARQUEE
+        ═══════════════════════════════════════════ */}
+        <div className="bg-ink text-cream py-3 overflow-hidden relative">
+          <div className="animate-marquee whitespace-nowrap flex">
+            {Array.from({ length: 2 }).map((_, j) => (
+              <div key={j} className="flex items-center gap-8 mr-8">
+                {["TOKYO", "ROME", "PARIS", "BARCELONA", "LONDON", "BANGKOK", "ISTANBUL", "ATHENS", "HANOI", "SEOUL", "MANILA", "HONG KONG", "VANCOUVER"].map((city, i) => (
+                  <span key={`${j}-${i}`} className="flex items-center gap-3">
+                    <span className="text-sm font-extrabold tracking-[0.15em]">{city}</span>
+                    <span className="text-coral text-lg">✦</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ═══════════════════════════════════════════
+            ABOUT — Who is Shosuke?
+        ═══════════════════════════════════════════ */}
+        <section id="about" className="py-28 px-6 relative overflow-hidden">
+          <div className="absolute -top-20 -left-32 w-80 h-80 bg-violet/8 paint-splash" />
+          <div className="absolute top-1/3 -right-20 w-64 h-64 bg-turquoise/8 paint-splash-2" />
+          <div className="absolute -bottom-20 left-1/4 w-72 h-72 bg-golden/6 paint-splash-3" />
+
+          {/* Decorative real photo */}
+          <div className="absolute top-12 right-8 md:right-16 w-28 hidden md:block">
+            <ScrollReveal delay={400}>
+              <Polaroid rotate={12} src={NOTE_IMAGES.tabibox} label="TABI-BOX" />
+            </ScrollReveal>
+          </div>
+          <div className="absolute bottom-20 right-12 hidden lg:block">
+            <ScrollReveal delay={600}>
+              <Sticker text="東大院 → 世界一周" color="#7C3AED" className="w-20 h-20 p-1 text-[8px]" rotate={-12} />
+            </ScrollReveal>
+          </div>
+
+          <div className="max-w-5xl mx-auto relative z-10">
+            <ScrollReveal>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-8 bg-turquoise rounded-full flex items-center justify-center">
+                  <GlobeIcon className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm text-turquoise uppercase tracking-[0.2em] font-extrabold">Who Am I</p>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-extrabold mb-16 leading-[0.95]">
+                About<br />
+                <span className="text-gradient">Shosuke</span>
+              </h2>
+            </ScrollReveal>
+
+            <div className="grid md:grid-cols-5 gap-12 items-start">
+              <div className="md:col-span-3 space-y-6 relative">
+                <WashiTape className="absolute -top-4 left-8 w-28" rotate={2} color="#FFB800" />
+
+                <ScrollReveal delay={100}>
+                  <div className="bg-white p-6 rounded-xl collage-shadow" style={{ transform: "rotate(-0.5deg)" }}>
+                    <p className="text-lg text-ink-light leading-relaxed">
+                      2004年生まれ、東京育ち。東京大学工学部システム創成学科を卒業し、2026年4月から同大学院に進学予定。でも、その直後に<span className="text-coral font-bold">休学して世界一周の旅に出る</span>ことを決めました。
+                    </p>
+                  </div>
+                </ScrollReveal>
+                <ScrollReveal delay={200}>
+                  <div className="bg-white p-6 rounded-xl collage-shadow" style={{ transform: "rotate(0.8deg)" }}>
+                    <p className="text-lg text-ink-light leading-relaxed">
+                      これまでに<span className="text-violet font-bold">16カ国</span>を旅してきました。イタリア、フランス、スペイン、ギリシャ、トルコ、イギリス、フィリピン、ベトナム、カンボジア、タイ、韓国、中国、香港、カナダ、ハワイ…。でもまだ見ていない世界の方がずっと広い。
+                    </p>
+                  </div>
+                </ScrollReveal>
+                <ScrollReveal delay={300}>
+                  <div className="bg-coral/5 p-6 rounded-xl border-2 border-coral/20" style={{ transform: "rotate(-1deg)" }}>
+                    <p className="text-xl text-ink font-bold leading-relaxed">
+                      世界一周中は<span className="text-coral">noteとYouTube</span>で旅の記録を発信しながら、<br className="hidden md:block" />リモートワークで旅費を稼ぐ冒険スタイル。
+                    </p>
+                  </div>
+                </ScrollReveal>
+
+                {/* Real note article card */}
+                <ScrollReveal delay={400}>
+                  <div className="w-48 ml-auto -mt-2">
+                    <PhotoCard
+                      rotate={3}
+                      src={NOTE_IMAGES.aiStrategy}
+                      label="AI時代に替えのきかない人になる戦略"
+                      href="https://note.com/shosuke240557"
+                      color="#FFB800"
+                    />
+                  </div>
+                </ScrollReveal>
+
+                <div className="absolute -bottom-4 left-8 hidden md:block">
+                  <div className="stamp border-turquoise text-turquoise text-[8px] rotate-12">
+                    ✓ 16 COUNTRIES
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: passport-style info */}
+              <ScrollReveal delay={200} className="md:col-span-2">
+                <div className="bg-white border-2 border-cream-dark rounded-2xl p-6 space-y-5 collage-shadow relative" style={{ transform: "rotate(1.5deg)" }}>
+                  <WashiTape className="absolute -top-3 left-1/2 -translate-x-1/2 w-24" rotate={-1} color="#00D4AA" />
+
+                  <div className="flex items-center gap-2 mb-4 pt-2">
+                    <SuitcaseIcon className="w-5 h-5 text-golden" />
+                    <p className="text-xs text-golden uppercase tracking-[0.2em] font-extrabold">Passport</p>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] text-ink-muted uppercase tracking-[0.15em] mb-2 font-bold">名前</p>
+                    <p className="font-bold text-ink">佐藤 翔介（Shosuke Sato）</p>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] text-ink-muted uppercase tracking-[0.15em] mb-2 font-bold">所属</p>
+                    <p className="font-bold text-ink text-sm">東京大学大学院 工学系研究科<br />システム創成学専攻</p>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] text-ink-muted uppercase tracking-[0.15em] mb-2 font-bold">訪問国</p>
+                    <div className="flex flex-wrap gap-1">
+                      {["🇵🇭", "🇮🇹", "🇫🇷", "🇰🇷", "🇨🇳", "🇻🇳", "🇰🇭", "🇹🇭", "🇭🇰", "🇪🇸", "🇬🇷", "🇹🇷", "🇬🇧", "🇺🇸", "🇨🇦"].map((flag, i) => (
+                        <span key={i} className="text-xl" title="visited">{flag}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] text-ink-muted uppercase tracking-[0.15em] mb-2 font-bold">発信メディア</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[
+                        { name: "note", color: "bg-turquoise/15 text-turquoise" },
+                        { name: "YouTube", color: "bg-coral/15 text-coral" },
+                        { name: "Instagram", color: "bg-rose/15 text-rose" },
+                        { name: "X", color: "bg-sky/15 text-sky" },
+                      ].map((s) => (
+                        <span key={s.name} className={`px-3 py-1 rounded-full text-xs font-extrabold font-mono ${s.color}`}>
+                          {s.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2">
+                    <MapPinIcon className="w-5 h-5 text-coral" />
+                    <span className="font-bold">Tokyo → World</span>
+                  </div>
+
+                  <div className="absolute -bottom-6 -right-4 w-16">
+                    <PassportStamp text="UTokyo" subtext="東大" date="2022-" color="#7C3AED" rotate={20} />
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════
+            CONTENT — note & YouTube showcase
+        ═══════════════════════════════════════════ */}
+        <section id="projects" className="py-28 px-6 relative overflow-hidden">
+          <div className="absolute top-20 -left-16 w-72 h-72 bg-golden/8 paint-splash" />
+          <div className="absolute bottom-20 -right-16 w-64 h-64 bg-rose/8 paint-splash-2" />
+          <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-sky/6 paint-splash-3" />
+
+          <div className="absolute top-16 right-8 md:right-20 hidden md:block">
+            <ScrollReveal delay={300}>
+              <Sticker text="✍ note" color="#00D4AA" className="w-14 h-14 p-1" rotate={-8} />
+            </ScrollReveal>
+          </div>
+          <div className="absolute bottom-20 left-8 hidden lg:block">
+            <ScrollReveal delay={500}>
+              <Sticker text="▶ YouTube" color="#FF4545" className="w-16 h-16 p-1 text-[8px]" rotate={10} />
+            </ScrollReveal>
+          </div>
+
+          <div className="max-w-5xl mx-auto relative z-10">
+            <ScrollReveal>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-8 bg-coral rounded-full flex items-center justify-center">
+                  <NoteIcon className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm text-coral uppercase tracking-[0.2em] font-extrabold">Content</p>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-extrabold mb-4 leading-[0.95]">
+                <span className="text-gradient">Works</span>
+              </h2>
+              <p className="text-ink-muted text-lg mb-16 max-w-xl">
+                noteでのエッセイ、YouTubeでの発信、<br className="hidden md:block" />そして旅から生まれたプロダクト。
+              </p>
+            </ScrollReveal>
+
+            {/* Note articles showcase */}
+            <ScrollReveal delay={100}>
+              <h3 className="text-2xl font-extrabold mb-6 flex items-center gap-2">
+                <span className="w-3 h-3 bg-turquoise rounded-full" />
+                note — エッセイ
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-16">
+                <PhotoCard
+                  rotate={-1}
+                  src={NOTE_IMAGES.ai}
+                  label="AIに全部やらせてる自分に価値なんてない…と感じてしまうあなたへ"
+                  href="https://note.com/shosuke240557"
+                  color="#7C3AED"
+                />
+                <div className="md:mt-6">
+                  <PhotoCard
+                    rotate={1.5}
+                    src={NOTE_IMAGES.risk}
+                    label="リスクを取らずに、理想を叶える方法。"
+                    href="https://note.com/shosuke240557"
+                    color="#FFB800"
+                  />
+                </div>
+                <PhotoCard
+                  rotate={-0.5}
+                  src={NOTE_IMAGES.aiStrategy}
+                  label="AI時代に替えのきかない人になる最強戦略"
+                  href="https://note.com/shosuke240557"
+                  color="#00D4AA"
+                />
+                <div className="md:mt-4">
+                  <PhotoCard
+                    rotate={2}
+                    src={NOTE_IMAGES.marathon}
+                    label="初マラソンで同じ失敗をしてほしくないから、全部書く"
+                    href="https://note.com/shosuke240557"
+                    color="#F43F5E"
+                  />
+                </div>
+                <PhotoCard
+                  rotate={-1.5}
+                  src={NOTE_IMAGES.research}
+                  label="研究の効率を10倍にする方法"
+                  href="https://note.com/shosuke240557"
+                  color="#0EA5E9"
+                />
+                <div className="md:mt-8">
+                  <PhotoCard
+                    rotate={1}
+                    src={NOTE_IMAGES.inventor}
+                    label="発明癖のある祖父に聞いた、アイデアを商品化するまでの流れ"
+                    href="https://note.com/shosuke240557"
+                    color="#F97316"
+                  />
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Projects as boarding passes */}
+            <ScrollReveal delay={100}>
+              <h3 className="text-2xl font-extrabold mb-6 flex items-center gap-2">
+                <span className="w-3 h-3 bg-golden rounded-full" />
+                プロダクト
+              </h3>
+              <div className="grid md:grid-cols-2 gap-8">
+                <BoardingPass
+                  destination="TRAVEL → TECH"
+                  flight="SS-001"
+                  title="Tabi-Box"
+                  description="旅の予約をまとめて管理できるWebアプリ。自分が世界一周で使うために作った。"
+                  tags={["Travel", "Web App"]}
+                  href="https://tabi-box.pages.dev"
+                  icon={<GlobeIcon className="w-8 h-8" />}
+                  gate="A1"
+                  accentColor="text-turquoise"
+                  rotate={-1.5}
+                />
+                <div className="md:mt-8">
+                  <BoardingPass
+                    destination="CODE → WORLD"
+                    flight="SS-002"
+                    title="Coming Soon"
+                    description="世界一周中に生まれるプロジェクト。旅の中で感じたことを形にしていく。"
+                    tags={["Travel", "App"]}
+                    href="#"
+                    icon={<SuitcaseIcon className="w-8 h-8" />}
+                    gate="??"
+                    accentColor="text-rose"
+                    rotate={2}
+                  />
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════
+            JOURNEY — Timeline
+        ═══════════════════════════════════════════ */}
+        <section id="journey" className="py-28 px-6 relative overflow-hidden">
+          <div className="absolute inset-0 map-grid" />
+          <div className="absolute -top-32 -right-32 w-96 h-96 bg-violet/5 paint-splash" />
+          <div className="absolute bottom-0 -left-20 w-72 h-72 bg-coral/5 paint-splash-3" />
+
+          <div className="absolute top-20 right-12 w-28 hidden lg:block">
+            <ScrollReveal delay={300}>
+              <Polaroid rotate={-6} src={NOTE_IMAGES.marathon} label="RUN!" />
+            </ScrollReveal>
+          </div>
+          <div className="absolute bottom-28 left-8 hidden lg:block">
+            <ScrollReveal delay={500}>
+              <PassportStamp text="2022" subtext="UTokyo" date="START" color="#00D4AA" rotate={-12} className="w-14" />
+            </ScrollReveal>
+          </div>
+
+          <div className="max-w-4xl mx-auto relative z-10">
+            <ScrollReveal>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-8 bg-violet rounded-full flex items-center justify-center">
+                  <TrainIcon className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm text-violet uppercase tracking-[0.2em] font-extrabold">Route Map</p>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-extrabold mb-16 leading-[0.95]">
+                <span className="text-gradient">Journey</span>
+              </h2>
+            </ScrollReveal>
+
+            <div className="relative">
+              <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 rounded-full md:-translate-x-px"
+                style={{
+                  background: "linear-gradient(to bottom, #FF4545, #FFB800, #00D4AA, #7C3AED, #F43F5E)",
+                }}
+              />
+
+              {[
+                {
+                  year: "2026.05",
+                  title: "世界一周 出発 ✈",
+                  desc: "大学院を休学して、まだ見ぬ世界へ。noteとYouTubeで旅の全てを発信。リモートワークしながら旅費を稼ぐ。",
+                  side: "right" as const,
+                  color: "coral",
+                },
+                {
+                  year: "2026.04",
+                  title: "東大大学院 入学 → 休学",
+                  desc: "工学系研究科システム創成学専攻に進学。入学と同時に休学届を提出。",
+                  side: "left" as const,
+                  color: "violet",
+                },
+                {
+                  year: "2025",
+                  title: "Tabi-Box 開発",
+                  desc: "世界一周の準備として、旅行予約管理アプリTabi-Boxを開発。noteでの発信も本格化。",
+                  side: "right" as const,
+                  color: "golden",
+                },
+                {
+                  year: "2024",
+                  title: "ヨーロッパ周遊",
+                  desc: "スペイン、ギリシャ、トルコ、イギリスなどを巡る。世界一周への想いが確信に変わった。",
+                  side: "left" as const,
+                  color: "turquoise",
+                },
+                {
+                  year: "2022",
+                  title: "東京大学 入学",
+                  desc: "工学部システム創成学科Cコースへ。大学生活と並行して、旅とものづくりを続ける。",
+                  side: "right" as const,
+                  color: "rose",
+                },
+              ].map((item, i) => (
+                <ScrollReveal key={i} delay={i * 150}>
+                  <div
+                    className={`relative flex items-start gap-6 mb-16 ${
+                      item.side === "right"
+                        ? "md:flex-row md:ml-[50%] md:pl-12"
+                        : "md:flex-row-reverse md:mr-[50%] md:pr-12 md:text-right"
+                    } pl-16 md:pl-0`}
+                  >
+                    <div className={`absolute left-3.5 md:hidden top-1 w-6 h-6 rounded-full bg-cream border-3 border-${item.color} z-10`}>
+                      <div className={`absolute inset-1.5 rounded-full bg-${item.color}`} />
+                    </div>
+                    <div className={`hidden md:block absolute top-1 w-6 h-6 rounded-full bg-cream border-3 border-${item.color} z-10`}
+                      style={{
+                        left: item.side === "right" ? "-0.75rem" : "auto",
+                        right: item.side === "left" ? "-0.75rem" : "auto",
+                      }}
+                    >
+                      <div className={`absolute inset-1.5 rounded-full bg-${item.color}`} />
+                    </div>
+
+                    <div className="bg-white p-5 rounded-xl collage-shadow" style={{ transform: `rotate(${item.side === "right" ? "0.5" : "-0.5"}deg)` }}>
+                      <span className={`inline-block px-4 py-1.5 bg-${item.color}/15 text-${item.color} text-sm font-mono font-extrabold rounded-full mb-3`}>
+                        {item.year}
+                      </span>
+                      <h3 className="text-xl font-extrabold text-ink mb-2">{item.title}</h3>
+                      <p className="text-ink-muted leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════
+            PHILOSOPHY — Big Bold Quote
+        ═══════════════════════════════════════════ */}
+        <section className="py-32 px-6 relative overflow-hidden">
+          <div className="absolute top-1/4 -left-40 w-[500px] h-[500px] bg-rose/6 paint-splash" />
+          <div className="absolute -bottom-20 -right-40 w-[400px] h-[400px] bg-turquoise/6 paint-splash-2" />
+          <div className="absolute top-10 right-1/4 w-[300px] h-[300px] bg-golden/5 paint-splash-3" />
+
+          <div className="absolute inset-0 flex items-center justify-center opacity-[0.03]">
+            <div className="text-[25rem] font-bold text-coral select-none animate-globe">
+              &#9992;
+            </div>
+          </div>
+
+          <div className="absolute top-16 left-8 md:left-20 w-28 hidden md:block">
+            <ScrollReveal delay={200}>
+              <Polaroid rotate={-10} src={NOTE_IMAGES.risk} label="ESSAY" />
+            </ScrollReveal>
+          </div>
+          <div className="absolute bottom-16 right-8 md:right-24 w-32 hidden md:block">
+            <ScrollReveal delay={400}>
+              <PhotoCard rotate={8} src={NOTE_IMAGES.research} label="研究×旅" href="https://note.com/shosuke240557" color="#7C3AED" />
+            </ScrollReveal>
+          </div>
+          <div className="absolute top-24 right-12 hidden lg:block">
+            <ScrollReveal delay={300}>
+              <Sticker text="冒険" color="#FFB800" className="w-14 h-14 p-1 text-base" rotate={-20} />
+            </ScrollReveal>
+          </div>
+          <div className="absolute bottom-32 left-16 hidden lg:block">
+            <ScrollReveal delay={500}>
+              <PassportStamp text="WORLD" subtext="TRIP" date="2026" color="#7C3AED" rotate={15} className="w-16" />
+            </ScrollReveal>
+          </div>
+
+          <ScrollReveal>
+            <div className="max-w-4xl mx-auto text-center relative z-10">
+              <div className="inline-block mb-8">
+                <div className="stamp border-violet text-violet text-sm animate-stamp px-6 py-3" style={{ ["--stamp-rotate" as string]: "-3deg" }}>
+                  My Philosophy
+                </div>
+              </div>
+              <blockquote className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-ink leading-[1.2]">
+                &ldquo;まだ見ぬ景色を、
+                <br />
+                <span className="text-coral">自分の目で見に行く。</span>
+                <br />
+                それだけでいい。&rdquo;
+              </blockquote>
+              <p className="mt-8 text-xl md:text-2xl text-ink-muted">
+                — 2026年5月、世界一周へ。
+              </p>
+            </div>
+          </ScrollReveal>
+        </section>
+
+        {/* ═══════════════════════════════════════════
+            CONNECT — Social Links (with Instagram)
+        ═══════════════════════════════════════════ */}
+        <section id="connect" className="py-28 px-6 relative overflow-hidden">
+          <div className="absolute inset-0 map-grid" />
+          <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-coral/5 paint-splash" />
+          <div className="absolute top-10 -right-16 w-64 h-64 bg-violet/5 paint-splash-2" />
+
+          <div className="absolute top-12 left-8 w-24 hidden lg:block">
+            <ScrollReveal delay={200}>
+              <Polaroid rotate={-8} src={NOTE_IMAGES.inventor} label="STORY" />
+            </ScrollReveal>
+          </div>
+          <div className="absolute bottom-16 right-12 hidden lg:block">
+            <ScrollReveal delay={400}>
+              <Sticker text="FOLLOW ME" color="#F43F5E" className="w-16 h-16 p-1 text-[8px]" rotate={12} />
+            </ScrollReveal>
+          </div>
+
+          <div className="max-w-3xl mx-auto text-center relative z-10">
+            <ScrollReveal>
+              <div className="flex items-center gap-3 justify-center mb-2">
+                <div className="w-8 h-8 bg-rose rounded-full flex items-center justify-center">
+                  <MapPinIcon className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm text-rose uppercase tracking-[0.2em] font-extrabold">Follow the Journey</p>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-extrabold mb-6 leading-[0.95]">
+                <span className="text-gradient">Connect</span>
+              </h2>
+              <p className="text-ink-muted mb-12 text-lg">
+                世界一周の旅をリアルタイムで発信します。<br className="hidden md:block" />一緒に旅を楽しみましょう。
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={200}>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-3xl mx-auto">
+                {[
+                  {
+                    name: "note",
+                    desc: "旅のエッセイ",
+                    href: "https://note.com/shosuke240557",
+                    icon: <NoteIcon className="w-7 h-7" />,
+                    bg: "hover:bg-turquoise hover:text-white hover:border-turquoise",
+                    rotate: -1.5,
+                  },
+                  {
+                    name: "YouTube",
+                    desc: "旅の動画",
+                    href: "https://youtube.com/@shosuke240557",
+                    icon: <YouTubeIcon className="w-7 h-7" />,
+                    bg: "hover:bg-coral hover:text-white hover:border-coral",
+                    rotate: 1,
+                  },
+                  {
+                    name: "Instagram",
+                    desc: "旅の写真",
+                    href: "https://instagram.com/shosuke240557",
+                    icon: <InstagramIcon className="w-7 h-7" />,
+                    bg: "hover:bg-rose hover:text-white hover:border-rose",
+                    rotate: -2,
+                  },
+                  {
+                    name: "X",
+                    desc: "つぶやき",
+                    href: "https://x.com/shosuke240557",
+                    icon: <XIcon className="w-7 h-7" />,
+                    bg: "hover:bg-sky hover:text-white hover:border-sky",
+                    rotate: 1.5,
+                  },
+                  {
+                    name: "GitHub",
+                    desc: "コード",
+                    href: "https://github.com/shosukesato",
+                    icon: <GitHubIcon className="w-7 h-7" />,
+                    bg: "hover:bg-ink hover:text-white hover:border-ink",
+                    rotate: -1,
+                  },
+                ].map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex flex-col items-center gap-2 p-5 rounded-2xl border-2 border-cream-dark bg-white text-ink-muted transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-lg collage-shadow ${link.bg}`}
+                    style={{ transform: `rotate(${link.rotate}deg)` }}
+                  >
+                    {link.icon}
+                    <span className="text-xs font-mono font-extrabold">{link.name}</span>
+                    <span className="text-[9px] text-ink-muted">{link.desc}</span>
+                  </a>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════
+            FOOTER
+        ═══════════════════════════════════════════ */}
+        <footer className="py-10 px-6 bg-ink text-cream/60">
+          <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 text-sm">
+              <CompassIcon className="w-5 h-5 text-coral" />
+              <span className="font-bold text-cream">&copy; {new Date().getFullYear()} Shosuke Sato</span>
+            </div>
+            <p className="text-xs font-mono tracking-wider">
+              The journey never ends ✈
+            </p>
+          </div>
+        </footer>
+      </main>
+    </>
+  );
+}
