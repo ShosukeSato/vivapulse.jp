@@ -5,7 +5,7 @@ import { CompassIcon } from "./Icons";
 
 const navItems = [
   { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
+  { label: "Works", href: "#works" },
   { label: "Journey", href: "#journey" },
   { label: "Connect", href: "#connect" },
 ];

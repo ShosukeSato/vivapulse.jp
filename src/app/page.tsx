@@ -29,6 +29,28 @@ import {
 } from "@/components/Icons";
 
 /* note.com thumbnail URLs */
+/* YouTube thumbnail URLs (via video ID) */
+const YOUTUBE_VIDEOS = [
+  {
+    id: "MZs_cfaE1yI",
+    title: "【新時代】もう既存の飲みゲーに飽きた方、次の飲みゲーはこれです。",
+    color: "#FF4545",
+    rotate: -1,
+  },
+  {
+    id: "JITEnMLVUt8",
+    title: "【パズドラ】時透無一郎2体出すのに魔法石はいくつ必要？【鬼滅の刃コラボ】",
+    color: "#7C3AED",
+    rotate: 1.5,
+  },
+  {
+    id: "_80ZAPbSdn8",
+    title: "寿司打をやってみました。",
+    color: "#FFB800",
+    rotate: -0.5,
+  },
+];
+
 const NOTE_IMAGES = {
   ai: "https://assets.st-note.com/production/uploads/images/256781095/rectangle_large_type_2_d2fa8fb70bd2a46eb068cfb45b6cc3d8.png",
   marathon: "https://assets.st-note.com/production/uploads/images/256521161/rectangle_large_type_2_e7134c8aef5185de9c8ad7c74d5329f0.png",
@@ -94,7 +116,7 @@ export default function Home() {
 
           {/* Passport stamps */}
           <div className="absolute top-28 right-[42%] w-20 animate-fade-in [animation-delay:1s] opacity-0 hidden lg:block">
-            <PassportStamp text="TOKYO" subtext="JAPAN" date="HOME" color="#FF4545" rotate={15} />
+            <PassportStamp text="KANAGAWA" subtext="JAPAN" date="HOME" color="#FF4545" rotate={15} />
           </div>
           <div className="absolute bottom-48 left-[28%] w-16 animate-fade-in [animation-delay:1.4s] opacity-0 hidden lg:block">
             <PassportStamp text="PARIS" subtext="FRANCE" date="2024" color="#7C3AED" rotate={-10} />
@@ -224,7 +246,7 @@ export default function Home() {
                 <ScrollReveal delay={100}>
                   <div className="bg-white p-6 rounded-xl collage-shadow" style={{ transform: "rotate(-0.5deg)" }}>
                     <p className="text-lg text-ink-light leading-relaxed">
-                      2004年生まれ、東京育ち。東京大学工学部システム創成学科を卒業し、2026年4月から同大学院に進学予定。でも、その直後に<span className="text-coral font-bold">休学して世界一周の旅に出る</span>ことを決めました。
+                      2004年生まれ、神奈川県育ち。東京大学工学部システム創成学科を卒業し、2026年4月から同大学院に進学。でも、<span className="text-coral font-bold">入学と同時に休学して世界一周の旅に出る</span>ことを決めました。
                     </p>
                   </div>
                 </ScrollReveal>
@@ -238,7 +260,7 @@ export default function Home() {
                 <ScrollReveal delay={300}>
                   <div className="bg-coral/5 p-6 rounded-xl border-2 border-coral/20" style={{ transform: "rotate(-1deg)" }}>
                     <p className="text-xl text-ink font-bold leading-relaxed">
-                      世界一周中は<span className="text-coral">noteとYouTube</span>で旅の記録を発信しながら、<br className="hidden md:block" />リモートワークで旅費を稼ぐ冒険スタイル。
+                      僕という、この時代に生きる一人の個体の人生を<span className="text-coral">「標本」</span>として残したい。<br className="hidden md:block" />noteやYouTubeでの発信を通じて、AI時代にどう独自性をつくれるかを探求しています。
                     </p>
                   </div>
                 </ScrollReveal>
@@ -308,9 +330,14 @@ export default function Home() {
                     </div>
                   </div>
 
+                  <div>
+                    <p className="text-[10px] text-ink-muted uppercase tracking-[0.15em] mb-2 font-bold">好きなもの</p>
+                    <p className="font-bold text-ink text-sm">みなとみらい / サウナ</p>
+                  </div>
+
                   <div className="flex items-center gap-2 pt-2">
                     <MapPinIcon className="w-5 h-5 text-coral" />
-                    <span className="font-bold">Tokyo → World</span>
+                    <span className="font-bold">Kanagawa → World</span>
                   </div>
 
                   <div className="absolute -bottom-6 -right-4 w-16">
@@ -325,7 +352,7 @@ export default function Home() {
         {/* ═══════════════════════════════════════════
             CONTENT — note & YouTube showcase
         ═══════════════════════════════════════════ */}
-        <section id="projects" className="py-28 px-6 relative overflow-hidden">
+        <section id="works" className="py-28 px-6 relative overflow-hidden">
           <div className="absolute top-20 -left-16 w-72 h-72 bg-golden/8 paint-splash" />
           <div className="absolute bottom-20 -right-16 w-64 h-64 bg-rose/8 paint-splash-2" />
           <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-sky/6 paint-splash-3" />
@@ -412,6 +439,27 @@ export default function Home() {
                     color="#F97316"
                   />
                 </div>
+              </div>
+            </ScrollReveal>
+
+            {/* YouTube videos */}
+            <ScrollReveal delay={100}>
+              <h3 className="text-2xl font-extrabold mb-6 flex items-center gap-2">
+                <span className="w-3 h-3 bg-coral rounded-full" />
+                YouTube
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-16">
+                {YOUTUBE_VIDEOS.map((video, i) => (
+                  <div key={video.id} className={i === 1 ? "md:mt-6" : ""}>
+                    <PhotoCard
+                      rotate={video.rotate}
+                      src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
+                      label={video.title}
+                      href={`https://www.youtube.com/watch?v=${video.id}`}
+                      color={video.color}
+                    />
+                  </div>
+                ))}
               </div>
             </ScrollReveal>
 
@@ -528,23 +576,65 @@ export default function Home() {
                 },
                 {
                   year: "2026.04",
-                  title: "東大大学院 入学 → 休学",
-                  desc: "工学系研究科システム創成学専攻に進学。入学と同時に休学届を提出。",
+                  title: "東大大学院 入学と同時に休学",
+                  desc: "工学系研究科システム創成学専攻に進学。入学と同時に休学し、世界一周の準備へ。",
                   side: "left" as const,
                   color: "violet",
                 },
                 {
+                  year: "2026.03",
+                  title: "東京大学 卒業",
+                  desc: "工学部システム創成学科を卒業。4年間の学びを経て、次のステージへ。",
+                  side: "right" as const,
+                  color: "turquoise",
+                },
+                {
+                  year: "2025.10",
+                  title: "GROWTH VERSE インターン",
+                  desc: "GROWTH VERSEにインターンとして参画。",
+                  side: "left" as const,
+                  color: "golden",
+                },
+                {
+                  year: "2025.05",
+                  title: "羽石産業知能研究所 CPO就任",
+                  desc: "羽石産業知能研究所にてCPO（最高プロダクト責任者）として活動開始。",
+                  side: "right" as const,
+                  color: "sky",
+                },
+                {
                   year: "2025",
                   title: "Tabi-Box 開発",
-                  desc: "世界一周の準備として、旅行予約管理アプリTabi-Boxを開発。noteでの発信も本格化。",
+                  desc: "世界一周の準備として、旅行予約管理アプリTabi-Boxを開発。",
+                  side: "left" as const,
+                  color: "rose",
+                },
+                {
+                  year: "2024.07",
+                  title: "note 本格始動",
+                  desc: "noteでのエッセイ執筆を本格的にスタート。AI時代の独自性や旅について発信。",
+                  side: "right" as const,
+                  color: "turquoise",
+                },
+                {
+                  year: "2024",
+                  title: "工学部システム創成学科に進学",
+                  desc: "理科一類からシステム創成学科Cコースへ進学。iOSアプリ3本をリリース。",
+                  side: "left" as const,
+                  color: "violet",
+                },
+                {
+                  year: "2024.01",
+                  title: "Airion インターン開始",
+                  desc: "Airionにインターンとして参画。2025年2月まで約1年間勤務。",
                   side: "right" as const,
                   color: "golden",
                 },
                 {
                   year: "2022",
-                  title: "東京大学 入学",
-                  desc: "工学部システム創成学科Cコースへ。大学生活と並行して、旅とものづくりを続ける。",
-                  side: "right" as const,
+                  title: "東京大学 理科一類 入学",
+                  desc: "東京大学に入学。大学生活と並行して、旅とものづくりを続ける。",
+                  side: "left" as const,
                   color: "rose",
                 },
               ].map((item, i) => (
@@ -625,14 +715,12 @@ export default function Home() {
                 </div>
               </div>
               <blockquote className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-ink leading-[1.2]">
-                &ldquo;まだ見ぬ景色を、
+                &ldquo;この時代に生きる
                 <br />
-                <span className="text-coral">自分の目で見に行く。</span>
-                <br />
-                それだけでいい。&rdquo;
+                <span className="text-coral">一人の人生を、標本として残す。</span>&rdquo;
               </blockquote>
-              <p className="mt-8 text-xl md:text-2xl text-ink-muted">
-                — 2026年5月、世界一周へ。
+              <p className="mt-8 text-xl md:text-2xl text-ink-muted leading-relaxed">
+                まだ見ぬ景色を自分の目で見に行き、<br className="hidden md:block" />その全てを記録する。— 2026年5月、世界一周へ。
               </p>
             </div>
           </ScrollReveal>
