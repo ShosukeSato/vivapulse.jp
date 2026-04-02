@@ -87,6 +87,22 @@ export function AppStoreIcon({ className = "w-5 h-5" }: { className?: string }) 
   );
 }
 
+export function RocketIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2.5c0 0-4.5 2-4.5 10.5H4l4 5.5c0 1.5.5 3.5.5 3.5s.5-2 .5-3.5l4-5.5h-3.5C9.5 4.5 12 2.5 12 2.5zm0 0s4.5 2 4.5 10.5H20l-4 5.5c0 1.5-.5 3.5-.5 3.5s-.5-2-.5-3.5l-4-5.5h3.5c0-8-2.5-10.5-2.5-10.5z" />
+    </svg>
+  );
+}
+
+export function BriefcaseIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 7h-4V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 5h4v2h-4V5z" />
+    </svg>
+  );
+}
+
 export function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">

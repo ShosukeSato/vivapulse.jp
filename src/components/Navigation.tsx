@@ -6,6 +6,7 @@ import { CompassIcon } from "./Icons";
 const navItems = [
   { label: "About", href: "#about" },
   { label: "Works", href: "#works" },
+  { label: "Business", href: "#business" },
   { label: "Journey", href: "#journey" },
   { label: "Connect", href: "#connect" },
 ];
@@ -39,8 +40,8 @@ export default function Navigation() {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-1">
           {navItems.map((item, i) => {
-            const colors = ["text-coral", "text-violet", "text-turquoise", "text-golden"];
-            const bgColors = ["hover:bg-coral/10", "hover:bg-violet/10", "hover:bg-turquoise/10", "hover:bg-golden/10"];
+            const colors = ["text-coral", "text-violet", "text-sky", "text-turquoise", "text-golden"];
+            const bgColors = ["hover:bg-coral/10", "hover:bg-violet/10", "hover:bg-sky/10", "hover:bg-turquoise/10", "hover:bg-golden/10"];
             return (
               <a
                 key={item.href}
@@ -74,7 +75,7 @@ export default function Navigation() {
       {menuOpen && (
         <div className="md:hidden bg-cream/95 backdrop-blur-xl border-t-2 border-coral/10">
           {navItems.map((item, i) => {
-            const colors = ["text-coral", "text-violet", "text-turquoise", "text-golden"];
+            const colors = ["text-coral", "text-violet", "text-sky", "text-turquoise", "text-golden"];
             return (
               <a
                 key={item.href}

@@ -26,31 +26,11 @@ import {
   CompassIcon,
   InstagramIcon,
   AppStoreIcon,
+  RocketIcon,
+  BriefcaseIcon,
 } from "@/components/Icons";
 
 /* note.com thumbnail URLs */
-/* YouTube thumbnail URLs (via video ID) */
-const YOUTUBE_VIDEOS = [
-  {
-    id: "MZs_cfaE1yI",
-    title: "【新時代】もう既存の飲みゲーに飽きた方、次の飲みゲーはこれです。",
-    color: "#FF4545",
-    rotate: -1,
-  },
-  {
-    id: "JITEnMLVUt8",
-    title: "【パズドラ】時透無一郎2体出すのに魔法石はいくつ必要？【鬼滅の刃コラボ】",
-    color: "#7C3AED",
-    rotate: 1.5,
-  },
-  {
-    id: "_80ZAPbSdn8",
-    title: "寿司打をやってみました。",
-    color: "#FFB800",
-    rotate: -0.5,
-  },
-];
-
 const NOTE_IMAGES = {
   ai: "https://assets.st-note.com/production/uploads/images/256781095/rectangle_large_type_2_d2fa8fb70bd2a46eb068cfb45b6cc3d8.png",
   marathon: "https://assets.st-note.com/production/uploads/images/256521161/rectangle_large_type_2_e7134c8aef5185de9c8ad7c74d5329f0.png",
@@ -388,7 +368,7 @@ export default function Home() {
             <ScrollReveal delay={100}>
               <h3 className="text-2xl font-extrabold mb-6 flex items-center gap-2">
                 <span className="w-3 h-3 bg-turquoise rounded-full" />
-                note — エッセイ
+                note
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-16">
                 <PhotoCard
@@ -442,24 +422,18 @@ export default function Home() {
               </div>
             </ScrollReveal>
 
-            {/* YouTube videos */}
+            {/* YouTube — Coming Soon */}
             <ScrollReveal delay={100}>
               <h3 className="text-2xl font-extrabold mb-6 flex items-center gap-2">
                 <span className="w-3 h-3 bg-coral rounded-full" />
                 YouTube
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-16">
-                {YOUTUBE_VIDEOS.map((video, i) => (
-                  <div key={video.id} className={i === 1 ? "md:mt-6" : ""}>
-                    <PhotoCard
-                      rotate={video.rotate}
-                      src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
-                      label={video.title}
-                      href={`https://www.youtube.com/watch?v=${video.id}`}
-                      color={video.color}
-                    />
-                  </div>
-                ))}
+              <div className="flex items-center justify-center py-16 mb-16 bg-white rounded-2xl border-2 border-dashed border-cream-dark collage-shadow" style={{ transform: "rotate(-0.5deg)" }}>
+                <div className="text-center">
+                  <p className="text-5xl mb-4">🎬</p>
+                  <p className="text-2xl font-extrabold text-ink mb-2">Coming Soon...</p>
+                  <p className="text-ink-muted text-sm">新チャンネルで旅の動画を発信予定。お楽しみに！</p>
+                </div>
               </div>
             </ScrollReveal>
 
@@ -470,6 +444,19 @@ export default function Home() {
                 プロダクト
               </h3>
               <div className="grid md:grid-cols-2 gap-8">
+                <BoardingPass
+                  destination="AI → DISCOVER"
+                  flight="SS-000"
+                  title="AI Tool Hub"
+                  description="ChatGPT・Claude・Geminiをはじめ、話題のAIツールの特徴・料金・強み・弱みを徹底比較できるメディアサイト。"
+                  tags={["AI", "Web Media"]}
+                  href="https://ai-tool-hub-pi.vercel.app"
+                  icon={<CompassIcon className="w-8 h-8" />}
+                  gate="A0"
+                  accentColor="text-sky"
+                  rotate={1}
+                />
+                <div className="md:mt-8">
                 <BoardingPass
                   destination="TRAVEL → TECH"
                   flight="SS-001"
@@ -482,6 +469,7 @@ export default function Home() {
                   accentColor="text-turquoise"
                   rotate={-1.5}
                 />
+                </div>
                 <div className="md:mt-8">
                   <BoardingPass
                     destination="EYES → SPEED"
@@ -522,6 +510,105 @@ export default function Home() {
                     rotate={1.5}
                   />
                 </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════
+            BUSINESS — クリエイターブランド戦略パートナー
+        ═══════════════════════════════════════════ */}
+        <section id="business" className="py-28 px-6 relative overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-80 h-80 bg-sky/8 paint-splash" />
+          <div className="absolute bottom-10 -left-16 w-64 h-64 bg-coral/6 paint-splash-2" />
+          <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-golden/5 paint-splash-3" />
+
+          <div className="absolute top-16 right-8 md:right-20 hidden md:block">
+            <ScrollReveal delay={300}>
+              <Sticker text="NEW" color="#FF4545" className="w-14 h-14 p-1 text-sm" rotate={12} />
+            </ScrollReveal>
+          </div>
+          <div className="absolute bottom-20 left-8 hidden lg:block">
+            <ScrollReveal delay={500}>
+              <PassportStamp text="CEO" subtext="STARTUP" date="2026" color="#0EA5E9" rotate={-15} className="w-16" />
+            </ScrollReveal>
+          </div>
+
+          <div className="max-w-5xl mx-auto relative z-10">
+            <ScrollReveal>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-8 bg-sky rounded-full flex items-center justify-center">
+                  <RocketIcon className="w-4 h-4 text-white" />
+                </div>
+                <p className="text-sm text-sky uppercase tracking-[0.2em] font-extrabold">Business</p>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-extrabold mb-4 leading-[0.95]">
+                Creator Brand<br />
+                <span className="text-gradient-wild">Partner</span>
+              </h2>
+              <p className="text-ink-muted text-lg mb-16 max-w-2xl">
+                クリエイターの「こういうツール欲しい」を、<br className="hidden md:block" />
+                企画から開発まで爆速で形にする事業を始めます。
+              </p>
+            </ScrollReveal>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <ScrollReveal delay={100}>
+                <div className="bg-white p-8 rounded-2xl collage-shadow relative" style={{ transform: "rotate(-0.5deg)" }}>
+                  <WashiTape className="absolute -top-3 left-12 w-24" rotate={2} color="#0EA5E9" />
+                  <div className="pt-2">
+                    <h3 className="text-2xl font-extrabold text-ink mb-4 flex items-center gap-2">
+                      <BriefcaseIcon className="w-6 h-6 text-sky" />
+                      何をやるのか
+                    </h3>
+                    <p className="text-ink-light leading-relaxed mb-4">
+                      クリエイターのブランドをAIで拡張する<span className="text-sky font-bold">「戦略パートナー」</span>。
+                      ファン向けツール、ポートフォリオ、AI搭載システムなど、クリエイターが本当に必要としているものを一緒に考え、形にします。
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {["ファン向けツール開発", "ポートフォリオ制作", "AI搭載システム", "ブランド戦略顧問"].map((tag) => (
+                        <span key={tag} className="px-3 py-1.5 bg-sky/10 text-sky text-xs font-extrabold rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={200}>
+                <div className="bg-white p-8 rounded-2xl collage-shadow relative md:mt-8" style={{ transform: "rotate(0.8deg)" }}>
+                  <WashiTape className="absolute -top-3 right-10 w-24" rotate={-3} color="#FFB800" />
+                  <div className="pt-2">
+                    <h3 className="text-2xl font-extrabold text-ink mb-4 flex items-center gap-2">
+                      <RocketIcon className="w-6 h-6 text-golden" />
+                      なぜやるのか
+                    </h3>
+                    <p className="text-ink-light leading-relaxed mb-4">
+                      AIスタートアップでのマーケティング・広報経験と、東大工学部で培った技術力を組み合わせて、
+                      <span className="text-golden font-bold">クリエイターが本業に集中できる環境</span>を作りたい。
+                      「技術的に凄いもの」ではなく、「これ欲しい！」と思ってもらえるものを作ります。
+                    </p>
+                    <div className="bg-golden/5 border-2 border-golden/20 rounded-xl p-4">
+                      <p className="text-sm text-ink font-bold">
+                        まずは無料モニターを募集中。<br />
+                        クリエイターの方、ぜひお声がけください。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+
+            <ScrollReveal delay={300}>
+              <div className="mt-12 text-center">
+                <a
+                  href="#connect"
+                  className="group inline-flex items-center gap-2 px-8 py-3.5 bg-sky text-white font-extrabold rounded-full transition-all hover:scale-105 hover:shadow-lg hover:shadow-sky/25"
+                >
+                  <RocketIcon className="w-5 h-5 transition-transform group-hover:-translate-y-0.5" />
+                  お問い合わせ・ご相談
+                </a>
               </div>
             </ScrollReveal>
           </div>
