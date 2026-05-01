@@ -21,24 +21,22 @@ import {
   GitHubIcon,
   XIcon,
   YouTubeIcon,
+  TikTokIcon,
   MapPinIcon,
   TrainIcon,
   CompassIcon,
   InstagramIcon,
   AppStoreIcon,
-  RocketIcon,
-  BriefcaseIcon,
 } from "@/components/Icons";
 
-/* note.com thumbnail URLs */
+/* note.com thumbnail URLs (latest articles) */
 const NOTE_IMAGES = {
-  ai: "https://assets.st-note.com/production/uploads/images/256781095/rectangle_large_type_2_d2fa8fb70bd2a46eb068cfb45b6cc3d8.png",
-  marathon: "https://assets.st-note.com/production/uploads/images/256521161/rectangle_large_type_2_e7134c8aef5185de9c8ad7c74d5329f0.png",
-  risk: "https://assets.st-note.com/production/uploads/images/251524837/rectangle_large_type_2_8e1bc27627e5d0526657a683b20cc4a5.png",
-  tabibox: "https://assets.st-note.com/production/uploads/images/251432056/rectangle_large_type_2_fa5b974efd0c4fc1b61e8f85ac7d1dd8.png",
-  aiStrategy: "https://assets.st-note.com/production/uploads/images/250627808/rectangle_large_type_2_eae272fe373a3155e2783e519cb3db87.png",
-  research: "https://assets.st-note.com/production/uploads/images/250343508/rectangle_large_type_2_123b07c3305dee47f8dd9457d91b8eb2.png",
-  inventor: "https://assets.st-note.com/production/uploads/images/182495927/rectangle_large_type_2_05d702049c5b69463201cb3b2c9983ad.png",
+  selfWorth: "https://assets.st-note.com/production/uploads/images/269541292/rectangle_large_type_2_c302976dacfebc2502c09768542789bb.png",
+  lifePlan: "https://assets.st-note.com/production/uploads/images/269011819/rectangle_large_type_2_b44e8e0641f2dd9c0e5e599cef60411a.png",
+  utokyo: "https://assets.st-note.com/production/uploads/images/267933413/rectangle_large_type_2_d355e618a2fe9293ed4cdf5416288565.png",
+  creation: "https://assets.st-note.com/production/uploads/images/266699314/rectangle_large_type_2_7a0740368d1ba265abe8a8c90ddc2778.png",
+  noStartup: "https://assets.st-note.com/production/uploads/images/265501089/rectangle_large_type_2_416ebd9babb5ff336557ac2109f5114b.png",
+  research: "https://assets.st-note.com/production/uploads/images/265306249/rectangle_large_type_2_3e8eca61864ff1c061420a28effbf4f5.png",
 };
 
 export default function Home() {
@@ -72,8 +70,8 @@ export default function Home() {
           <div className="absolute top-20 right-4 md:right-16 w-32 md:w-40 animate-fade-in [animation-delay:0.8s] opacity-0 z-20 hidden sm:block">
             <PhotoCard
               rotate={7}
-              src={NOTE_IMAGES.ai}
-              label="AIに全部やらせてる自分に価値なんてない…"
+              src={NOTE_IMAGES.creation}
+              label="AIが何でも作れる時代に、なぜ「創作」するのか。"
               href="https://note.com/shosuke240557"
               color="#7C3AED"
             />
@@ -81,17 +79,17 @@ export default function Home() {
           <div className="absolute bottom-36 left-4 md:left-12 w-32 md:w-40 animate-fade-in [animation-delay:1.2s] opacity-0 z-20 hidden sm:block">
             <PhotoCard
               rotate={-5}
-              src={NOTE_IMAGES.marathon}
-              label="初マラソンで同じ失敗をしてほしくない"
+              src={NOTE_IMAGES.utokyo}
+              label="東大理系の4年間"
               href="https://note.com/shosuke240557"
               color="#00D4AA"
             />
           </div>
           <div className="absolute top-44 left-4 md:left-10 w-28 md:w-32 animate-fade-in [animation-delay:1.5s] opacity-0 z-20 hidden md:block">
-            <Polaroid rotate={-12} src={NOTE_IMAGES.risk} label="ESSAY" />
+            <Polaroid rotate={-12} src={NOTE_IMAGES.selfWorth} label="ESSAY" />
           </div>
           <div className="absolute bottom-44 right-4 md:right-12 w-28 md:w-36 animate-fade-in [animation-delay:1.8s] opacity-0 z-20 hidden md:block">
-            <Polaroid rotate={8} src={NOTE_IMAGES.inventor} label="INTERVIEW" />
+            <Polaroid rotate={8} src={NOTE_IMAGES.lifePlan} label="LIFE PLAN" />
           </div>
 
           {/* Passport stamps */}
@@ -196,7 +194,7 @@ export default function Home() {
           {/* Decorative real photo */}
           <div className="absolute top-12 right-8 md:right-16 w-28 hidden md:block">
             <ScrollReveal delay={400}>
-              <Polaroid rotate={12} src={NOTE_IMAGES.tabibox} label="TABI-BOX" />
+              <Polaroid rotate={12} src={NOTE_IMAGES.noStartup} label="ESSAY" />
             </ScrollReveal>
           </div>
           <div className="absolute bottom-20 right-12 hidden lg:block">
@@ -250,8 +248,8 @@ export default function Home() {
                   <div className="w-48 ml-auto -mt-2">
                     <PhotoCard
                       rotate={3}
-                      src={NOTE_IMAGES.aiStrategy}
-                      label="AI時代に替えのきかない人になる戦略"
+                      src={NOTE_IMAGES.noStartup}
+                      label="大学生時代、なぜ結局学生起業をしなかったのか"
                       href="https://note.com/shosuke240557"
                       color="#FFB800"
                     />
@@ -302,6 +300,7 @@ export default function Home() {
                         { name: "YouTube", color: "bg-coral/15 text-coral" },
                         { name: "Instagram", color: "bg-rose/15 text-rose" },
                         { name: "X", color: "bg-sky/15 text-sky" },
+                        { name: "TikTok", color: "bg-violet/15 text-violet" },
                       ].map((s) => (
                         <span key={s.name} className={`px-3 py-1 rounded-full text-xs font-extrabold font-mono ${s.color}`}>
                           {s.name}
@@ -373,48 +372,48 @@ export default function Home() {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-16">
                 <PhotoCard
                   rotate={-1}
-                  src={NOTE_IMAGES.ai}
-                  label="AIに全部やらせてる自分に価値なんてない…と感じてしまうあなたへ"
+                  src={NOTE_IMAGES.selfWorth}
+                  label="自己肯定感を上げる方法がついにわかってしまったぞ！！！"
                   href="https://note.com/shosuke240557"
                   color="#7C3AED"
                 />
                 <div className="md:mt-6">
                   <PhotoCard
                     rotate={1.5}
-                    src={NOTE_IMAGES.risk}
-                    label="リスクを取らずに、理想を叶える方法。"
+                    src={NOTE_IMAGES.lifePlan}
+                    label="これからの10年間の人生設計をした。"
                     href="https://note.com/shosuke240557"
                     color="#FFB800"
                   />
                 </div>
                 <PhotoCard
                   rotate={-0.5}
-                  src={NOTE_IMAGES.aiStrategy}
-                  label="AI時代に替えのきかない人になる最強戦略"
+                  src={NOTE_IMAGES.utokyo}
+                  label="東大理系の4年間"
                   href="https://note.com/shosuke240557"
                   color="#00D4AA"
                 />
                 <div className="md:mt-4">
                   <PhotoCard
                     rotate={2}
-                    src={NOTE_IMAGES.marathon}
-                    label="初マラソンで同じ失敗をしてほしくないから、全部書く"
+                    src={NOTE_IMAGES.creation}
+                    label="AIが何でも作れる時代に、なぜ「創作」するのか。"
                     href="https://note.com/shosuke240557"
                     color="#F43F5E"
                   />
                 </div>
                 <PhotoCard
                   rotate={-1.5}
-                  src={NOTE_IMAGES.research}
-                  label="研究の効率を10倍にする方法"
+                  src={NOTE_IMAGES.noStartup}
+                  label="大学生時代、なぜ結局学生起業をしなかったのか"
                   href="https://note.com/shosuke240557"
                   color="#0EA5E9"
                 />
                 <div className="md:mt-8">
                   <PhotoCard
                     rotate={1}
-                    src={NOTE_IMAGES.inventor}
-                    label="発明癖のある祖父に聞いた、アイデアを商品化するまでの流れ"
+                    src={NOTE_IMAGES.research}
+                    label="論文を出して終わり、じゃもったいない。研究の&quot;その後&quot;にやったほうがいいこと。"
                     href="https://note.com/shosuke240557"
                     color="#F97316"
                   />
@@ -445,170 +444,135 @@ export default function Home() {
               </h3>
               <div className="grid md:grid-cols-2 gap-8">
                 <BoardingPass
-                  destination="AI → DISCOVER"
+                  destination="MONEY → SECONDS"
                   flight="SS-000"
-                  title="AI Tool Hub"
-                  description="ChatGPT・Claude・Geminiをはじめ、話題のAIツールの特徴・料金・強み・弱みを徹底比較できるメディアサイト。"
-                  tags={["AI", "Web Media"]}
-                  href="https://ai-tool-hub-pi.vercel.app"
-                  icon={<CompassIcon className="w-8 h-8" />}
+                  title="秒で家計簿"
+                  description="2〜3タップで終わる、続けられない人のための家計簿。入力の摩擦を極限まで削ったiOSアプリ。"
+                  tags={["iOS", "Finance"]}
+                  href="https://apps.apple.com/jp/app/秒で家計簿/id6468492832?l=en-US"
+                  icon={<AppStoreIcon className="w-8 h-8" />}
                   gate="A0"
-                  accentColor="text-sky"
+                  accentColor="text-golden"
+                  rotate={1.5}
+                />
+                <div className="md:mt-8">
+                  <BoardingPass
+                    destination="HABIT → TIMER"
+                    flight="SS-001"
+                    title="習慣化タイマー"
+                    description="「成果」ではなく「時間」で習慣を積む、行動科学ベースのタイマー型iOSアプリ。"
+                    tags={["iOS", "Habits"]}
+                    href="https://apps.apple.com/jp/app/習慣化タイマー/id6764331794?l=en-US"
+                    icon={<AppStoreIcon className="w-8 h-8" />}
+                    gate="A1"
+                    accentColor="text-turquoise"
+                    rotate={-1}
+                  />
+                </div>
+                <BoardingPass
+                  destination="NIGHT → CLOSE"
+                  flight="SS-002"
+                  title="Owari"
+                  description="就寝時刻に他アプリを強制ロック。明日の自分への引き継ぎを書いてから寝るiOSアプリ。"
+                  tags={["iOS", "Sleep"]}
+                  href="https://apps.apple.com/jp/app/owari/id6761009213?l=en-US"
+                  icon={<AppStoreIcon className="w-8 h-8" />}
+                  gate="A2"
+                  accentColor="text-coral"
+                  rotate={2}
+                />
+                <div className="md:mt-8">
+                  <BoardingPass
+                    destination="TIME → FOCUS"
+                    flight="SS-003"
+                    title="やる4"
+                    description="1日のタスク合計を4時間にハードキャップ。制約から思考を鋭くするiOS todoアプリ。"
+                    tags={["iOS", "Productivity"]}
+                    href="https://apps.apple.com/jp/app/やる4/id6763765316?l=en-US"
+                    icon={<AppStoreIcon className="w-8 h-8" />}
+                    gate="A3"
+                    accentColor="text-violet"
+                    rotate={-1.5}
+                  />
+                </div>
+                <BoardingPass
+                  destination="EYES → SPEED"
+                  flight="SS-004"
+                  title="動体視力道場"
+                  description="動体視力を鍛えるトレーニングアプリ。ゲーム感覚で楽しく視覚能力を向上。"
+                  tags={["iOS", "Game"]}
+                  href="https://apps.apple.com/jp/app/動体視力道場/id6476528461?l=en-US"
+                  icon={<AppStoreIcon className="w-8 h-8" />}
+                  gate="A4"
+                  accentColor="text-rose"
                   rotate={1}
                 />
                 <div className="md:mt-8">
-                <BoardingPass
-                  destination="TRAVEL → TECH"
-                  flight="SS-001"
-                  title="Tabi-Box"
-                  description="旅の予約をまとめて管理できるWebアプリ。自分が世界一周で使うために作った。"
-                  tags={["Travel", "Web App"]}
-                  href="https://tabi-box.pages.dev"
-                  icon={<GlobeIcon className="w-8 h-8" />}
-                  gate="A1"
-                  accentColor="text-turquoise"
-                  rotate={-1.5}
-                />
-                </div>
-                <div className="md:mt-8">
                   <BoardingPass
-                    destination="EYES → SPEED"
-                    flight="SS-002"
-                    title="動体視力道場"
-                    description="動体視力を鍛えるトレーニングアプリ。ゲーム感覚で楽しく視覚能力を向上。"
-                    tags={["iOS", "Game"]}
-                    href="https://apps.apple.com/jp/app/動体視力道場/id6476528461?l=en-US"
+                    destination="PROMISE → SELF"
+                    flight="SS-005"
+                    title="Yakusoku."
+                    description="今日、自分との約束を一行だけ書く。白と黒だけの静かな内省iOSアプリ。"
+                    tags={["iOS", "Mindful"]}
+                    href="https://apps.apple.com/jp/app/yakusoku/id6762287005?l=en-US"
                     icon={<AppStoreIcon className="w-8 h-8" />}
-                    gate="A2"
-                    accentColor="text-rose"
-                    rotate={2}
+                    gate="A5"
+                    accentColor="text-sky"
+                    rotate={-2}
                   />
                 </div>
                 <BoardingPass
                   destination="LIFE → PHYSICS"
-                  flight="SS-003"
+                  flight="SS-006"
                   title="日常物理"
                   description="日常の中に潜む物理法則を学べるアプリ。身近な現象を物理の視点で楽しむ。"
                   tags={["iOS", "Education"]}
                   href="https://apps.apple.com/jp/app/日常物理/id6475620635?l=en-US"
                   icon={<AppStoreIcon className="w-8 h-8" />}
-                  gate="A3"
-                  accentColor="text-violet"
-                  rotate={-1}
+                  gate="A6"
+                  accentColor="text-coral"
+                  rotate={1.5}
                 />
                 <div className="md:mt-8">
                   <BoardingPass
-                    destination="MONEY → SIMPLE"
-                    flight="SS-004"
-                    title="一番シンプルな家計簿"
-                    description="余計な機能を削ぎ落とした、シンプルさを追求した家計簿アプリ。"
-                    tags={["iOS", "Finance"]}
-                    href="https://apps.apple.com/jp/app/一番シンプルな家計簿/id6468492832?l=en-US"
-                    icon={<AppStoreIcon className="w-8 h-8" />}
-                    gate="A4"
-                    accentColor="text-golden"
-                    rotate={1.5}
+                    destination="AI → DISCOVER"
+                    flight="SS-007"
+                    title="AI Tool Hub"
+                    description="ChatGPT・Claude・Geminiをはじめ、話題のAIツールの特徴・料金・強み・弱みを徹底比較できるメディアサイト。"
+                    tags={["AI", "Web Media"]}
+                    href="https://ai-tool-hub-pi.vercel.app"
+                    icon={<CompassIcon className="w-8 h-8" />}
+                    gate="A7"
+                    accentColor="text-turquoise"
+                    rotate={-1}
                   />
                 </div>
-              </div>
-            </ScrollReveal>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════
-            BUSINESS — クリエイターブランド戦略パートナー
-        ═══════════════════════════════════════════ */}
-        <section id="business" className="py-28 px-6 relative overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-80 h-80 bg-sky/8 paint-splash" />
-          <div className="absolute bottom-10 -left-16 w-64 h-64 bg-coral/6 paint-splash-2" />
-          <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-golden/5 paint-splash-3" />
-
-          <div className="absolute top-16 right-8 md:right-20 hidden md:block">
-            <ScrollReveal delay={300}>
-              <Sticker text="NEW" color="#FF4545" className="w-14 h-14 p-1 text-sm" rotate={12} />
-            </ScrollReveal>
-          </div>
-          <div className="absolute bottom-20 left-8 hidden lg:block">
-            <ScrollReveal delay={500}>
-              <PassportStamp text="CEO" subtext="STARTUP" date="2026" color="#0EA5E9" rotate={-15} className="w-16" />
-            </ScrollReveal>
-          </div>
-
-          <div className="max-w-5xl mx-auto relative z-10">
-            <ScrollReveal>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 bg-sky rounded-full flex items-center justify-center">
-                  <RocketIcon className="w-4 h-4 text-white" />
+                <BoardingPass
+                  destination="TRAVEL → TECH"
+                  flight="SS-008"
+                  title="Tabi-Box"
+                  description="旅の予約をまとめて管理できるWebアプリ。自分が世界一周で使うために作った。"
+                  tags={["Travel", "Web App"]}
+                  href="https://tabi-box.pages.dev"
+                  icon={<GlobeIcon className="w-8 h-8" />}
+                  gate="A8"
+                  accentColor="text-violet"
+                  rotate={2}
+                />
+                <div className="md:mt-8">
+                  <BoardingPass
+                    destination="RESEARCH → PRODUCT"
+                    flight="SS-009"
+                    title="FluidMotion"
+                    description="粒子法×深層学習の流体シミュレーションをブラウザでリアルタイムに体験できるWebアプリ。研究で使った手法を誰でも触れる形に。"
+                    tags={["Web App", "Research"]}
+                    href="https://fluidmotion-73l.pages.dev"
+                    icon={<GlobeIcon className="w-8 h-8" />}
+                    gate="A9"
+                    accentColor="text-golden"
+                    rotate={-1.5}
+                  />
                 </div>
-                <p className="text-sm text-sky uppercase tracking-[0.2em] font-extrabold">Business</p>
-              </div>
-              <h2 className="text-5xl md:text-7xl font-extrabold mb-4 leading-[0.95]">
-                Creator Brand<br />
-                <span className="text-gradient-wild">Partner</span>
-              </h2>
-              <p className="text-ink-muted text-lg mb-16 max-w-2xl">
-                クリエイターの「こういうツール欲しい」を、<br className="hidden md:block" />
-                企画から開発まで爆速で形にする事業を始めます。
-              </p>
-            </ScrollReveal>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              <ScrollReveal delay={100}>
-                <div className="bg-white p-8 rounded-2xl collage-shadow relative" style={{ transform: "rotate(-0.5deg)" }}>
-                  <WashiTape className="absolute -top-3 left-12 w-24" rotate={2} color="#0EA5E9" />
-                  <div className="pt-2">
-                    <h3 className="text-2xl font-extrabold text-ink mb-4 flex items-center gap-2">
-                      <BriefcaseIcon className="w-6 h-6 text-sky" />
-                      何をやるのか
-                    </h3>
-                    <p className="text-ink-light leading-relaxed mb-4">
-                      クリエイターのブランドをAIで拡張する<span className="text-sky font-bold">「戦略パートナー」</span>。
-                      ファン向けツール、ポートフォリオ、AI搭載システムなど、クリエイターが本当に必要としているものを一緒に考え、形にします。
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {["ファン向けツール開発", "ポートフォリオ制作", "AI搭載システム", "ブランド戦略顧問"].map((tag) => (
-                        <span key={tag} className="px-3 py-1.5 bg-sky/10 text-sky text-xs font-extrabold rounded-full">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={200}>
-                <div className="bg-white p-8 rounded-2xl collage-shadow relative md:mt-8" style={{ transform: "rotate(0.8deg)" }}>
-                  <WashiTape className="absolute -top-3 right-10 w-24" rotate={-3} color="#FFB800" />
-                  <div className="pt-2">
-                    <h3 className="text-2xl font-extrabold text-ink mb-4 flex items-center gap-2">
-                      <RocketIcon className="w-6 h-6 text-golden" />
-                      なぜやるのか
-                    </h3>
-                    <p className="text-ink-light leading-relaxed mb-4">
-                      AIスタートアップでのマーケティング・広報経験と、東大工学部で培った技術力を組み合わせて、
-                      <span className="text-golden font-bold">クリエイターが本業に集中できる環境</span>を作りたい。
-                      「技術的に凄いもの」ではなく、「これ欲しい！」と思ってもらえるものを作ります。
-                    </p>
-                    <div className="bg-golden/5 border-2 border-golden/20 rounded-xl p-4">
-                      <p className="text-sm text-ink font-bold">
-                        まずは無料モニターを募集中。<br />
-                        クリエイターの方、ぜひお声がけください。
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            </div>
-
-            <ScrollReveal delay={300}>
-              <div className="mt-12 text-center">
-                <a
-                  href="#connect"
-                  className="group inline-flex items-center gap-2 px-8 py-3.5 bg-sky text-white font-extrabold rounded-full transition-all hover:scale-105 hover:shadow-lg hover:shadow-sky/25"
-                >
-                  <RocketIcon className="w-5 h-5 transition-transform group-hover:-translate-y-0.5" />
-                  お問い合わせ・ご相談
-                </a>
               </div>
             </ScrollReveal>
           </div>
@@ -624,7 +588,7 @@ export default function Home() {
 
           <div className="absolute top-20 right-12 w-28 hidden lg:block">
             <ScrollReveal delay={300}>
-              <Polaroid rotate={-6} src={NOTE_IMAGES.marathon} label="RUN!" />
+              <Polaroid rotate={-6} src={NOTE_IMAGES.utokyo} label="UTokyo" />
             </ScrollReveal>
           </div>
           <div className="absolute bottom-28 left-8 hidden lg:block">
@@ -775,12 +739,12 @@ export default function Home() {
 
           <div className="absolute top-16 left-8 md:left-20 w-28 hidden md:block">
             <ScrollReveal delay={200}>
-              <Polaroid rotate={-10} src={NOTE_IMAGES.risk} label="ESSAY" />
+              <Polaroid rotate={-10} src={NOTE_IMAGES.selfWorth} label="ESSAY" />
             </ScrollReveal>
           </div>
           <div className="absolute bottom-16 right-8 md:right-24 w-32 hidden md:block">
             <ScrollReveal delay={400}>
-              <PhotoCard rotate={8} src={NOTE_IMAGES.research} label="研究×旅" href="https://note.com/shosuke240557" color="#7C3AED" />
+              <PhotoCard rotate={8} src={NOTE_IMAGES.research} label="論文の&quot;その後&quot;" href="https://note.com/shosuke240557" color="#7C3AED" />
             </ScrollReveal>
           </div>
           <div className="absolute top-24 right-12 hidden lg:block">
@@ -823,7 +787,7 @@ export default function Home() {
 
           <div className="absolute top-12 left-8 w-24 hidden lg:block">
             <ScrollReveal delay={200}>
-              <Polaroid rotate={-8} src={NOTE_IMAGES.inventor} label="STORY" />
+              <Polaroid rotate={-8} src={NOTE_IMAGES.lifePlan} label="LIFE PLAN" />
             </ScrollReveal>
           </div>
           <div className="absolute bottom-16 right-12 hidden lg:block">
@@ -849,7 +813,7 @@ export default function Home() {
             </ScrollReveal>
 
             <ScrollReveal delay={200}>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-3xl mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-6 gap-4 max-w-4xl mx-auto">
                 {[
                   {
                     name: "note",
@@ -862,7 +826,7 @@ export default function Home() {
                   {
                     name: "YouTube",
                     desc: "旅の動画",
-                    href: "https://www.youtube.com/@satou_jouyu",
+                    href: "https://www.youtube.com/@shouyu_desu",
                     icon: <YouTubeIcon className="w-7 h-7" />,
                     bg: "hover:bg-coral hover:text-white hover:border-coral",
                     rotate: 1,
@@ -870,7 +834,7 @@ export default function Home() {
                   {
                     name: "Instagram",
                     desc: "旅の写真",
-                    href: "https://www.instagram.com/shosuke0401/",
+                    href: "https://www.instagram.com/shouyu_desu/",
                     icon: <InstagramIcon className="w-7 h-7" />,
                     bg: "hover:bg-rose hover:text-white hover:border-rose",
                     rotate: -2,
@@ -878,10 +842,18 @@ export default function Home() {
                   {
                     name: "X",
                     desc: "つぶやき",
-                    href: "https://x.com/satou_jouyu__",
+                    href: "https://x.com/shouyu_desu",
                     icon: <XIcon className="w-7 h-7" />,
                     bg: "hover:bg-sky hover:text-white hover:border-sky",
                     rotate: 1.5,
+                  },
+                  {
+                    name: "TikTok",
+                    desc: "縦動画",
+                    href: "https://www.tiktok.com/@shouyu_desu",
+                    icon: <TikTokIcon className="w-7 h-7" />,
+                    bg: "hover:bg-violet hover:text-white hover:border-violet",
+                    rotate: -1.5,
                   },
                   {
                     name: "GitHub",
