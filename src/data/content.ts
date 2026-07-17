@@ -59,9 +59,11 @@ export const products: Product[] = [
     tagline: "撮るだけで、作品になる。",
     description:
       "撮る、という判断だけを人に残して、そこから先はすべて委ねる。光と色と被写体を読み、フィルムのような淡い色調に整え、展示のセオリーに基づいた余白で額装する。一枚の写真が、一枚の作品に変わる。",
-    caption: "iOSアプリ ・ 近日公開",
+    caption: "iOSアプリ ・ 旅の道中でつくった",
+    icon: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/22/49/b9/2249b9b9-81ab-5e24-b1ad-2c29868abc05/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/512x512bb.jpg",
     lp: "https://shosukesato.github.io/haku-lp/",
-    status: "coming-soon",
+    appStore: "https://apps.apple.com/jp/app/haku-shoot-then-art/id6788477365",
+    status: "released",
   },
   {
     id: "stocka",

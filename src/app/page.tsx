@@ -33,7 +33,7 @@ export default function Home() {
 
 function Header() {
   return (
-    <header className="flex items-baseline justify-between pt-10 pb-6">
+    <header className="sticky top-0 z-40 -mx-6 flex items-baseline justify-between border-b border-rule/70 bg-paper/85 px-6 pb-4 pt-5 backdrop-blur-sm md:-mx-10 md:px-10">
       <a href="#top" className="text-sm tracking-[0.2em]">
         さとうしょうすけ
       </a>
@@ -71,6 +71,11 @@ function Hero() {
       </p>
 
       <Reveal>
+        <p className="caption mb-7 flex items-center gap-4">
+          作品集
+          <span className="inline-block h-px w-10 bg-rule align-middle" aria-hidden />
+          アプリ ・ 文章 ・ 映像
+        </p>
         <h1 className="text-[clamp(2.6rem,7.5vw,5.25rem)] font-semibold leading-[1.25] tracking-wide">
           旅の途中で、
           <br />
@@ -129,26 +134,27 @@ function Works() {
     <section id="works" className="scroll-mt-10 pt-28 md:pt-36">
       <SectionTitle index="一" title="作品" sub="旅からうまれた三つのアプリ" />
       <div className="mt-4">
-        {products.map((p) => (
-          <WorkEntry key={p.id} product={p} />
+        {products.map((p, i) => (
+          <WorkEntry key={p.id} product={p} index={["その一", "その二", "その三"][i] ?? ""} />
         ))}
       </div>
     </section>
   );
 }
 
-function WorkEntry({ product }: { product: Product }) {
+function WorkEntry({ product, index }: { product: Product; index: string }) {
   return (
     <Reveal>
       <article className="grid gap-8 border-b border-rule py-14 md:grid-cols-12 md:py-16">
         <div className="md:col-span-3">
+          <p className="caption mb-5">{index}</p>
           {product.icon ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={product.icon}
               alt={`${product.name} のアイコン`}
               loading="lazy"
-              className="h-16 w-16 rounded-2xl border border-rule"
+              className="h-16 w-16 rounded-2xl border border-rule shadow-[0_10px_24px_-14px_rgba(60,50,32,0.35)]"
             />
           ) : (
             <span className="flex h-16 w-16 items-center justify-center rounded-2xl border border-rule bg-white">
@@ -169,15 +175,15 @@ function WorkEntry({ product }: { product: Product }) {
           <p className="mt-6 max-w-xl text-[15px] leading-[2.05] text-ink-soft">
             {product.description}
           </p>
-          <p className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm">
+          <p className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
             {product.appStore && (
               <a
                 href={product.appStore}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="quiet-link"
+                className="pill"
               >
-                App Store ↗
+                App Storeで見る ↗
               </a>
             )}
             <a
@@ -212,13 +218,15 @@ function Writing() {
         >
           <div className="md:col-span-5">
             <span className="print">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={featuredArticle.thumbnail}
-                alt=""
-                loading="lazy"
-                className="aspect-[1.91/1] w-full object-cover"
-              />
+              <span className="print-window">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={featuredArticle.thumbnail}
+                  alt=""
+                  loading="lazy"
+                  className="aspect-[1.91/1] w-full object-cover"
+                />
+              </span>
             </span>
           </div>
           <div className="md:col-span-7">
@@ -286,13 +294,15 @@ function Film() {
               className="group block"
             >
               <span className="print">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
-                  alt=""
-                  loading="lazy"
-                  className="aspect-video w-full object-cover"
-                />
+                <span className="print-window">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-video w-full object-cover"
+                  />
+                </span>
               </span>
               <p className="mt-4 text-sm leading-[1.9] transition-colors group-hover:text-shu">
                 {v.title}
@@ -328,17 +338,32 @@ function Itinerary() {
     <section id="itinerary" className="scroll-mt-10 pt-28 md:pt-36">
       <SectionTitle index="四" title="旅程" sub="九ヶ月、世界一周" />
 
-      <div className="mt-10">
+      <div className="relative mt-12 ml-1">
+        <span
+          className="absolute bottom-5 left-[3px] top-5 w-px bg-rule"
+          aria-hidden
+        />
         {journey.map((stop, i) => (
           <Reveal key={stop.place} delay={Math.min(i * 0.04, 0.2)}>
-            <div className="grid grid-cols-[5.5rem_1fr] items-baseline gap-4 border-b border-rule py-6 md:grid-cols-[7rem_11rem_1fr]">
+            <div className="relative grid grid-cols-[5.5rem_1fr] items-baseline gap-4 py-6 pl-8 md:grid-cols-[7rem_11rem_1fr]">
+              <span
+                className="absolute left-0 top-[2.05rem] flex h-[7px] w-[7px] items-center justify-center"
+                aria-hidden
+              >
+                {stop.status === "now" ? (
+                  <span className="shu-dot" />
+                ) : stop.status === "done" ? (
+                  <span className="h-[7px] w-[7px] rounded-full bg-ink-faint/70" />
+                ) : (
+                  <span className="h-[7px] w-[7px] rounded-full border border-ink-faint bg-paper" />
+                )}
+              </span>
               <span
                 className={`caption ${stop.status === "now" ? "text-shu" : ""}`}
               >
                 {stop.status === "now" ? "いま" : stop.period}
               </span>
-              <span className="flex items-center gap-2.5 text-lg font-semibold tracking-[0.1em]">
-                {stop.status === "now" && <span className="shu-dot" />}
+              <span className="text-lg font-semibold tracking-[0.1em]">
                 {stop.place}
               </span>
               <span className="col-span-2 mt-1 text-sm leading-relaxed text-ink-soft md:col-span-1 md:mt-0">

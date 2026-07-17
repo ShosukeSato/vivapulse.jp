@@ -20,6 +20,7 @@ const description =
   "旅の途中で、アプリをつくり、文章を書き、映像を撮る。世界一周をしながら制作を続ける、さとうしょうすけの作品集。";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://vivapulse.jp"),
   title: "さとうしょうすけ — 旅の途中で、つくる。",
   description,
   openGraph: {
