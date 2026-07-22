@@ -1,50 +1,40 @@
-import type { Metadata } from "next";
-import { Shippori_Mincho_B1, Zen_Kaku_Gothic_New } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const mincho = Shippori_Mincho_B1({
-  weight: ["400", "600", "700", "800"],
-  subsets: ["latin"],
-  variable: "--font-mincho",
-  display: "swap",
-});
-
-const zen = Zen_Kaku_Gothic_New({
-  weight: ["400", "500", "700", "900"],
-  subsets: ["latin"],
-  variable: "--font-zen",
-  display: "swap",
-});
-
+const title = "途中市 — さとうしょうすけの生きたポートフォリオ";
 const description =
-  "旅の途中で、アプリをつくり、文章を書き、映像を撮る。世界一周をしながら制作を続ける、さとうしょうすけの作品集。";
+  "さとうしょうすけが何かを始めるたびに、建物が増え、道が延びる。アプリ、文章、映像、世界一周の記録からできた未完成の街。";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://vivapulse.jp"),
-  title: "さとうしょうすけ — 旅の途中で、つくる。",
+  title,
   description,
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "さとうしょうすけ — 旅の途中で、つくる。",
+    title,
     description,
-    siteName: "vivapulse.jp",
+    url: "/",
+    siteName: "途中市 / TOCHU CITY",
     locale: "ja_JP",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "さとうしょうすけ — 旅の途中で、つくる。",
+    title,
     description,
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#dff3fb",
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ja" className={`${mincho.variable} ${zen.variable}`}>
-      <body className="antialiased">{children}</body>
+    <html lang="ja">
+      <body>{children}</body>
     </html>
   );
 }
