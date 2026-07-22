@@ -4,7 +4,7 @@ export type CityPlaceKind =
   | "haku"
   | "stocka"
   | "library"
-  | "broadcast"
+  | "cinema"
   | "strategy"
   | "harbor"
   | "construction";
@@ -18,6 +18,9 @@ export type CityPlace = {
   x: number;
   y: number;
   status: "open" | "live" | "building";
+  href?: string;
+  action: string;
+  summary: string;
 };
 
 export const cityPlaces: CityPlace[] = [
@@ -30,6 +33,8 @@ export const cityPlaces: CityPlace[] = [
     x: 0.8,
     y: 1.2,
     status: "building",
+    action: "計画を見る",
+    summary: "小さなアプリと実験が生まれ続ける工事区画。",
   },
   {
     id: "tripvlog",
@@ -40,6 +45,9 @@ export const cityPlaces: CityPlace[] = [
     x: 2.05,
     y: 2.45,
     status: "open",
+    href: "https://shosukesato.github.io/tripvlog-lp/",
+    action: "公式サイトへ",
+    summary: "撮るだけで旅の一日が映像になる、旅行者のための映像店。",
   },
   {
     id: "haku",
@@ -50,6 +58,9 @@ export const cityPlaces: CityPlace[] = [
     x: 1.35,
     y: 5.8,
     status: "open",
+    href: "https://shosukesato.github.io/haku-lp/",
+    action: "公式サイトへ",
+    summary: "撮った一枚を作品へ変える、海辺の写真館とギャラリー。",
   },
   {
     id: "stocka",
@@ -60,6 +71,9 @@ export const cityPlaces: CityPlace[] = [
     x: 5.85,
     y: 1.45,
     status: "open",
+    href: "https://stocka-lp.vercel.app/",
+    action: "公式サイトへ",
+    summary: "翻訳を自分の英語へ変える、港を望む語学学校。",
   },
   {
     id: "station",
@@ -70,16 +84,21 @@ export const cityPlaces: CityPlace[] = [
     x: 4.45,
     y: 4.45,
     status: "live",
+    action: "駅に入る",
+    summary: "さとうしょうすけの現在地と、ここまでの旅路。",
   },
   {
-    id: "broadcast",
-    name: "旅の中央放送局",
-    shortName: "TABI TV",
-    district: "放送街",
-    kind: "broadcast",
-    x: 2.2,
-    y: 7.15,
+    id: "cinema",
+    name: "旅の中央映画館",
+    shortName: "TABI CINEMA",
+    district: "シアター街",
+    kind: "cinema",
+    x: 3.2,
+    y: 8.15,
     status: "live",
+    href: "https://www.youtube.com/@shosuke_sato",
+    action: "上映作品を観る",
+    summary: "世界一周の最新映像を上映する、海辺のシネマコンプレックス。",
   },
   {
     id: "strategy",
@@ -90,6 +109,8 @@ export const cityPlaces: CityPlace[] = [
     x: 7.1,
     y: 2.75,
     status: "live",
+    action: "地下へ降りる",
+    summary: "人生の選択を話し合う、市役所地下二階の秘密放送室。",
   },
   {
     id: "library",
@@ -100,6 +121,9 @@ export const cityPlaces: CityPlace[] = [
     x: 6.65,
     y: 5.8,
     status: "open",
+    href: "https://note.com/shosuke240557",
+    action: "図書館に入る",
+    summary: "旅と人生について書いた220本以上を収蔵する中央図書館。",
   },
   {
     id: "harbor",
@@ -110,5 +134,7 @@ export const cityPlaces: CityPlace[] = [
     x: 8.15,
     y: 7.8,
     status: "live",
+    action: "航路を見る",
+    summary: "東京から世界へ。旅が進むたびに航路が延びる中央港。",
   },
 ];

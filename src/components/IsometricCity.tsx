@@ -144,21 +144,40 @@ function LibraryBuilding() {
       <polygon points="7,-96 31,-102 31,-25 7,-19" fill="#baf4f1" />
       <path d="M-26 -109L0 -125 26 -109" fill="none" stroke="#fff8d8" strokeWidth="4" />
       <text x="10" y="-50" fill="#18578c" fontSize="9" fontWeight="900" transform="skewY(-14)">220+</text>
+      <polygon points="-42,-119 -3,-140 -3,-121 -38,-101" fill="#fffdf4" stroke="#e7c96e" strokeWidth="2" />
+      <polygon points="3,-140 43,-119 39,-101 3,-121" fill="#fff9df" stroke="#e7c96e" strokeWidth="2" />
+      <path d="M0 -139v19" stroke="#d9a94c" strokeWidth="2" />
+      <polygon points="9,-17 58,-29 71,-23 21,-10" fill="#fff5d2" />
+      <polygon points="16,-10 58,-21 69,-16 27,-5" fill="#ffffff" />
+      <text x="-72" y="-45" fill="#fff8df" fontSize="9" fontWeight="900" letterSpacing="1" transform="skewY(14)">LIBRARY</text>
     </g>
   );
 }
 
-function BroadcastBuilding() {
+function CinemaBuilding() {
   return (
     <g>
-      <ellipse className="building-shadow" cx="3" cy="12" rx="78" ry="24" />
-      <BaseBlock width={62} height={66} depth={46} roof="#ff7b68" left="#375f99" right="#244e87" />
-      <polygon points="10,-50 51,-60 51,-22 10,-12" fill="#123c6c" />
-      <path className="screen-glow" d="M20 -42l20-5v18l-20 5z" fill="#ff8a75" />
-      <path d="M0 -89v-87M-21 -91L0 -176 21 -91M-12 -127h24M-7 -151h14" fill="none" stroke="#2d5d88" strokeWidth="3" />
-      <circle cx="0" cy="-176" r="6" fill="#ff826d" />
-      <circle className="radio-wave wave-one" cx="0" cy="-176" r="18" fill="none" stroke="#ff826d" strokeWidth="2" />
-      <circle className="radio-wave wave-two" cx="0" cy="-176" r="30" fill="none" stroke="#ff826d" strokeWidth="2" />
+      <ellipse className="building-shadow" cx="4" cy="14" rx="112" ry="31" />
+      <BaseBlock width={88} height={72} depth={58} roof="#fff8db" left="#315d94" right="#1e4e86" />
+      <polygon points="9,-59 76,-76 76,-17 9,0" fill="#f6fbfd" />
+      <polygon points="18,-51 68,-64 68,-28 18,-15" fill="#123a69" />
+      <path className="screen-glow" d="M26 -45l31-8v18l-31 8z" fill="#6ce3dd" />
+      <path d="M37 -39l12-3-6-7z" fill="#ffffff" />
+      <polygon points="-75,-67 -8,-50 -8,-13 -75,-30" fill="#f5f8f9" />
+      {[-65, -42, -19].map((x, index) => (
+        <g key={x}>
+          <polygon points={`${x},-59 ${x + 16},-55 ${x + 16},-27 ${x},-31`} fill={index === 1 ? "#ffb84e" : "#ff7467"} />
+          <path d={`M${x + 4} -46l8 2`} stroke="#fff" strokeWidth="2" />
+        </g>
+      ))}
+      <polygon points="-8,-22 70,-42 88,-29 9,-9" fill="#ff7064" />
+      <polygon points="9,-9 88,-29 88,-18 9,2" fill="#d94650" />
+      <text x="23" y="-22" fill="#ffffff" fontSize="10" fontWeight="900" letterSpacing="2" transform="skewY(-14)">NOW SHOWING</text>
+      <path d="M-7 -92v-73h42v84" fill="#ff7064" />
+      <path d="M0 -151h28v48H0z" fill="#fff8df" />
+      <circle cx="14" cy="-127" r="11" fill="#1e4e86" />
+      <path d="M10 -134l11 7-11 7z" fill="#ffffff" />
+      <text x="-62" y="-73" fill="#fff8df" fontSize="11" fontWeight="900" transform="skewY(14)">TABI</text>
     </g>
   );
 }
@@ -213,7 +232,7 @@ function BuildingByKind({ kind }: { kind: CityPlaceKind }) {
     case "stocka": return <StockaBuilding />;
     case "station": return <StationBuilding />;
     case "library": return <LibraryBuilding />;
-    case "broadcast": return <BroadcastBuilding />;
+    case "cinema": return <CinemaBuilding />;
     case "strategy": return <StrategyBuilding />;
     case "harbor": return <HarborBuilding />;
     case "construction": return <ConstructionBuilding />;
@@ -283,7 +302,46 @@ function WaterfrontHall({ x, y }: { x: number; y: number }) {
   );
 }
 
-function Place({ place, selected, onSelect }: { place: CityPlace; selected: boolean; onSelect: (id: string) => void }) {
+function CityLife() {
+  return (
+    <g aria-hidden="true">
+      <g className="city-car">
+        <polygon points="526,372 552,385 538,392 512,379" fill="#ffffff" />
+        <polygon points="521,370 539,379 532,383 514,374" fill="#ff6b5f" />
+        <circle cx="520" cy="381" r="3" fill="#335f77" />
+        <circle cx="540" cy="391" r="3" fill="#335f77" />
+      </g>
+      <g className="city-bus">
+        <polygon points="883,508 929,531 912,540 866,517" fill="#f8fcfd" />
+        <polygon points="875,505 916,525 916,534 875,514" fill="#19a9c2" />
+        <path d="M883 510l8 4m5 2l8 4" stroke="#d8ffff" strokeWidth="3" />
+      </g>
+      {([
+        [625, 425, "#ff6b5f"], [641, 433, "#1269b0"], [925, 593, "#f3b632"], [948, 605, "#16a98e"],
+      ] as const).map(([x, y, color], index) => (
+        <g key={index} transform={`translate(${x} ${y})`}>
+          <ellipse cx="2" cy="4" rx="6" ry="3" fill="#44758c" opacity=".2" />
+          <circle cx="0" cy="-10" r="3" fill="#f2bda7" />
+          <path d="M0 -7v12m0-7l-5 5m5-5l5 5" stroke={color} strokeWidth="3" strokeLinecap="round" />
+        </g>
+      ))}
+      <path className="water-wave wave-a" d="M760 697q28-14 56 0t56 0" fill="none" stroke="#e9feff" strokeWidth="3" opacity=".8" />
+      <path className="water-wave wave-b" d="M1010 664q24-12 48 0t48 0" fill="none" stroke="#e9feff" strokeWidth="3" opacity=".75" />
+    </g>
+  );
+}
+
+function Place({
+  place,
+  selected,
+  onSelect,
+  onPreview,
+}: {
+  place: CityPlace;
+  selected: boolean;
+  onSelect: (id: string) => void;
+  onPreview: (id: string | null) => void;
+}) {
   const point = iso(place.x, place.y);
   const activate = () => onSelect(place.id);
   const onKeyDown = (event: ReactKeyboardEvent<SVGGElement>) => {
@@ -292,6 +350,38 @@ function Place({ place, selected, onSelect }: { place: CityPlace; selected: bool
       activate();
     }
   };
+
+  const contents = (
+    <>
+      <g className="building-art">
+        <BuildingByKind kind={place.kind} />
+      </g>
+      <g className="map-label" transform="translate(0 45)">
+        <rect x="-68" y="-20" width="136" height="42" rx="13" />
+        <text className="place-name" textAnchor="middle" y="-3">{place.shortName}</text>
+        <text className="place-action" textAnchor="middle" y="12">{place.action} {place.href ? "↗" : "→"}</text>
+      </g>
+      {selected && <circle className="selection-ring" cx="0" cy="2" r="78" />}
+    </>
+  );
+
+  if (place.href) {
+    return (
+      <a
+        className="city-place is-link"
+        href={place.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${place.name}を開く`}
+        onMouseEnter={() => onPreview(place.id)}
+        onMouseLeave={() => onPreview(null)}
+        onFocus={() => onPreview(place.id)}
+        onBlur={() => onPreview(null)}
+      >
+        <g transform={`translate(${point.x} ${point.y})`}>{contents}</g>
+      </a>
+    );
+  }
 
   return (
     <g
@@ -302,15 +392,12 @@ function Place({ place, selected, onSelect }: { place: CityPlace; selected: bool
       aria-label={`${place.name}を開く`}
       onClick={activate}
       onKeyDown={onKeyDown}
+      onMouseEnter={() => onPreview(place.id)}
+      onMouseLeave={() => onPreview(null)}
+      onFocus={() => onPreview(place.id)}
+      onBlur={() => onPreview(null)}
     >
-      <g className="building-art">
-        <BuildingByKind kind={place.kind} />
-      </g>
-      <g className="map-label" transform="translate(0 42)">
-        <rect x="-54" y="-15" width="108" height="29" rx="14.5" />
-        <text textAnchor="middle" y="5">{place.shortName}</text>
-      </g>
-      {selected && <circle className="selection-ring" cx="0" cy="2" r="78" />}
+      {contents}
     </g>
   );
 }
@@ -320,9 +407,11 @@ type Camera = { x: number; y: number; zoom: number };
 export default function IsometricCity({
   selectedId,
   onSelect,
+  onPreview,
 }: {
   selectedId: string | null;
   onSelect: (id: string) => void;
+  onPreview: (id: string | null) => void;
 }) {
   const [camera, setCamera] = useState<Camera>({ x: 720, y: 445, zoom: 1 });
   const drag = useRef<{ x: number; y: number; cameraX: number; cameraY: number } | null>(null);
@@ -341,6 +430,7 @@ export default function IsometricCity({
 
   const onPointerDown = (event: ReactPointerEvent<SVGSVGElement>) => {
     if (event.button !== 0) return;
+    if ((event.target as Element).closest?.(".city-place")) return;
     event.currentTarget.setPointerCapture(event.pointerId);
     drag.current = { x: event.clientX, y: event.clientY, cameraX: camera.x, cameraY: camera.y };
   };
@@ -366,7 +456,7 @@ export default function IsometricCity({
         className="city-map"
         viewBox={`${camera.x - viewWidth / 2} ${camera.y - viewHeight / 2} ${viewWidth} ${viewHeight}`}
         preserveAspectRatio="xMidYMid slice"
-        aria-label="途中市のアイソメトリック地図。建物を選択すると活動の詳細が開きます。"
+        aria-label="途中市のアイソメトリック地図。アプリ店舗、映画館、図書館は押すと外部サイトへ移動し、街の施設は案内が開きます。"
         onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -411,6 +501,10 @@ export default function IsometricCity({
 
         <path d="M448 296L992 568M414 449L686 585M754 619L958 721" stroke="#f8fbfb" strokeWidth="4" strokeDasharray="22 19" opacity=".92" />
         <path d="M992 568L1196 670" stroke="#176dac" strokeWidth="3" strokeDasharray="8 13" opacity=".7" />
+        <path d="M214 405L690 643L1124 426" fill="none" stroke="#f7ffff" strokeWidth="12" opacity=".72" />
+        <path d="M214 405L690 643L1124 426" fill="none" stroke="#20a3c2" strokeWidth="2" strokeDasharray="5 12" opacity=".72" />
+
+        <CityLife />
 
         <GlassTower x={3.7} y={0.45} height={148} width={38} tone="blue" />
         <GlassTower x={5.15} y={0.45} height={194} width={42} tone="aqua" />
@@ -428,11 +522,11 @@ export default function IsometricCity({
         <Tree x={8.75} y={2.1} />
 
         {places.map((place) => (
-          <Place key={place.id} place={place} selected={selectedId === place.id} onSelect={onSelect} />
+          <Place key={place.id} place={place} selected={selectedId === place.id} onSelect={onSelect} onPreview={onPreview} />
         ))}
 
         <g className="district-label" transform="translate(535 238)"><text>MAKERS DISTRICT</text></g>
-        <g className="district-label" transform="translate(330 532)"><text>BROADCAST ROW</text></g>
+        <g className="district-label" transform="translate(330 532)"><text>CINEMA PROMENADE</text></g>
         <g className="district-label" transform="translate(940 605)"><text>ARCHIVE QUARTER</text></g>
         <g className="district-label" transform="translate(1125 723)"><text>WORLD ROUTE →</text></g>
       </svg>
@@ -442,7 +536,7 @@ export default function IsometricCity({
         <button type="button" onClick={() => zoomBy(0.86)} aria-label="縮小">−</button>
         <button type="button" onClick={reset} aria-label="地図を中央に戻す">◎</button>
       </div>
-      <p className="map-hint"><span /> DRAG TO EXPLORE · SELECT A BUILDING</p>
+      <p className="map-hint"><span /> DRAG TO EXPLORE · CLICK A BUILDING TO ENTER</p>
     </div>
   );
 }
