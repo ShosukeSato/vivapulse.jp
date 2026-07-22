@@ -1,10 +1,9 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cityPlaces, type CityPlace } from "@/data/city";
 import {
-  articles,
   channelUrl,
   featuredArticle,
   films,
@@ -13,7 +12,10 @@ import {
   products,
   profile,
   socials,
+  type Product,
 } from "@/data/content";
+import noteArchive from "@/data/note-archive.json";
+import ArchiveCatalogue, { type ArchiveNote } from "./ArchiveCatalogue";
 import styles from "./place.module.css";
 
 type PageProps = { params: Promise<{ slug: string }> };
@@ -105,7 +107,7 @@ function CinemaInterior() {
           <span className={styles.screenShade} />
           <span className={styles.playButton} aria-hidden="true">▶</span>
           <span className={styles.screenCopy}>
-            <small>{feature.place} · {feature.date}</small>
+            <small>{feature.place} · {feature.date} · {feature.duration}</small>
             <strong>{feature.title}</strong>
             <em>本編を観る ↗</em>
           </span>
@@ -118,8 +120,8 @@ function CinemaInterior() {
       <section className={styles.contentSection} aria-labelledby="screening-lineup">
         <div className={styles.sectionHeadingRow}>
           <div className={styles.sectionHeading}>
-            <span>SCREENS 02—04</span>
-            <h2 id="screening-lineup">上映中の作品</h2>
+            <span>SCREENS 02—{String(films.length).padStart(2, "0")}</span>
+            <h2 id="screening-lineup">全作品アーカイブ</h2>
           </div>
           <p className={styles.counter}>{String(films.length).padStart(2, "0")} FILMS</p>
         </div>
@@ -136,6 +138,7 @@ function CinemaInterior() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={`https://i.ytimg.com/vi/${film.id}/hqdefault.jpg`} alt="" />
                 <b>{String(index + 2).padStart(2, "0")}</b>
+                <em>{film.duration}</em>
                 <i aria-hidden="true">▶</i>
               </span>
               <span className={styles.posterMeta}>{film.place} · {film.date}</span>
@@ -152,9 +155,9 @@ function CinemaInterior() {
   );
 }
 
-const bookColors = ["#215e78", "#e05b45", "#d89a2b", "#2d7462", "#75548e", "#3f6fb4", "#9a5546"];
-
 function LibraryInterior() {
+  const archive = noteArchive as ArchiveNote[];
+
   return (
     <>
       <section className={`${styles.featureRoom} ${styles.libraryRoom}`} aria-labelledby="curators-pick">
@@ -180,42 +183,15 @@ function LibraryInterior() {
       <section className={`${styles.contentSection} ${styles.archiveSection}`} aria-labelledby="open-shelves">
         <div className={styles.sectionHeadingRow}>
           <div className={styles.sectionHeading}>
-            <span>OPEN SHELVES · SELECTED</span>
+            <span>OPEN SHELVES · COMPLETE COLLECTION</span>
             <h2 id="open-shelves">ひらかれた書架</h2>
           </div>
-          <p className={styles.counter}>220+ TEXTS</p>
+          <p className={styles.counter}>{archive.length} TEXTS</p>
         </div>
-        <div className={styles.bookshelf}>
-          <div className={styles.bookRow}>
-            {articles.map((article, index) => (
-              <a
-                className={styles.book}
-                href={article.href}
-                key={article.href}
-                style={{ "--book": bookColors[index % bookColors.length] } as CSSProperties}
-                title={article.title}
-                {...externalProps}
-              >
-                <span>{article.date}</span>
-                <strong>{article.title}</strong>
-                <small>SHOSUKE SATO</small>
-              </a>
-            ))}
-          </div>
-          <div className={styles.shelf} aria-hidden="true"><i>TRAVEL</i><i>IDEAS</i><i>01</i></div>
-        </div>
-        <div className={styles.catalogueGrid}>
-          {articles.map((article, index) => (
-            <a className={styles.catalogueCard} href={article.href} key={article.href} {...externalProps}>
-              <span>{String(index + 1).padStart(3, "0")}</span>
-              <div><small>{article.date}</small><strong>{article.title}</strong></div>
-              <ArrowIcon outward />
-            </a>
-          ))}
-        </div>
+        <ArchiveCatalogue notes={archive} />
         <div className={styles.endCta}>
-          <p>220本以上の全蔵書は、note本館で閲覧できます。</p>
-          <ExternalButton href="https://note.com/shosuke240557">蔵書をすべて見る</ExternalButton>
+          <p>2019年から積み重なった{archive.length}冊。新刊は、旅の途中でも増えていきます。</p>
+          <ExternalButton href="https://note.com/shosuke240557">note本館へ</ExternalButton>
         </div>
       </section>
     </>
@@ -285,6 +261,64 @@ function HarborInterior() {
   );
 }
 
+function ProductArtifact({ product }: { product: Product }) {
+  if (product.id === "tripvlog") {
+    return (
+      <div className={`${styles.productArtifact} ${styles.tripVlogArtifact}`} role="img" aria-label="TripVlogが旅の映像を一本に編集する制作卓">
+        <div className={styles.videoPhone}>
+          <div className={styles.phoneBar}><span>REC</span><small>DAY 042</small></div>
+          <div className={styles.vlogFrame}>
+            <i /><i /><i />
+            <span>JOGJAKARTA</span>
+            <strong>旅の一日が、<br />一本になる。</strong>
+          </div>
+          <div className={styles.editTimeline}><i /><i /><i /><b /></div>
+        </div>
+        <div className={styles.footageRail}>
+          {["08:42", "12:18", "17:06", "21:31"].map((time, index) => <span key={time}><i>{index + 1}</i><b>{time}</b></span>)}
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {product.icon && <img className={styles.artifactIcon} src={product.icon} alt="" />}
+      </div>
+    );
+  }
+
+  if (product.id === "haku") {
+    return (
+      <div className={`${styles.productArtifact} ${styles.hakuArtifact}`} role="img" aria-label="HAKUが写真を余白ごと作品として額装する展示壁">
+        <div className={styles.galleryWall}>
+          <span className={styles.galleryFrameOne}><i /><small>LIGHT / 01</small></span>
+          <span className={styles.galleryFrameTwo}><i /><small>STILL / 02</small></span>
+          <span className={styles.galleryFrameThree}><i /><small>JOURNEY / 03</small></span>
+        </div>
+        <div className={styles.galleryPlacard}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {product.icon && <img src={product.icon} alt="" />}
+          <span><b>HAKU COLLECTION</b><small>SHOOT, THEN ART.</small></span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`${styles.productArtifact} ${styles.stockaArtifact}`} role="img" aria-label="Stockaが翻訳した文を構文・文法・単語へ分解する学習卓">
+      <div className={styles.translationBoard}>
+        <small>LIVE TRANSLATION / EN → JA</small>
+        <strong>I found a place<br />I want to return to.</strong>
+        <p>また帰りたいと思える場所を、見つけた。</p>
+        <div className={styles.languageTokens}><span>SUBJECT</span><span>VERB</span><span>RELATIVE CLAUSE</span></div>
+      </div>
+      <div className={styles.cardStack}>
+        <span><small>FOUND</small><b>find / found</b></span>
+        <span><small>RETURN TO</small><b>〜へ戻る</b></span>
+        <span><small>PHRASE 031</small><b>MY WORDS</b></span>
+      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {product.icon && <img className={styles.artifactIcon} src={product.icon} alt="" />}
+    </div>
+  );
+}
+
 function ProductInterior({ place }: { place: CityPlace }) {
   const product = products.find((item) => item.id === place.id);
   if (!product) return null;
@@ -301,12 +335,7 @@ function ProductInterior({ place }: { place: CityPlace }) {
       <section className={`${styles.featureRoom} ${styles.productRoom}`} aria-labelledby="product-exhibit">
         <div className={styles.sectionHeading}><span>{exhibit.label}</span><h2 id="product-exhibit">{product.tagline}</h2></div>
         <div className={styles.productExhibit}>
-          <div className={styles.iconPlinth}>
-            <span className={styles.plinthLight} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            {product.icon && <img src={product.icon} alt={`${product.name} アプリアイコン`} />}
-            <i aria-hidden="true" />
-          </div>
+          <ProductArtifact product={product} />
           <div className={styles.productStatement}>
             <small>EXHIBIT {place.code}</small>
             <h3>{product.name}</h3>

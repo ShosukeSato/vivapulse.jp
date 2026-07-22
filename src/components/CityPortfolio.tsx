@@ -203,6 +203,17 @@ export default function CityPortfolio() {
   }, []);
 
   useEffect(() => {
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (connection?.saveData) return;
+
+    const prefetchTimer = window.setTimeout(() => {
+      cityPlaces.forEach((place) => router.prefetch(place.path));
+    }, 400);
+
+    return () => window.clearTimeout(prefetchTimer);
+  }, [router]);
+
+  useEffect(() => {
     if (directoryOpen) directoryCloseRef.current?.focus();
     else if (selected) panelCloseRef.current?.focus();
   }, [directoryOpen, selected]);
@@ -221,7 +232,11 @@ export default function CityPortfolio() {
 
   const previewPlaceOnMap = (id: string | null) => {
     setPreviewId(id);
-    if (id) setIntroOpen(false);
+    if (id) {
+      setIntroOpen(false);
+      const place = cityPlaces.find((candidate) => candidate.id === id);
+      if (place) router.prefetch(place.path);
+    }
   };
 
   const enteringPlace = enteringId

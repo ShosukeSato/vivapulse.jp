@@ -163,7 +163,7 @@ export const cityPlaces: CityPlace[] = [
     name: "THE ARCHIVE",
     shortName: "THE ARCHIVE",
     district: "CULTURE PROMENADE",
-    destination: "note / 220本以上の記事",
+    destination: "note / 229本の公開記事",
     kind: "library",
     x: 7.1,
     y: 5.2,
@@ -173,7 +173,7 @@ export const cityPlaces: CityPlace[] = [
     path: "/places/the-archive",
     externalHref: "https://note.com/shosuke240557",
     action: "施設に入る",
-    summary: "旅と人生について書いた220本以上を収蔵する中央図書館。",
+    summary: "旅と人生について書いた229本を収蔵する中央図書館。",
   },
   {
     id: "harbor",
