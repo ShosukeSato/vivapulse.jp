@@ -17,11 +17,21 @@ export const metadata: Metadata = {
     siteName: "途中市 / TOCHU CITY",
     locale: "ja_JP",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TOCHU CITY — A living portfolio by Shosuke Sato",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: ["/opengraph-image.png"],
   },
 };
 
