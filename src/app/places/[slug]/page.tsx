@@ -85,6 +85,34 @@ function EntranceTransition({ place }: { place: CityPlace }) {
   );
 }
 
+function FacilityAtmosphere({ kind }: { kind: CityPlace["kind"] }) {
+  if (kind === "cinema") {
+    return <div className={`${styles.heroAtmosphere} ${styles.atmosphereCinema}`} aria-hidden="true"><i /><i /><i /><b>01</b><span>FEATURE PRESENTATION</span></div>;
+  }
+  if (kind === "library") {
+    return <div className={`${styles.heroAtmosphere} ${styles.atmosphereLibrary}`} aria-hidden="true">{Array.from({ length: 9 }, (_, index) => <i key={index} />)}<span>OPEN STACKS / 229 VOLUMES</span></div>;
+  }
+  if (kind === "harbor") {
+    return <div className={`${styles.heroAtmosphere} ${styles.atmosphereHarbor}`} aria-hidden="true"><i /><i /><i /><b>N</b><span>07°16&apos;N<br />80°36&apos;E</span></div>;
+  }
+  if (kind === "tripvlog") {
+    return <div className={`${styles.heroAtmosphere} ${styles.atmosphereTripvlog}`} aria-hidden="true"><i /><i /><i /><b>00:42:18</b><span>REC · ASSEMBLE · RELIVE</span></div>;
+  }
+  if (kind === "haku") {
+    return <div className={`${styles.heroAtmosphere} ${styles.atmosphereHaku}`} aria-hidden="true"><i /><i /><i /><span>LIGHT / STILL / SPACE</span></div>;
+  }
+  if (kind === "stocka") {
+    return <div className={`${styles.heroAtmosphere} ${styles.atmosphereStocka}`} aria-hidden="true"><i>SUBJECT</i><i>VERB</i><i>RELATIVE CLAUSE</i><b>A / あ</b><span>TRANSLATE → UNPACK → STOCK</span></div>;
+  }
+  if (kind === "construction") {
+    return <div className={`${styles.heroAtmosphere} ${styles.atmosphereFoundry}`} aria-hidden="true"><i /><i /><i /><b>0 → 1</b><span>PROTOTYPE FLOOR / ACTIVE</span></div>;
+  }
+  if (kind === "station") {
+    return <div className={`${styles.heroAtmosphere} ${styles.atmosphereStation}`} aria-hidden="true"><i /><i /><i /><b>NOW</b><span>ARRIVALS / DEPARTURES</span></div>;
+  }
+  return <div className={`${styles.heroAtmosphere} ${styles.atmosphereStrategy}`} aria-hidden="true">{Array.from({ length: 17 }, (_, index) => <i key={index} />)}<b>ON AIR</b><span>88.1 / AFTER HOURS</span></div>;
+}
+
 function CinemaInterior() {
   const [feature, ...lineup] = films;
 
@@ -467,6 +495,7 @@ export default async function PlacePage({ params }: PageProps) {
       <main id="inside">
         <section className={styles.placeHero} aria-labelledby="place-title">
           <div className={styles.heroGrid} aria-hidden="true" />
+          <FacilityAtmosphere kind={place.kind} />
           <div className={styles.heroCode}>{place.code}</div>
           <div className={styles.heroCopy}>
             <span>{place.district} · {place.status.toUpperCase()}</span>

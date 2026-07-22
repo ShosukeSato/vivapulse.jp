@@ -810,6 +810,220 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible {
 }
 
 /* ──────────────────────────────────────────────────────────
+   CITY PLAN 01 — editorial plan view
+   The map is deliberately limited to districts, routes and
+   nine landmarks. Visual consistency takes priority over detail.
+   ────────────────────────────────────────────────────────── */
+.portfolio-shell {
+  --plan-ink: #153f52;
+  --plan-paper: #f4f1e8;
+  --plan-blue: #087f9b;
+  --plan-red: #e85e52;
+  background: #e9ede6;
+}
+
+.portfolio-shell::before { display: none; }
+.portfolio-shell::after { z-index: 4; opacity: .026; mix-blend-mode: multiply; }
+
+.city-header {
+  height: 72px;
+  padding: 13px 24px;
+  border-color: rgba(21,63,82,.22);
+  background: rgba(247,245,237,.94);
+  box-shadow: 0 1px 0 rgba(255,255,255,.7);
+  backdrop-filter: blur(16px);
+}
+
+.brand { gap: 10px; }
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 0;
+  background: var(--plan-ink);
+  color: #fff;
+  font-size: 14px;
+  transform: none;
+}
+.brand-mark i { transform: none; }
+.brand strong { color: var(--plan-ink); font-size: 12px; letter-spacing: .2em; }
+.brand small { color: #58717a; font-size: 7px; letter-spacing: .17em; }
+.city-status { color: #506d77; font-size: 7px; letter-spacing: .15em; }
+.status-light { width: 6px; height: 6px; background: var(--plan-red); box-shadow: none; }
+.header-actions > button:first-child { min-height: 40px; color: var(--plan-ink); font-size: 8px; }
+.directory-button {
+  min-height: 40px;
+  padding-inline: 17px;
+  border: 1px solid var(--plan-ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--plan-ink);
+  font-size: 8px;
+}
+.directory-button:hover { border-color: var(--plan-ink); background: var(--plan-ink); color: #fff; }
+.directory-button:hover .directory-icon i { background: #fff; }
+
+.city-stage { top: 72px; background: #e9ede6; }
+.plan-map-wrap { overflow: hidden; background: #e9ede6; }
+.plan-map { inset: 0; width: 100%; height: 100%; cursor: default; transition: transform .55s ease, opacity .4s; }
+.plan-map:active { cursor: default; }
+.plan-map.is-entering { transform: scale(1.025); filter: none; }
+.plan-map.is-entering .plan-place:not(.is-entering) { opacity: .18; }
+
+.district-fill { stroke: #153f52; stroke-width: 1; }
+.district-north { fill: #e8dfcb; }
+.district-makers { fill: #dde9df; }
+.district-central { fill: #e1e2d8; }
+.district-culture { fill: #eee5d6; }
+.plan-water { fill: #6dbcc2; }
+.quay-line { fill: none; stroke: #153f52; stroke-width: 3; }
+
+.plan-roads path { fill: none; stroke: #f8f5ec; stroke-width: 38; stroke-linecap: square; }
+.road-centres path { fill: none; stroke: #87989a; stroke-width: 2; stroke-dasharray: 11 12; }
+.plan-rail path { fill: none; stroke: #596f73; stroke-width: 2; }
+.plan-rail path:first-child, .plan-rail path:nth-child(2) { stroke-width: 4; }
+
+.district-titles text {
+  fill: #153f52;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .18em;
+}
+.district-titles tspan { fill: #d84f47; font-size: 8px; }
+.map-notation text { fill: #315b68; font-size: 8px; font-weight: 800; letter-spacing: .16em; }
+.map-notation path, .map-notation circle { fill: none; stroke: #315b68; stroke-width: 1.5; }
+
+.plan-place { cursor: pointer; outline: none; transition: opacity .4s; }
+.plan-parcel {
+  fill: rgba(255,255,255,.36);
+  stroke: rgba(21,63,82,.32);
+  stroke-width: 1;
+  transition: fill .25s, stroke .25s;
+}
+.parcel-axis { fill: none; stroke: rgba(21,63,82,.14); stroke-width: 1; }
+.plan-landmark {
+  filter: drop-shadow(7px 9px 0 rgba(21,63,82,.11));
+  transition: transform .25s cubic-bezier(.2,.8,.2,1);
+}
+.plan-place:hover .plan-landmark,
+.plan-place:focus-visible .plan-landmark,
+.plan-place.is-active .plan-landmark { transform: translateY(-6px); }
+.plan-place:hover .plan-parcel,
+.plan-place:focus-visible .plan-parcel,
+.plan-place.is-active .plan-parcel { fill: rgba(255,255,255,.8); stroke: #153f52; stroke-width: 2; }
+.plan-place:focus-visible .plan-parcel { stroke: #e85e52; stroke-width: 3; }
+.landmark-symbol-text { fill: #153f52; font-size: 8px; font-weight: 900; letter-spacing: .06em; }
+.landmark-symbol-text.light { fill: #fff8e9; }
+
+.plan-label rect { fill: #f8f5ec; stroke: #153f52; stroke-width: 1.5; transition: fill .2s; }
+.plan-label text { fill: #153f52; font-weight: 850; }
+.plan-label .plan-code { font-size: 7px; letter-spacing: .12em; }
+.plan-label .plan-name { font-size: 9px; letter-spacing: .02em; }
+.plan-label path { fill: none; stroke: #153f52; stroke-width: 1.5; }
+.plan-place:hover .plan-label rect,
+.plan-place:focus-visible .plan-label rect,
+.plan-place.is-active .plan-label rect { fill: #153f52; }
+.plan-place:hover .plan-label text,
+.plan-place:focus-visible .plan-label text,
+.plan-place.is-active .plan-label text { fill: #fff; }
+.plan-place:hover .plan-label path,
+.plan-place:focus-visible .plan-label path,
+.plan-place.is-active .plan-label path { stroke: #fff; }
+.plan-live { fill: #e85e52; stroke: #fff; stroke-width: 3; animation: planLive 2.4s ease-in-out infinite; }
+.plan-entry-ring { fill: none; stroke: #e85e52; stroke-width: 3; animation: planEntry .65s ease-out both; }
+
+.city-intro {
+  z-index: 8;
+  top: 26px;
+  left: 24px;
+  width: 304px;
+  padding: 21px 22px 18px;
+  border: 1px solid var(--plan-ink);
+  border-radius: 0;
+  background: rgba(248,245,236,.97);
+  box-shadow: 9px 9px 0 rgba(21,63,82,.12);
+}
+.city-intro > p { color: #45646f; font-size: 7px; }
+.city-intro h1 { color: var(--plan-ink); font-size: 24px; line-height: 1.28; letter-spacing: -.045em; }
+.city-intro > span { color: #536c73; font-size: 9px; line-height: 1.8; }
+.city-intro .intro-guide {
+  min-height: 40px;
+  border-top-color: rgba(21,63,82,.25);
+  color: var(--plan-ink);
+  font-size: 9px;
+}
+.city-intro .intro-dismiss { top: 8px; right: 8px; }
+
+.facility-guide {
+  z-index: 32;
+  right: 352px;
+  bottom: 58px;
+  left: 24px;
+  height: 80px;
+  border: 1px solid var(--plan-ink);
+  border-radius: 0;
+  background: rgba(248,245,236,.97);
+  box-shadow: 6px 6px 0 rgba(21,63,82,.1);
+}
+.facility-guide-head { width: 125px; min-width: 125px; padding: 13px; border-right-color: rgba(21,63,82,.18); }
+.facility-guide-list button { min-width: 135px; padding: 11px 12px; border-right-color: rgba(21,63,82,.16); }
+.facility-guide-list button:hover, .facility-guide-list button:focus-visible { background: #e1ece7; }
+.facility-guide-list button > span:first-child { width: 34px; height: 26px; border-radius: 0; background: #dce7e2; color: var(--plan-ink); }
+.facility-guide-list strong { color: var(--plan-ink); }
+
+.landmark-preview {
+  z-index: 33;
+  right: 24px;
+  bottom: 58px;
+  width: 310px;
+  min-height: 80px;
+  border: 1px solid var(--plan-ink);
+  border-radius: 0;
+  background: rgba(248,245,236,.98);
+  box-shadow: 6px 6px 0 rgba(21,63,82,.1);
+}
+.preview-index { border-radius: 0; background: var(--plan-ink); color: #fff; }
+.map-controls { z-index: 33; top: 24px; right: 24px; border: 1px solid var(--plan-ink); border-radius: 0; background: #f8f5ec; box-shadow: none; }
+.map-controls button { width: 40px; height: 40px; border-bottom-color: rgba(21,63,82,.18); }
+.map-controls button:hover { background: #dfe9e4; }
+.map-hint { z-index: 30; bottom: 151px; color: #3e636e; font-size: 7px; }
+.city-coordinate { z-index: 30; bottom: 52px; color: #365c67; }
+.city-ticker { z-index: 35; height: 44px; border-top-color: var(--plan-ink); background: #f8f5ec; }
+.ticker-label { background: var(--plan-ink); }
+.city-ticker a { min-height: 44px; }
+
+@keyframes planLive { 50% { opacity: .42; } }
+@keyframes planEntry { from { opacity: .9; transform: scale(.45); } to { opacity: 0; transform: scale(1.35); } }
+
+@media (max-width: 1080px) {
+  .facility-guide { right: 24px; }
+  .landmark-preview { display: none; }
+}
+
+@media (max-width: 720px) {
+  .city-header { height: 62px; padding: 10px 12px; }
+  .city-stage { top: 62px; }
+  .brand-mark { width: 38px; height: 38px; }
+  .header-actions > button:first-child { display: none; }
+  .directory-button { min-height: 38px; padding-inline: 13px; }
+  .city-intro { top: 12px; left: 12px; width: min(282px, calc(100vw - 72px)); padding: 17px 18px 14px; }
+  .city-intro h1 { font-size: 21px; }
+  .city-intro > span { font-size: 8px; }
+  .plan-map-wrap { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .plan-map-wrap::-webkit-scrollbar { display: none; }
+  .plan-map { position: relative; inset: auto; width: 980px; max-width: none; height: calc(100svh - 106px); }
+  .map-controls { top: 12px; right: 12px; position: fixed; transform: translateY(62px); }
+  .map-controls button { width: 38px; height: 38px; }
+  .facility-guide { right: 12px; bottom: 52px; left: 12px; height: 74px; }
+  .facility-guide-head { width: 92px; min-width: 92px; padding: 10px; }
+  .facility-guide-head > span { font-size: 6px; }
+  .facility-guide-list button { min-width: 130px; }
+  .map-hint, .city-coordinate { display: none; }
+  .city-ticker { height: 40px; }
+  .city-ticker a { min-height: 40px; }
+}
+
+/* ──────────────────────────────────────────────────────────
    CITY 01 / waterfront masterplan v3
    ────────────────────────────────────────────────────────── */
 
@@ -1255,4 +1469,119 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .moving-person, .city-cyclist, .canal-boat { display: none; }
+}
+
+/* Final cascade for the plan interface; supersedes the retired v3 city chrome. */
+.portfolio-shell { background: #e9ede6; }
+.portfolio-shell::before { display: none; }
+.portfolio-shell::after { z-index: 4; opacity: .026; }
+.city-header {
+  z-index: 70;
+  height: 72px;
+  padding: 13px 24px;
+  border-color: rgba(21,63,82,.22);
+  background: rgba(247,245,237,.94);
+  box-shadow: 0 1px 0 rgba(255,255,255,.7);
+  backdrop-filter: blur(16px);
+}
+.brand { gap: 10px; }
+.brand-mark { width: 42px; height: 42px; border: 0; border-radius: 0; background: #153f52; color: #fff; font-size: 14px; box-shadow: none; transform: none; }
+.brand-mark i { transform: none; }
+.brand strong { color: #153f52; font-size: 12px; letter-spacing: .2em; }
+.brand small { color: #58717a; font-size: 7px; }
+.city-status { color: #506d77; font-size: 7px; }
+.header-actions > button:first-child { min-height: 40px; color: #153f52; font-size: 8px; }
+.directory-button { min-height: 40px; padding-inline: 17px; border: 1px solid #153f52; border-radius: 0; background: transparent; color: #153f52; font-size: 8px; }
+.directory-button:hover { border-color: #153f52; background: #153f52; color: #fff; }
+.directory-button:hover .directory-icon i { background: #fff; }
+.city-stage { top: 72px; background: #e9ede6; }
+.city-map-wrap.plan-map-wrap { z-index: 1; overflow: hidden; background: #e9ede6; }
+.city-map.plan-map { inset: 0; width: 100%; height: 100%; cursor: default; filter: none; transition: transform .55s ease, opacity .4s; }
+.city-map.plan-map:active { cursor: default; }
+.city-map.plan-map.is-entering { transform: scale(1.025); filter: none; }
+.city-intro {
+  z-index: 8;
+  top: 26px;
+  left: 24px;
+  width: 304px;
+  padding: 21px 22px 18px;
+  border: 1px solid #153f52;
+  border-radius: 0;
+  background: rgba(248,245,236,.97);
+  box-shadow: 9px 9px 0 rgba(21,63,82,.12);
+  backdrop-filter: none;
+}
+.city-intro > p { margin-bottom: 8px; color: #45646f; font-size: 7px; }
+.city-intro h1 { color: #153f52; font-size: 24px; line-height: 1.28; }
+.city-intro > span { margin-top: 9px; color: #536c73; font-size: 9px; line-height: 1.8; }
+.city-intro .intro-guide { min-height: 40px; margin-top: 11px; padding-top: 8px; color: #153f52; font-size: 9px; }
+.city-intro .intro-dismiss { top: 6px; right: 6px; }
+.facility-guide {
+  z-index: 32;
+  right: 352px;
+  bottom: 58px;
+  left: 24px;
+  height: 80px;
+  grid-template-columns: 125px minmax(0,1fr);
+  border: 1px solid #153f52;
+  border-radius: 0;
+  background: rgba(248,245,236,.97);
+  box-shadow: 6px 6px 0 rgba(21,63,82,.1);
+  backdrop-filter: none;
+}
+.facility-guide-head { width: 125px; min-width: 125px; padding: 13px; background: #e1e8df; border-right-color: rgba(21,63,82,.18); }
+.facility-guide-head button { border-radius: 0; color: #153f52; }
+.facility-guide-list button { min-width: 135px; padding: 11px 12px; border-right-color: rgba(21,63,82,.16); }
+.facility-guide-list button:hover, .facility-guide-list button:focus-visible { background: #e1ece7; }
+.facility-guide-list button > span:first-child { width: 34px; height: 26px; border-radius: 0; background: #dce7e2; color: #153f52; }
+.facility-guide-list strong { color: #153f52; font-size: 10px; }
+.facility-guide-list small { display: none; }
+.facility-guide-list button > span:last-child { font-size: 7px; }
+.city-intro > span { font-size: 10px; }
+.landmark-preview, .landmark-preview.is-idle {
+  z-index: 33;
+  right: 24px;
+  bottom: 58px;
+  width: 310px;
+  min-height: 80px;
+  border: 1px solid #153f52;
+  border-radius: 0;
+  background: rgba(248,245,236,.98);
+  box-shadow: 6px 6px 0 rgba(21,63,82,.1);
+  backdrop-filter: none;
+}
+.preview-index { border-radius: 0; background: #153f52; color: #fff; }
+.map-controls { z-index: 33; top: 24px; right: 24px; border: 1px solid #153f52; border-radius: 0; background: #f8f5ec; box-shadow: none; }
+.map-controls button { width: 40px; height: 40px; border-bottom-color: rgba(21,63,82,.18); }
+.map-hint { z-index: 30; bottom: 151px; color: #3e636e; font-size: 7px; }
+.city-coordinate { z-index: 30; bottom: 52px; color: #365c67; }
+.city-ticker { z-index: 35; height: 44px; border-top-color: #153f52; background: #f8f5ec; }
+.ticker-label { background: #153f52; }
+.city-ticker a { min-height: 44px; }
+
+@media (max-width: 1080px) {
+  .facility-guide { right: 24px; }
+  .landmark-preview, .landmark-preview.is-idle { display: none; }
+}
+
+@media (max-width: 720px) {
+  .city-header { height: 62px; padding: 10px 12px; }
+  .city-stage { top: 62px; }
+  .brand-mark { width: 38px; height: 38px; }
+  .header-actions > button:first-child { display: none; }
+  .directory-button { min-height: 38px; padding-inline: 13px; }
+  .city-intro { top: 12px; left: 12px; width: min(282px, calc(100vw - 72px)); padding: 17px 18px 14px; }
+  .city-intro h1 { font-size: 21px; }
+  .city-intro > span { font-size: 8px; }
+  .city-map-wrap.plan-map-wrap { overflow-x: auto; overflow-y: hidden; }
+  .city-map.plan-map { position: relative; inset: auto; width: 980px; max-width: none; height: calc(100svh - 102px); }
+  .map-controls { position: fixed; top: 74px; right: 12px; transform: none; }
+  .map-controls button { width: 38px; height: 38px; }
+  .facility-guide { right: 12px; bottom: 52px; left: 12px; height: 74px; grid-template-columns: 92px minmax(0,1fr); }
+  .facility-guide-head { width: 92px; min-width: 92px; padding: 10px; }
+  .facility-guide-head > span { font-size: 6px; }
+  .facility-guide-list button { min-width: 130px; }
+  .map-hint, .city-coordinate { display: none; }
+  .city-ticker { height: 40px; }
+  .city-ticker a { min-height: 40px; }
 }
