@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { CityPlace } from "@/data/city";
 import { featuredArticle, films, journey } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
@@ -171,6 +172,7 @@ export default function Harbor({ place }: { place: CityPlace }) {
       <footer className={styles.footer}>
         <span>ROUTE TERMINAL / CITY 01</span>
         <p>旅が進むたびに、地図と記録を更新します。</p>
+        <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>
   );

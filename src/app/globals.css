@@ -43,6 +43,9 @@ svg { max-width: 100%; }
   overflow-wrap: anywhere;
 }
 
+/* Short, authored Japanese units may wrap between units, never mid-word. */
+.semanticUnit { white-space: nowrap; }
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,

@@ -91,7 +91,7 @@ Rules:
 - Text below `9px` is forbidden
 - Display type maximum: desktop `96px`, mobile `52px`
 - The maximum applies to semantic text. Architectural section signs such as the aria-hidden `01` and `B2` may exceed it.
-- Meaning-unit spans use `word-break: keep-all` with `overflow-wrap: anywhere`: intact at normal width, safely breakable under text zoom.
+- Display phrases use `word-break: keep-all` with `overflow-wrap: anywhere`. Authored body copy may use `semanticUnit` only for short meaning units that fit at 320px and 200% text zoom; adjacent units are separated by `wbr` so wrapping happens at an intentional Japanese boundary.
 
 ## Interface
 
@@ -121,7 +121,7 @@ Touch targets are at least `44 × 44` CSS px. A visible keyboard focus state is 
 - TripVlog: converted warehouse studio, blue light band and loading entrance
 - HAKU: white low pavilion, courtyard and three skylights
 - Stocka: green-glass learning building and compact courtyard
-- B2: stairs descending below grade, ventilation tower; ON AIR only when actually publishing
+- B2: stairs descending below grade and a ventilation tower; the interior uses one real podcast thumbnail as its illuminated monitor, never an ON AIR prop
 - 01 Yard: fence, containers, crane and one in-progress module
 
 Buildings are recognizable through architecture and use, not giant play, book, camera or alphabet symbols.
@@ -160,7 +160,7 @@ Use real screens and only interactions supported by the actual product. Demonstr
 
 ### B2 Studio
 
-Real audio, waveform and transcript only. Until an episode exists, show a locked opening-soon page and mark the facility as building. Palette: `#0B0B1D`, `#3A315B`, `#D64B76`, `#E4B95C`.
+Present the real video podcast “一笑瓶のにわか哲学” as a featured conversation plus a compact episode ledger. Preserve official titles, dates and durations. The hosts are friends who enjoy the humanities and philosophy, not experts; the writing must never imply otherwise. Use one uncropped, unrecolored real thumbnail as the only bright monitor in the underground room. No fake waveform, ON AIR, invented timestamp or three-card cinema layout. Palette: `#0B0B1D`, `#3A315B`, `#D64B76`, `#E4B95C`.
 
 ### 01 Yard
 

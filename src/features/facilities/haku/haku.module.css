@@ -207,6 +207,9 @@
 }
 .footer span { padding-left: 11px; border-left: 4px solid #b87783; color: #2d2828; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
 .footer p { margin: 0; font-family: var(--font-serif); font-size: clamp(20px, 2.2vw, 32px); }
+.footer > a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; border-bottom: 1px solid #b87783; color: #2d2828; font-size: 13px; font-weight: 700; text-decoration: none; }
+.footer > a:hover { color: #8c5260; }
+.footer > a svg { width: 15px; }
 
 @media (max-width: 980px) {
   .entrance,
@@ -241,6 +244,7 @@
   .admission h2 { font-size: 45px; }
   .admission a { width: 100%; justify-content: space-between; }
   .footer { align-items: flex-start; flex-direction: column; padding: 54px 20px; }
+  .footer > a { width: 100%; justify-content: space-between; }
 }
 
 @media (max-width: 360px) {

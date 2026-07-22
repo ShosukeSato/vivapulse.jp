@@ -15,7 +15,8 @@
 .bar a { color: inherit; text-decoration: none; }
 .back { width: max-content; min-height: 44px; display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; }
 .back svg { width: 16px; }
-.back:hover { color: #ed6a55; }
+.back:hover { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+.inverse .back:hover { color: #ed6a55; }
 .cityMark { min-height: 44px; display: inline-flex; align-items: center; gap: 9px; font-size: 13px; letter-spacing: .08em; }
 .cityMark i { position: relative; width: 24px; height: 24px; display: block; border: 1px solid currentColor; }
 .cityMark b { position: absolute; width: 5px; height: 5px; background: currentColor; }
@@ -29,7 +30,7 @@
 
 @media (max-width: 620px) {
   .bar { padding-inline: 14px; }
-  .back span, .locator span { display: none; }
-  .back { width: 44px; justify-content: center; }
+  .locator span { display: none; }
+  .back { width: max-content; gap: 7px; font-size: 12px; }
   .cityMark strong { font-size: 13px; }
 }

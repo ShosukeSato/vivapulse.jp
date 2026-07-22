@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { CityPlace } from "@/data/city";
 import { products } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
+import SemanticText from "@/features/shared/SemanticText";
 import FacilityBar from "../FacilityBar";
 import styles from "./stocka.module.css";
 
@@ -24,7 +26,7 @@ export default function Stocka({ place }: { place: CityPlace }) {
             <h1 id="stocka-title"><span>翻訳を、</span><span>あなたの英語に</span><span>変える。</span></h1>
           </div>
           <div className={styles.overview}>
-            <p>{stocka.description}</p>
+            <p><SemanticText phrases={stocka.descriptionPhrases ?? [stocka.description]} /></p>
             <div className={styles.actions}>
               <a href={stocka.appStore} target="_blank" rel="noreferrer">
                 <span>App Storeで見る</span><PixelIcon name="external" />
@@ -143,6 +145,7 @@ export default function Stocka({ place }: { place: CityPlace }) {
       <footer className={styles.footer}>
         <div><span>STOCKA LAB / CITY 01</span><p>旅の会話から生まれた、自分のための学習装置。</p></div>
         <a href={stocka.lp} target="_blank" rel="noreferrer">機能を詳しく見る <PixelIcon name="external" /></a>
+        <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>
   );

@@ -95,7 +95,6 @@
 }
 
 .cityTime > span:first-child { color: var(--city-light-core); }
-.liveDot { width: 6px; height: 6px; background: var(--city-coral); }
 
 .directoryTrigger {
   justify-self: end;
@@ -488,5 +487,5 @@
 
 @media (forced-colors: active) {
   .page { forced-color-adjust: auto; }
-  .brandMark i, .liveDot, .mapLegend i { border: 1px solid CanvasText; }
+  .brandMark i, .mapLegend i { border: 1px solid CanvasText; }
 }

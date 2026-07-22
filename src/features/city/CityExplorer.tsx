@@ -13,6 +13,12 @@ import styles from "./city.module.css";
 const PRIMARY_PLACE_IDS = ["tripvlog", "haku", "stocka"];
 const ignoreSelection = () => undefined;
 
+const placeStatusLabel = (status: (typeof cityPlaces)[number]["status"]) => {
+  if (status === "live") return "CURRENT";
+  if (status === "building") return "OPENING SOON";
+  return "OPEN";
+};
+
 export default function CityExplorer() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [directoryOpen, setDirectoryOpen] = useState(false);
@@ -112,9 +118,8 @@ export default function CityExplorer() {
             <span><strong>CITY 01</strong><small>SHOSUKE SATO / PORTFOLIO CITY</small></span>
           </Link>
 
-          <div className={styles.cityTime} aria-label="街の時刻と旅の日数">
-            <span>18:42</span>
-            <span className={styles.liveDot} />
+          <div className={styles.cityTime} aria-label="街の固定時刻と旅の日数">
+            <span>CITY TIME 18:42</span>
             <span>JOURNEY DAY <DayCounter /></span>
           </div>
 
@@ -134,7 +139,7 @@ export default function CityExplorer() {
 
         <div className={styles.gameBody}>
           <div className={styles.identity}>
-            <p className={styles.kicker}>SHOSUKE SATO / PORTFOLIO CITY</p>
+            <p className={styles.kicker}>さとうしょうすけ / PORTFOLIO CITY</p>
             <h1 id="city-title"><span>つくったものが、</span><br /><span>街になる。</span></h1>
             <p className={styles.introCopy}>
               <span className={styles.introLine}>世界を旅しながら、アプリをつくり、</span><br />
@@ -143,7 +148,7 @@ export default function CityExplorer() {
 
             <div className={styles.primaryActions}>
               <a className={styles.primaryAction} href="#works">
-                <span>代表作を3分で見る</span><PixelIcon name="enter" />
+                <span>3つの代表作を見る</span><PixelIcon name="enter" />
               </a>
               <Link className={styles.textAction} href="/places/city-01-central" prefetch={false}>本人について</Link>
             </div>
@@ -166,7 +171,7 @@ export default function CityExplorer() {
               <article className={styles.placeCard}>
                 <div className={styles.placeMeta}>
                   <span>{selectedPlace.code}</span>
-                  <span>{selectedPlace.status === "building" ? "OPENING SOON" : selectedPlace.status.toUpperCase()}</span>
+                  <span>{placeStatusLabel(selectedPlace.status)}</span>
                 </div>
                 <div className={styles.placeCopy}>
                   <div><p>{selectedPlace.destination}</p><h2>{selectedPlace.name}</h2></div>

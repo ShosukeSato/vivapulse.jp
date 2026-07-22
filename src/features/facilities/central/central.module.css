@@ -72,6 +72,7 @@
 
 .nameEn { margin: 13px 0 0; font-family: var(--font-mono); font-size: 15px; font-weight: 700; letter-spacing: .06em; }
 .bio { max-width: 35em; margin: 34px 0 0; font-size: 17px; line-height: 1.9; }
+.bio span { word-break: keep-all; overflow-wrap: anywhere; }
 
 .primaryRoutes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
 .primaryRoutes a {
@@ -86,7 +87,7 @@
   text-decoration: none;
 }
 .primaryRoutes a:first-child { background: #102b3b; color: #fff; }
-.primaryRoutes a:hover { border-color: #ed6a55; background: #ed6a55; color: #fff; }
+.primaryRoutes a:hover { border-color: #ed6a55; background: #ed6a55; color: #102b3b; }
 
 .currentBoard {
   display: flex;
@@ -166,7 +167,7 @@
 .footer > div p { margin: 0; font-size: 14px; line-height: 1.7; }
 .footer nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
 .footer nav a { min-height: 44px; display: inline-flex; align-items: center; gap: 9px; padding: 0 12px; border: 1px solid #7b8887; color: inherit; font-size: 13px; font-weight: 700; text-decoration: none; }
-.footer nav a:hover { border-color: #ed6a55; background: #ed6a55; color: #fff; }
+.footer nav a:hover { border-color: #ed6a55; background: #ed6a55; color: #102b3b; }
 .footer nav svg { width: 14px; }
 
 @media (max-width: 1050px) {

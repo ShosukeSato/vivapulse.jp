@@ -17,6 +17,7 @@
 - **WAI-ARIA APG**は、標準的な複合UIを実装・検査するときのパターンとして使う。
 - **ISO 9241-210**は、人間中心設計を一度きりの装飾工程にしないためのプロセス上の参照枠とする。本プロジェクトはISO適合を表明しない。
 - **GOV.UK、デジタル庁、Apple**は、明快さ、包摂性、可読性、操作快適性を判断する実務上の基準として使う。
+- **W3C JLREQ / Japanese Script Resources**は、日本語の禁則、意味単位の改行、和欧混植を画面幅ごとに手編集するための言語資料として使う。
 - **Nielsen Norman Groupの10ヒューリスティクス**は、原著者が明記する通り規格ではなく、UIを点検するための広い経験則として使う。
 - CITY 01固有の32-bit表現、18:42の色、24pxタイル、施設別演出は外部資料が命じたものではない。ユーザー目的を満たすためのアートディレクション上の選択である。
 
@@ -39,11 +40,11 @@
 | --- | --- | --- |
 | **人の目的から始め、実利用で反復する**。ISO 9241-210はライフサイクル全体の人間中心設計を扱い、GOV.UKはユーザーニーズ、データ、反復を設計原則に置く。[[R1]](#r1-iso-9241-2102019) [[R2]](#r2-govuk-government-design-principles) | 「RPGを見せる」ではなく、「さとうしょうすけと実作品を理解し、見たい施設へ行く」を中心課題にする。コードだけで承認せず、スクリーンショットと観察で反復する。 | 5秒で人物・活動・次の行動が分かる。4幅・各状態のスクリーンショットを審査し、5人の無誘導テストを行う。 |
 | **システムではなく利用者の言葉と現実世界に合わせる**。NN/gは、内部用語を避け、自然な順序と現実の慣習に沿うことを求める。[[R3]](#r3-nielsen-norman-group-10-usability-heuristics) | 都市コードより本人名と平易な内容説明を先に出す。館内では演出より実作品を先に見せる。意味のない英大文字、座標、ゼロ埋め番号を足さない。 | 「何のページか分からない」状態がない。実作品が装飾的メタファーより先に現れ、リンク名から遷移先が分かる。 |
-| **状態を見せ、事実を装わない**。NN/gの「Visibility of system status」は、現在状態と操作結果を適切な時間で伝える原則である。[[R3]](#r3-nielsen-norman-group-10-usability-heuristics) | 選択中の施設、現在地、営業・制作状態を明示する。B2は実音声がない間は「開局準備中」とし、`ON AIR`、架空時刻、架空波形を表示しない。 | 選択・フォーカス・閉館状態を撮影する。偽データ、プレースホルダー、利用不能な`LIVE`表示が一つもない。 |
+| **状態を見せ、事実を装わない**。NN/gの「Visibility of system status」は、現在状態と操作結果を適切な時間で伝える原則である。[[R3]](#r3-nielsen-norman-group-10-usability-heuristics) | 選択中の施設と現在地を明示する。固定世界時刻は`CITY TIME`と記し、現在地は`CURRENT`とする。B2は公式フィードで照合した実エピソードだけを掲載し、`ON AIR`、架空時刻、架空波形を表示しない。 | 選択・フォーカス・現在状態を撮影する。偽データ、プレースホルダー、利用不能な`LIVE`表示が一つもない。 |
 | **思い出させず、見れば分かるようにする。到達方法を一つにしない**。NN/gの「Recognition rather than recall」「Flexibility」、WCAG 2.4.5が根拠。[[R3]](#r3-nielsen-norman-group-10-usability-heuristics) [[R4]](#r4-wcag-22) | 地図の読み方や施設コードを記憶させない。探索用マップと通常のHTML施設一覧を同じ情報への二つの入口として用意する。 | 地図を使わず全施設へ行ける。キーボードだけでも同じ到達と主要操作ができる。 |
 | **一貫させるが、均一化しない**。GOV.UKは「Be consistent, not uniform」、NN/gは一貫性と標準慣習を掲げる。[[R2]](#r2-govuk-government-design-principles) [[R3]](#r3-nielsen-norman-group-10-usability-heuristics) | City Bar、戻る導線、アイコン、フォーカス言語は共有する。一方、映画館、書庫、港、スタジオ等は実内容に合わせて情報構造、密度、素材、主要行動を変える。 | 9館を名前なしで並べても違いが分かる。同じヒーロー、3カード、CTAを色だけ変えたページがない。 |
 | **不要な要素を主目的と競合させない**。NN/gの「Aesthetic and minimalist design」と、GOV.UKの「Do the hard work to make it simple」が根拠。[[R2]](#r2-govuk-government-design-principles) [[R3]](#r3-nielsen-norman-group-10-usability-heuristics) | 雰囲気だけのブラー、ガラスカード、粒子、オーロラ、巨大記号、ゲーム数値を使わない。各ビューポートの焦点は一つにし、装飾には場所か状態を伝える役割を持たせる。 | 一つの明確な焦点がある。ART_DIRECTIONの拒否条件がゼロで、主要内容やCTAと競う装飾がない。 |
-| **文字は変更・拡大されても読め、内容として存在する**。WCAG 1.4.4、1.4.5、1.4.10、1.4.12と、デジタル庁のタイポグラフィ指針が根拠。[[R4]](#r4-wcag-22) [[R6]](#r6-デジタル庁デザインシステム) | 本文は16–18px、行高1.75–1.9、和文本文幅28–38字を基準とする。情報を画像文字にせず、OSの日本語書体と実テキストを使い、320pxと200%拡大で再配置できるようにする。 | 320px、200%テキストズーム、フォント変更相当で欠落・重なり・横スクロールがない。本文、補助ラベル、意味単位の改行を実画面で確認する。 |
+| **文字は変更・拡大されても読め、内容として存在する**。WCAG 1.4.4、1.4.5、1.4.10、1.4.12、デジタル庁のタイポグラフィ指針、JLREQが根拠。[[R4]](#r4-wcag-22) [[R6]](#r6-デジタル庁デザインシステム) [[R9]](#r9-w3c-日本語組版資料) | 本文は16–18px、行高1.75–1.9、和文本文幅28–38字を基準とする。情報を画像文字にせず、OSの日本語書体と実テキストを使う。見出しは意味句の境界で折り返し、320pxと200%拡大で再配置できるようにする。 | 320px、200%テキストズーム、フォント変更相当で欠落・重なり・横スクロールがない。「プロ／ジェクト」のような不自然な語中分断も実画面で確認する。 |
 | **色・コントラスト・形のどれか一つだけに依存しない**。WCAG 1.4.1、1.4.3、1.4.11が根拠。[[R4]](#r4-wcag-22) | パレットの美観より文字・UIの識別を優先する。状態は色だけでなく、文言、輪郭、アイコン、位置の組合せで伝える。 | WCAG 2.2 AAコントラスト、グレースケール、forced-colorsを確認する。色だけで意味が失われる箇所がない。 |
 | **キーボードフォーカスを見失わせず、モーダルには入口と出口をつくる**。WCAG 2.1.1、2.4.3、2.4.7、2.4.11とWAI-ARIA APGのDialog Patternが根拠。[[R4]](#r4-wcag-22) [[R5]](#r5-wai-aria-authoring-practices-guide) | 原則としてネイティブリンクとボタンを使い、可視フォーカスを共通化する。モーダルを使う場合は内部にフォーカスを保ち、`Escape`と明示ボタンで閉じ、起動元へ戻す。 | 全操作をキーボードで通し、視覚順とフォーカス順を比較する。開閉後にフォーカスが消失・背面移動しない。 |
 | **押しやすさは適合最低値より余裕を持たせる**。WCAG 2.5.8のAA最低値は24×24 CSS px（例外あり）。Apple HIGは主要なボタンのヒット領域に44×44ptを一般則として示す。[[R4]](#r4-wcag-22) [[R7]](#r7-apple-human-interface-guidelines) | Appleの論理ポイントをWeb規格値と同一視はせず、CITY 01独自のより厳しい基準として主要操作を44×44 CSS px以上にする。 | 主要コントロールの実測値が44px以上で、隣接ターゲットの誤操作を招く密集がない。 |
@@ -96,6 +97,7 @@
 - W3C Recommendation, [Web Content Accessibility Guidelines (WCAG) 2.2](https://www.w3.org/TR/WCAG22/)
 - 実装時はW3Cの [How to Meet WCAG 2.2](https://www.w3.org/WAI/WCAG22/quickref/) と各達成基準のUnderstanding文書も併読する。
 - 特に参照する達成基準: [1.4.3 Contrast (Minimum)](https://www.w3.org/TR/WCAG22/#contrast-minimum)、[1.4.4 Resize Text](https://www.w3.org/TR/WCAG22/#resize-text)、[1.4.10 Reflow](https://www.w3.org/TR/WCAG22/#reflow)、[1.4.11 Non-text Contrast](https://www.w3.org/TR/WCAG22/#non-text-contrast)、[1.4.12 Text Spacing](https://www.w3.org/TR/WCAG22/#text-spacing)、[2.1.1 Keyboard](https://www.w3.org/TR/WCAG22/#keyboard)、[2.2.2 Pause, Stop, Hide](https://www.w3.org/TR/WCAG22/#pause-stop-hide)、[2.4.5 Multiple Ways](https://www.w3.org/TR/WCAG22/#multiple-ways)、[2.4.7 Focus Visible](https://www.w3.org/TR/WCAG22/#focus-visible)、[2.4.11 Focus Not Obscured](https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum)、[2.5.8 Target Size](https://www.w3.org/TR/WCAG22/#target-size-minimum)。
+- 可視ラベルをアクセシブルネームの先頭または一部に保持する [2.5.3 Label in Name](https://www.w3.org/TR/WCAG22/#label-in-name) も、画像リンクと外部リンクの検査に使用する。
 
 ### R5. WAI-ARIA Authoring Practices Guide
 
@@ -106,6 +108,7 @@
 
 - デジタル庁, [デジタル庁デザインシステム](https://design.digital.go.jp/dads/)
 - デジタル庁, [タイポグラフィ（アクセシビリティ）](https://design.digital.go.jp/dads/foundations/typography/accessibility/)
+- デジタル庁, [アイコン（アクセシビリティ）](https://design.digital.go.jp/dads/foundations/icon/accessibility/)
 - フォント変更、200%以上の拡大、レスポンシブな再配置、文字画像の回避、行高、和文を含む行長の考え方を、日本語UIの実務資料として参照した。
 
 ### R7. Apple Human Interface Guidelines
@@ -118,6 +121,12 @@
 
 - Google, [Web Vitals](https://web.dev/articles/vitals)
 - LCP、INP、CLSは変わり得る指標であるため、公開前に現行定義を再確認する。QAでは現時点のLCP・CLS目標を採用している。
+
+### R9. W3C 日本語組版資料
+
+- W3C, [Requirements for Japanese Text Layout (JLREQ)](https://www.w3.org/TR/jlreq/)
+- W3C, [Japanese Script Resources](https://www.w3.org/TR/jpan-lreq/)
+- 日本語の行頭・行末禁則、文字組み、和欧混植の背景を参照する。Web実装では固定改行を全幅へ強制せず、意味句のspan、`word-break: keep-all`、安全な緊急折返しを組み合わせ、320pxと200%拡大の実画面で判断する。
 
 ## 更新ルール
 

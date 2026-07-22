@@ -21,7 +21,7 @@ const facilityType: Record<CityPlace["kind"], string> = {
   stocka: "iOSアプリ",
   library: "文章",
   cinema: "映像",
-  strategy: "開局準備中",
+  strategy: "ビデオポッドキャスト",
   harbor: "旅程",
   construction: "制作一覧",
 };
@@ -42,7 +42,11 @@ export default function Central({ place }: { place: CityPlace }) {
             <p className={styles.kicker}>CITY 01 CENTRAL · PROFILE</p>
             <h1 id="central-title"><span>さとう</span><wbr /><span>しょうすけ</span></h1>
             <p className={styles.nameEn}>{profile.nameEn}</p>
-            <p className={styles.bio}>{profile.bio}</p>
+            <p className={styles.bio}>
+              <span>東京大学大学院を休学し、</span><span>世界一周の旅の途中。</span>
+              <span>アプリをつくり、</span><span>文章を書き、映像を撮りながら、</span>
+              <span>世界のどこかで暮らしています。</span>
+            </p>
             <div className={styles.primaryRoutes}>
               <a href="#departures">作品と活動を見る</a>
               <a href="#current-location">現在地を見る</a>
@@ -67,7 +71,7 @@ export default function Central({ place }: { place: CityPlace }) {
           <header>
             <div>
               <p>DEPARTURES · PORTFOLIO DIRECTORY</p>
-              <h2 id="departures-title">ここから、作品へ。</h2>
+              <h2 id="departures-title">作品と活動の出発案内。</h2>
             </div>
             <p>代表作、映像、文章、旅程を、街の各施設で見られます。地図を読まなくても、この案内から直接入れます。</p>
           </header>
@@ -84,7 +88,7 @@ export default function Central({ place }: { place: CityPlace }) {
                     <span className={styles.facilitySummary}>{destination.summary}</span>
                     <span className={styles.facilityType}>{facilityType[destination.kind]}</span>
                     <span className={`${styles.facilityStatus} ${styles[destination.status]}`}>
-                      {destination.status === "building" ? "準備中" : "公開中"}
+                      {destination.status === "building" ? "準備中" : destination.status === "live" ? "現在地" : "公開中"}
                     </span>
                     <span className={styles.enter}><span>入る</span><PixelIcon name="enter" /></span>
                   </Link>
@@ -113,11 +117,10 @@ export default function Central({ place }: { place: CityPlace }) {
             href={`https://www.youtube.com/watch?v=${departureFilm.id}`}
             target="_blank"
             rel="noreferrer"
-            aria-label={`旅先の記録「${departureFilm.title}」をYouTubeで見る`}
           >
             <Image
               src={`/media/cinema/${departureFilm.id}.jpg`}
-              alt="世界一周を始めた本人が映るYouTube動画のサムネイル"
+              alt=""
               width={480}
               height={360}
             />
@@ -132,12 +135,14 @@ export default function Central({ place }: { place: CityPlace }) {
 
       <footer className={styles.footer}>
         <div><span>CONTACT &amp; LINKS</span><p>制作、旅、文章の続きを、それぞれの場所で公開しています。</p></div>
-        <nav aria-label="外部プロフィール">
+        <nav aria-label="連絡先とリンク">
+          <a href="mailto:shosuke240557@gmail.com">メールを送る</a>
           {socials.map((social) => (
             <a href={social.href} target="_blank" rel="noreferrer" key={social.label}>
               {social.label}<PixelIcon name="external" />
             </a>
           ))}
+          <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
         </nav>
       </footer>
     </div>

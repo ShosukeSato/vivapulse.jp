@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { CityPlace } from "@/data/city";
 import { products } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
 import CurrentLocationName from "@/features/shared/CurrentLocationName";
+import SemanticText from "@/features/shared/SemanticText";
 import styles from "./haku.module.css";
 
 const haku = products.find((product) => product.id === "haku")!;
@@ -58,7 +60,7 @@ export default function Haku({ place }: { place: CityPlace }) {
               <span>飾りたくなる</span>
               <span>一枚へ。</span>
             </h1>
-            <p>{haku.description}</p>
+            <p><SemanticText phrases={haku.descriptionPhrases ?? [haku.description]} /></p>
             <dl>
               <div><dt>作品</dt><dd>iOS Camera App</dd></div>
               <div><dt>制作</dt><dd>旅の道中</dd></div>
@@ -82,7 +84,7 @@ export default function Haku({ place }: { place: CityPlace }) {
               height={1560}
               priority
             />
-            <figcaption><span>HAKU GALLERY · ENTRANCE WORK</span><b><CurrentLocationName place="スリランカ、ガラハ" /></b></figcaption>
+            <figcaption><span>HAKU / iOSカメラアプリ</span><b><CurrentLocationName place="スリランカ、ガラハ" /></b></figcaption>
           </figure>
         </section>
 
@@ -142,6 +144,7 @@ export default function Haku({ place }: { place: CityPlace }) {
       <footer className={styles.footer}>
         <span>HAKU GALLERY / CITY 01</span>
         <p>撮る、という判断だけを人に残す。</p>
+        <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>
   );

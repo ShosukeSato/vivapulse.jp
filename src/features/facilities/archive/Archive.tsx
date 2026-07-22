@@ -1,10 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { CityPlace } from "@/data/city";
 import { featuredArticle } from "@/data/content";
 import archiveNotes from "@/data/note-archive.json";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
 import FeaturedArticleTitle from "@/features/shared/FeaturedArticleTitle";
+import SemanticText from "@/features/shared/SemanticText";
 import ClientCatalogue from "./ClientCatalogue";
 import styles from "./archive.module.css";
 
@@ -20,7 +22,18 @@ export default function Archive({ place }: { place: CityPlace }) {
             <p className={styles.issue}>THE ARCHIVE · FEATURED STORY</p>
             <p className={styles.date}>{featuredArticle.date}</p>
             <h1 id="archive-title"><FeaturedArticleTitle /></h1>
-            <p className={styles.excerpt}>{featuredArticle.excerpt}</p>
+            <p className={styles.excerpt}>
+              <SemanticText phrases={[
+                "スリランカの",
+                "山奥で、",
+                "ひとりで",
+                "書きはじめた。",
+                "旅が進むたびに",
+                "追記されて、",
+                "旅と一緒に",
+                "育っていく記事。",
+              ]} />
+            </p>
             <a className={styles.readFeature} href={featuredArticle.href} target="_blank" rel="noreferrer">
               <span>この文章をnoteで読む</span><PixelIcon name="external" />
             </a>
@@ -31,7 +44,6 @@ export default function Archive({ place }: { place: CityPlace }) {
             href={featuredArticle.href}
             target="_blank"
             rel="noreferrer"
-            aria-label={`注目記事「${featuredArticle.title}」をnoteで読む`}
           >
             <Image
               src="/media/archive/featured.webp"
@@ -64,6 +76,7 @@ export default function Archive({ place }: { place: CityPlace }) {
         <a href="https://note.com/shosuke240557" target="_blank" rel="noreferrer">
           noteですべて見る <PixelIcon name="external" />
         </a>
+        <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>
   );

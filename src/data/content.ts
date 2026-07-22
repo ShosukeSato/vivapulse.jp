@@ -33,6 +33,7 @@ export type Product = {
   name: string;
   tagline: string;
   description: string;
+  descriptionPhrases?: readonly string[];
   caption: string;
   icon?: string;
   lp: string;
@@ -40,13 +41,64 @@ export type Product = {
   status: "released" | "coming-soon";
 };
 
+const tripVlogDescriptionPhrases = [
+  "旅先で撮った",
+  "動画から、",
+  "日付・場所・",
+  "国旗・地図入りの",
+  "縦型vlogを",
+  "ワンタップで",
+  "つくれます。",
+  "編集が",
+  "追いつかず、",
+  "旅を残すために",
+  "つくった",
+  "アプリを、",
+  "いまも毎日",
+  "使っています。",
+] as const;
+
+const hakuDescriptionPhrases = [
+  "撮る、という",
+  "判断だけを",
+  "人に残して、",
+  "そこから先は",
+  "すべて委ねる。",
+  "光と色と",
+  "被写体を読み、",
+  "フィルムのような",
+  "淡い色調に",
+  "整え、",
+  "展示のセオリーに",
+  "基づいた",
+  "余白で",
+  "額装する。",
+  "一枚の写真が、",
+  "一枚の作品に",
+  "変わる。",
+] as const;
+
+const stockaDescriptionPhrases = [
+  "旅先で",
+  "「調べて、",
+  "終わり」を",
+  "繰り返すのが",
+  "悔しくて",
+  "つくった。",
+  "翻訳のたびに",
+  "構文・文法・",
+  "単語をほどき、",
+  "復習カードとして",
+  "残せます。",
+] as const;
+
 export const products: Product[] = [
   {
     id: "tripvlog",
     name: "TripVlog",
     tagline: "撮るだけ、編集ゼロ。今日から旅が1本のvlogになる。",
-    description:
-      "旅先で適当に動画を撮るだけで、日付も、訪れた場所も、国旗も、地図も焼き込まれた縦型vlogがワンタップで完成する。世界一周の道中、毎日の編集がどうしても追いつかなくて、自分のためにつくった。いまも毎日、これで旅を記録している。",
+    description: tripVlogDescriptionPhrases.join(""),
+    descriptionPhrases: tripVlogDescriptionPhrases,
     caption: "iOSアプリ ・ 旅の道中でつくった",
     icon: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8f/a8/02/8fa80278-4827-fc1d-ca21-179c107e8a8b/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/512x512bb.jpg",
     lp: "https://shosukesato.github.io/tripvlog-lp/",
@@ -57,8 +109,8 @@ export const products: Product[] = [
     id: "haku",
     name: "HAKU",
     tagline: "撮るだけで、作品になる。",
-    description:
-      "撮る、という判断だけを人に残して、そこから先はすべて委ねる。光と色と被写体を読み、フィルムのような淡い色調に整え、展示のセオリーに基づいた余白で額装する。一枚の写真が、一枚の作品に変わる。",
+    description: hakuDescriptionPhrases.join(""),
+    descriptionPhrases: hakuDescriptionPhrases,
     caption: "iOSアプリ ・ 旅の道中でつくった",
     icon: "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/22/49/b9/2249b9b9-81ab-5e24-b1ad-2c29868abc05/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/512x512bb.jpg",
     lp: "https://shosukesato.github.io/haku-lp/",
@@ -69,8 +121,8 @@ export const products: Product[] = [
     id: "stocka",
     name: "Stocka",
     tagline: "翻訳を、あなたの英語に変える。",
-    description:
-      "訳すたびに、構文と文法と単語をほどいて教えてくれて、そのままカードになって手元にたまっていく。旅の会話で「調べて、終わり」を繰り返すのが悔しかったから、翻訳という行為そのものを学びに変えた。わからなかった言葉が、そのまま自分の言葉になる。",
+    description: stockaDescriptionPhrases.join(""),
+    descriptionPhrases: stockaDescriptionPhrases,
     caption: "iOSアプリ ・ 旅の道中でつくった",
     icon: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/85/9c/a1/859ca181-e9ec-d617-8ea2-4c899034cd5b/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/512x512bb.jpg",
     lp: "https://stocka-lp.vercel.app/",
@@ -174,6 +226,37 @@ export type Video = {
 };
 
 export const channelUrl = "https://www.youtube.com/@shosuke_sato";
+
+export type PodcastEpisode = {
+  id: string;
+  title: string;
+  date: string;
+  duration: string;
+};
+
+export const niwakaPhilosophyChannelUrl = "https://www.youtube.com/@niwaka_tetsugaku";
+
+/** Official channel feed, newest first. Last verified 2026-07-23. */
+export const niwakaPhilosophyEpisodes: PodcastEpisode[] = [
+  {
+    id: "AFEKFEwe-tU",
+    title: "ゴルフじゃないとダメですか？",
+    date: "2026.07.20",
+    duration: "36:12",
+  },
+  {
+    id: "o_9XUgJ7K_c",
+    title: "【言葉とコミニュケーション】通じ合うってなんだ...？【にわか哲学】",
+    date: "2026.06.23",
+    duration: "40:39",
+  },
+  {
+    id: "vGR0XhCqbbk",
+    title: "自己紹介ってなんだ？【にわか哲学】",
+    date: "2026.06.05",
+    duration: "43:03",
+  },
+];
 
 const featureFilmTitleLines = ["これ、", "インドネシアの", "年越しです。"] as const;
 

@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { CityPlace } from "@/data/city";
 import { products } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
+import SemanticText from "@/features/shared/SemanticText";
 import FacilityBar from "../FacilityBar";
 import styles from "./tripvlog.module.css";
 
@@ -26,7 +28,9 @@ export default function TripVlog({ place }: { place: CityPlace }) {
               <span>旅の一日が、</span>
               <span>一本になる。</span>
             </h1>
-            <p className={styles.lead}>{tripVlog.description}</p>
+            <p className={styles.lead}>
+              <SemanticText phrases={tripVlog.descriptionPhrases ?? [tripVlog.description]} />
+            </p>
             <div className={styles.actions}>
               <a href={tripVlog.appStore} target="_blank" rel="noreferrer">
                 <span>App Storeで見る</span><PixelIcon name="external" />
@@ -141,6 +145,7 @@ export default function TripVlog({ place }: { place: CityPlace }) {
       <footer className={styles.footer}>
         <span>TRIPVLOG STUDIO / CITY 01</span>
         <p>旅の途中で、毎日の編集が追いつかなくなった自分のためにつくりました。</p>
+        <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>
   );
