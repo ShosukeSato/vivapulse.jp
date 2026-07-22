@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const title = "途中市 — さとうしょうすけの生きたポートフォリオ";
+const title = "CITY 01 — A Living City by Shosuke Sato";
 const description =
-  "さとうしょうすけが何かを始めるたびに、建物が増え、道が延びる。アプリ、文章、映像、世界一周の記録からできた未完成の街。";
+  "さとうしょうすけが何かを始めるたびに、建物が増え、道が延びる。アプリ、文章、映像、世界一周の記録からできた、生きているポートフォリオ都市。";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://vivapulse.jp"),
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title,
     description,
     url: "/",
-    siteName: "途中市 / TOCHU CITY",
+    siteName: "CITY 01 / SHOSUKE SATO",
     locale: "ja_JP",
     type: "website",
     images: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "TOCHU CITY — A living portfolio by Shosuke Sato",
+        alt: "CITY 01 — A living city by Shosuke Sato",
         type: "image/png",
       },
     ],

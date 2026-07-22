@@ -64,8 +64,8 @@ export function GET() {
         <div style={{ position: "absolute", left: 70, top: 66, display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 18, fontWeight: 700, letterSpacing: 6, color: "#0d84aa" }}>A LIVING PORTFOLIO</div>
           <div style={{ marginTop: 24, display: "flex", flexDirection: "column", fontSize: 82, lineHeight: 0.92, fontWeight: 800, letterSpacing: -5 }}>
-            <span>TOCHU</span>
             <span>CITY</span>
+            <span style={{ color: "#0d84aa" }}>01</span>
           </div>
           <div style={{ marginTop: 25, fontSize: 22, fontWeight: 600, letterSpacing: 1.5, color: "#4e7388" }}>THE CITY GROWS WHEN I CREATE.</div>
         </div>
