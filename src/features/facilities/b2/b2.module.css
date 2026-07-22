@@ -1,0 +1,36 @@
+.page { min-height: 100dvh; overflow: hidden; background: #0b0b1d; color: #f0e9df; }
+.page a { color: inherit; }
+.page svg { display: block; }
+.room { min-height: calc(100svh - 56px); display: grid; grid-template-columns: minmax(260px, .7fr) minmax(420px, 1.3fr); }
+.level { position: relative; min-height: 620px; overflow: hidden; border-right: 1px solid #4f456b; background: #17142d; }
+.level span { position: absolute; right: clamp(34px, 6vw, 92px); bottom: clamp(42px, 7vw, 104px); color: #e4b95c; font-family: var(--font-mono); font-size: clamp(140px, 23vw, 330px); font-weight: 700; line-height: .72; letter-spacing: -.1em; }
+.level i { position: absolute; left: 0; right: 0; height: 18px; border-top: 1px solid #4f456b; border-bottom: 1px solid #4f456b; background: #0b0b1d; }
+.level i:nth-of-type(1) { top: 18%; }
+.level i:nth-of-type(2) { top: 36%; }
+.level i:nth-of-type(3) { top: 54%; }
+.level i:nth-of-type(4) { top: 72%; }
+.room section { display: flex; flex-direction: column; justify-content: center; padding: clamp(62px, 9vw, 138px) clamp(24px, 9vw, 138px); }
+.status { margin: 0; display: flex; align-items: center; gap: 10px; color: #e4b95c; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .06em; }
+.status span { width: 10px; height: 10px; display: block; border: 1px solid #e4b95c; }
+.room h1 { margin: 22px 0 0; font-size: clamp(58px, 7vw, 96px); line-height: 1; letter-spacing: -.07em; }
+.room h1 span { word-break: keep-all; overflow-wrap: anywhere; }
+.lead { max-width: 660px; margin: 34px 0 0; color: #c7bdd0; font-size: 18px; line-height: 1.9; }
+.notice { max-width: 720px; margin-top: 58px; padding: 26px 0; border-top: 2px solid #d64b76; border-bottom: 1px solid #4f456b; }
+.notice span { color: #a49ab0; font-size: 13px; }
+.notice strong { display: block; margin-top: 10px; font-size: 20px; }
+.notice p { margin: 15px 0 0; color: #bcb2c6; font-size: 16px; line-height: 1.85; }
+.back { width: fit-content; min-height: 50px; display: inline-flex; align-items: center; gap: 18px; margin-top: 38px; padding: 0 16px; border: 1px solid #f0e9df; font-size: 14px; font-weight: 700; text-decoration: none; }
+.back:hover { border-color: #e4b95c; background: #e4b95c; color: #0b0b1d; }
+.back svg { width: 17px; }
+
+@media (max-width: 760px) {
+  .page { overflow: auto; }
+  .room { grid-template-columns: 1fr; }
+  .level { min-height: 220px; border-right: 0; border-bottom: 1px solid #4f456b; }
+  .level span { right: 28px; bottom: 28px; font-size: 130px; }
+  .room section { padding: 58px 20px 80px; }
+  .room h1 { font-size: 52px; }
+  .lead { font-size: 16px; }
+  .notice { margin-top: 44px; }
+}
+@media (max-width: 360px) { .room h1 { font-size: 49px; } }

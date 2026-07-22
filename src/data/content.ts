@@ -8,7 +8,7 @@ export const DEPARTURE_DATE = "2026-05-23"; // 世界一周出発日
 export const profile = {
   name: "さとうしょうすけ",
   nameEn: "Shosuke Sato",
-  bio: "東京大学を休学し、世界一周の旅の途中。アプリをつくり、文章を書き、映像を撮りながら、世界のどこかで暮らしています。",
+  bio: "東京大学大学院を休学し、世界一周の旅の途中。アプリをつくり、文章を書き、映像を撮りながら、世界のどこかで暮らしています。",
   departureNote: "二〇二六年五月二三日、東京を発つ。",
   currentLocation: {
     place: "スリランカ、ガラハ",
@@ -98,14 +98,24 @@ export const otherApps = [
 
 export type Article = {
   title: string;
+  displayTitle?: {
+    lead: string;
+    phrases: readonly string[];
+  };
   href: string;
   date: string;
   thumbnail?: string;
   excerpt?: string;
 };
 
+const featuredArticleDisplayTitle = {
+  lead: "貯金0の世界一周で学んだ、自由に生きるための",
+  phrases: ["「一人経済圏の", "作り方」の全て"],
+} as const;
+
 export const featuredArticle: Article = {
-  title: "貯金0の世界一周で学んだ、自由に生きるための「一人経済圏の作り方」の全て",
+  title: `${featuredArticleDisplayTitle.lead}${featuredArticleDisplayTitle.phrases.join("")}`,
+  displayTitle: featuredArticleDisplayTitle,
   href: "https://note.com/shosuke240557/n/n502cf63fbb41",
   date: "二〇二六年七月 ・ スリランカ、ガラハにて",
   thumbnail:
@@ -157,6 +167,7 @@ export const articles: Article[] = [
 export type Video = {
   id: string;
   title: string;
+  displayTitleLines?: readonly string[];
   date: string;
   place: string;
   duration: string;
@@ -164,10 +175,13 @@ export type Video = {
 
 export const channelUrl = "https://www.youtube.com/@shosuke_sato";
 
+const featureFilmTitleLines = ["これ、", "インドネシアの", "年越しです。"] as const;
+
 export const films: Video[] = [
   {
     id: "Vkf4wQSLD04",
-    title: "これ、インドネシアの年越しです。",
+    title: featureFilmTitleLines.join(""),
+    displayTitleLines: featureFilmTitleLines,
     date: "2026.07",
     place: "インドネシア",
     duration: "9:01",
@@ -323,7 +337,7 @@ export const films: Video[] = [
     id: "exr5-6Sb9h0",
     title: "【トラブル有り】貯金ほぼ0円、9ヶ月間の世界一周の旅がスタートしました。",
     date: "2026.05",
-    place: "東京 → 世界",
+    place: "東京から世界へ",
     duration: "5:35",
   },
   {
@@ -355,7 +369,7 @@ export const journey: Stop[] = [
   {
     place: "東京",
     period: "2026.05",
-    note: "大学院を休学し、人生初の一人旅へ。",
+    note: "東京大学大学院を休学し、人生初の一人旅へ。",
     status: "done",
   },
   {

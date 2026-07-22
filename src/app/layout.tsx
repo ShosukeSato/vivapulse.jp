@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import "@fontsource/ibm-plex-mono/latin-400.css";
+import "@fontsource/ibm-plex-mono/latin-600.css";
 import "./globals.css";
 
-const title = "CITY 01 — A Living City by Shosuke Sato";
+const title = "CITY 01 — さとうしょうすけの、制作と旅の街。";
 const description =
-  "さとうしょうすけが何かを始めるたびに、建物が増え、道が延びる。アプリ、文章、映像、世界一周の記録からできた、生きているポートフォリオ都市。";
+  "世界を旅しながら、アプリをつくり、映像を撮り、文章を書く。さとうしょうすけのポートフォリオ都市。";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://vivapulse.jp"),
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "CITY 01 — A living city by Shosuke Sato",
+        alt: "CITY 01 — さとうしょうすけの制作と旅のポートフォリオ都市",
         type: "image/png",
       },
     ],
@@ -38,7 +40,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#dff3fb",
+  themeColor: "#081923",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

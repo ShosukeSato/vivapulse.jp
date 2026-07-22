@@ -1,0 +1,196 @@
+.page {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #cee8e5;
+  color: #0e4054;
+}
+
+.skip {
+  position: fixed;
+  z-index: 100;
+  top: 8px;
+  left: 8px;
+  padding: 12px 16px;
+  background: #0e4054;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-150%);
+}
+
+.skip:focus { transform: none; }
+
+.harborHead {
+  min-height: 470px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(360px, .65fr);
+  align-items: stretch;
+  border-bottom: 1px solid #2a7c91;
+}
+
+.harborHead > div:first-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(54px, 8vw, 118px) clamp(26px, 6vw, 90px);
+}
+
+.harborHead > div:first-child > p,
+.chartRoom header p,
+.logbook header p,
+.dispatches header p {
+  margin: 0 0 20px;
+  color: #17596c;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.harborHead h1 {
+  max-width: 13em;
+  margin: 0;
+  font-size: clamp(42px, 4.8vw, 72px);
+  line-height: 1.15;
+  letter-spacing: -.055em;
+}
+
+.titleLine { display: block; }
+.titleLine > span { word-break: keep-all; overflow-wrap: anywhere; }
+
+.nowBoard {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(38px, 5vw, 72px);
+  border-left: 1px solid #2a7c91;
+  background: #0e4054;
+  color: #cee8e5;
+}
+
+.nowBoard > span:first-child { color: #f0c85a; font-family: var(--font-mono); font-size: 13px; }
+.nowBoard strong { margin-top: 18px; font-size: clamp(28px, 3.2vw, 46px); line-height: 1.3; }
+.nowBoard p { margin: 10px 0 34px; font-size: 16px; line-height: 1.75; }
+.nextPort { min-height: 48px; display: flex; align-items: center; padding: 0 14px; border: 1px solid #2a7c91; font-size: 14px; font-weight: 700; }
+
+.chartRoom { padding: clamp(64px, 8vw, 120px) clamp(18px, 5vw, 76px); background: #0e4054; color: #cee8e5; }
+.chartRoom > header { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 42px; }
+.chartRoom header p { color: #f0c85a; }
+.chartRoom h2,
+.logbook h2,
+.dispatches h2 { margin: 0; font-size: clamp(36px, 5vw, 68px); letter-spacing: -.045em; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 0; padding: 0; list-style: none; }
+.legend li { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.legend i { width: 12px; height: 12px; display: block; border: 2px solid #cee8e5; }
+.legend .doneMark { background: #2a7c91; }
+.legend .nowMark { border-color: #f0c85a; background: #f0c85a; }
+.legend .planMark { border-style: dashed; }
+
+.maps { border: 1px solid #2a7c91; background: #0b3545; }
+.worldMap { width: 100%; height: auto; display: block; }
+.regionMap { width: 100%; height: auto; display: none; }
+.graticule path { fill: none; stroke: #2a7c91; stroke-width: 1; opacity: .42; }
+.land path { fill: #2a7c91; stroke: #cee8e5; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.routeDone,
+.routeNext { fill: none; stroke-width: 4; vector-effect: non-scaling-stroke; }
+.routeDone { stroke: #f0c85a; }
+.routeNext { stroke: #cee8e5; stroke-dasharray: 8 8; }
+.mapStop rect { fill: #0e4054; stroke: #cee8e5; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.mapStop circle { fill: #cee8e5; }
+.mapStop text { fill: #cee8e5; font-family: var(--font-sans); font-size: 14px; font-weight: 700; paint-order: stroke; stroke: #0e4054; stroke-width: 5px; stroke-linejoin: round; }
+.mapStop.now rect { fill: #f0c85a; stroke: #f0c85a; }
+.mapStop.now circle { fill: #0e4054; }
+.mapStop.next rect,
+.mapStop.planned rect { stroke-dasharray: 3 2; }
+
+.mapNote { margin: 14px 0 0; color: #a8cdce; font-size: 16px; line-height: 1.7; }
+
+.logbook { padding: clamp(70px, 9vw, 132px) clamp(18px, 8vw, 128px); }
+.logbook > header { display: grid; grid-template-columns: 160px 1fr; align-items: end; margin-bottom: 40px; }
+.logbook header p { margin: 0 0 8px; }
+.logbook ol { margin: 0; padding: 0; border-top: 3px solid #0e4054; list-style: none; }
+.logbook li {
+  min-height: 116px;
+  display: grid;
+  grid-template-columns: 70px 130px minmax(0, 1fr) 130px;
+  gap: 25px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #78aaae;
+}
+
+.stopNumber { font-family: var(--font-mono); font-size: 13px; }
+.logbook time { color: #17596c; font-family: var(--font-mono); font-size: 14px; font-weight: 700; }
+.logbook li > div strong { font-size: 24px; }
+.logbook li > div p { max-width: 48em; margin: 6px 0 0; font-size: 16px; line-height: 1.7; }
+.state { justify-self: end; min-height: 38px; display: grid; place-items: center; padding: 0 12px; border: 1px solid currentColor; font-size: 13px; font-weight: 700; }
+.logbook li.now { background: #f0c85a; }
+.logbook li.now > *:first-child { margin-left: 20px; }
+.logbook li.now > *:last-child { margin-right: 20px; }
+.logbook li.next,
+.logbook li.planned { color: #385f67; }
+
+.dispatches { padding: clamp(70px, 8vw, 120px) clamp(18px, 5vw, 76px); background: #f4eeee; }
+.dispatches > header { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 46px; }
+.dispatchLayout { display: grid; grid-template-columns: 1.35fr .65fr; gap: clamp(20px, 3vw, 46px); }
+.dispatchLayout a { color: inherit; text-decoration: none; }
+.dispatchImage { position: relative; display: block; overflow: hidden; background: #0e4054; aspect-ratio: 16 / 9; }
+.dispatchImage img { width: 100%; height: 100%; object-fit: cover; }
+.dispatchImage i { position: absolute; right: 18px; bottom: 18px; width: 54px; height: 54px; display: grid; place-items: center; background: #f0c85a; color: #0e4054; }
+.dispatchImage i svg { width: 18px; }
+.dispatchMeta,
+.routeDispatches small { display: block; margin-top: 15px; color: #17596c; font-family: var(--font-mono); font-size: 13px; font-style: normal; font-weight: 700; }
+.departureDispatch > strong { max-width: 31em; display: block; margin-top: 8px; font-size: clamp(23px, 3vw, 38px); line-height: 1.45; }
+.routeDispatches { display: grid; align-content: start; gap: 28px; }
+.routeDispatches a { display: grid; grid-template-columns: 43% 1fr; gap: 18px; padding-bottom: 26px; border-bottom: 1px solid #78aaae; }
+.routeDispatches img { width: 100%; height: 100%; min-height: 130px; object-fit: cover; }
+.routeDispatches small { margin-top: 0; }
+.routeDispatches strong { display: block; margin-top: 8px; font-size: 16px; line-height: 1.6; }
+
+.footer { min-height: 116px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 28px clamp(18px, 5vw, 76px); background: #0e4054; color: #cee8e5; }
+.footer span { font-family: var(--font-mono); font-size: 13px; }
+.footer p { margin: 0; font-size: 14px; }
+
+@media (max-width: 900px) {
+  .harborHead { grid-template-columns: 1fr; }
+  .nowBoard { border-top: 1px solid #2a7c91; border-left: 0; }
+  .dispatchLayout { grid-template-columns: 1fr; }
+  .routeDispatches { grid-template-columns: 1fr 1fr; }
+  .logbook > header { grid-template-columns: 1fr; gap: 8px; }
+}
+
+@media (max-width: 680px) {
+  .harborHead > div:first-child { padding-inline: 20px; }
+  .harborHead h1 { font-size: 43px; }
+  .nowBoard { padding: 38px 20px; }
+  .chartRoom > header { align-items: flex-start; flex-direction: column; }
+  .worldMap { display: none; }
+  .regionMap { display: block; }
+  .mapStop text { font-size: 13px; }
+  .logbook { padding-inline: 18px; }
+  .logbook li { grid-template-columns: 38px 1fr auto; gap: 10px 12px; padding: 18px 0; }
+  .logbook time { grid-column: 2; grid-row: 1; }
+  .logbook li > div { grid-column: 2 / 4; grid-row: 2; }
+  .stopNumber { grid-column: 1; grid-row: 1 / 3; align-self: start; padding-top: 3px; }
+  .state { grid-column: 3; grid-row: 1; min-height: 34px; }
+  .logbook li.now > *:first-child { margin-left: 10px; }
+  .logbook li.now > *:last-child { margin-right: 10px; }
+  .dispatches > header { align-items: flex-start; flex-direction: column; }
+  .routeDispatches { grid-template-columns: 1fr; }
+  .footer { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-width: 390px) {
+  .harborHead h1 { font-size: 38px; }
+  .chartRoom,
+  .dispatches { padding-inline: 14px; }
+  .chartRoom h2,
+  .logbook h2,
+  .dispatches h2 { font-size: 38px; }
+  .routeDispatches a { grid-template-columns: 1fr; }
+  .routeDispatches img { aspect-ratio: 16 / 9; min-height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip { transition: none; }
+}

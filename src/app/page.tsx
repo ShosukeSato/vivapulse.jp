@@ -1,5 +1,5 @@
-import CityPortfolio from "@/components/CityPortfolio";
+import CityExplorer from "@/features/city/CityExplorer";
 
 export default function Home() {
-  return <CityPortfolio />;
+  return <CityExplorer />;
 }

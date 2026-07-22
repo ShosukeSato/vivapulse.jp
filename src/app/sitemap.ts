@@ -4,7 +4,7 @@ import { cityPlaces } from "@/data/city";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const updatedAt = new Date("2026-07-22T00:00:00+09:00");
+  const updatedAt = new Date("2026-07-23T00:00:00+09:00");
   return [
     {
       url: "https://vivapulse.jp",

@@ -1,0 +1,219 @@
+.page {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #e5e1d4;
+  color: #102b3b;
+}
+
+.skip {
+  position: fixed;
+  z-index: 100;
+  top: 8px;
+  left: 8px;
+  padding: 12px 16px;
+  background: #102b3b;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-150%);
+}
+
+.skip:focus { transform: none; }
+
+.concourse {
+  min-height: min(690px, calc(100vh - 56px));
+  display: grid;
+  grid-template-columns: 112px minmax(430px, 1.15fr) minmax(380px, .85fr);
+  border-bottom: 1px solid #7b8887;
+}
+
+.platformMark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #7b8887;
+  background: #f3c85e;
+  color: #102b3b;
+  font-family: var(--font-mono);
+}
+
+.platformMark span { font-size: 22px; font-weight: 700; }
+.platformMark strong { font-size: 58px; line-height: 1; }
+.platformMark i { width: 22px; height: 22px; display: block; margin-top: 25px; background: #ed6a55; }
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(52px, 7vw, 108px) clamp(28px, 6vw, 90px);
+}
+
+.kicker,
+.departures header > div p,
+.recordCopy > p,
+.footer > div span {
+  margin: 0 0 22px;
+  color: #8e4233;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.identity h1 {
+  margin: 0;
+  font-size: clamp(58px, 7.5vw, 96px);
+  font-weight: 750;
+  line-height: 1.06;
+  letter-spacing: -.07em;
+}
+.identity h1 span { word-break: keep-all; overflow-wrap: anywhere; }
+
+.nameEn { margin: 13px 0 0; font-family: var(--font-mono); font-size: 15px; font-weight: 700; letter-spacing: .06em; }
+.bio { max-width: 35em; margin: 34px 0 0; font-size: 17px; line-height: 1.9; }
+
+.primaryRoutes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.primaryRoutes a {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 18px;
+  border: 1px solid #102b3b;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.primaryRoutes a:first-child { background: #102b3b; color: #fff; }
+.primaryRoutes a:hover { border-color: #ed6a55; background: #ed6a55; color: #fff; }
+
+.currentBoard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(42px, 5vw, 72px);
+  background: #102b3b;
+  color: #e5e1d4;
+}
+
+.boardTop { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 15px; border-bottom: 1px solid #366b78; font-family: var(--font-mono); font-size: 13px; }
+.boardTop span { color: #f3c85e; font-weight: 700; }
+.locationPin { width: 42px; height: 42px; display: grid; place-items: center; margin-top: 42px; border: 1px solid #6fa1ad; color: #f3c85e; }
+.locationPin svg { width: 20px; }
+.currentBoard h2 { margin: 24px 0 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.3; letter-spacing: -.04em; }
+.currentBoard > p { margin: 10px 0 0; color: #abd1d2; font-size: 16px; line-height: 1.75; }
+.currentBoard dl { margin: 40px 0 0; border-top: 1px solid #366b78; }
+.currentBoard dl div { min-height: 61px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid #366b78; }
+.currentBoard dt { color: #abd1d2; font-size: 13px; }
+.currentBoard dd { margin: 0; font-family: var(--font-mono); font-size: 13px; font-weight: 700; text-align: right; }
+.currentBoard dd small { display: block; margin-top: 4px; color: #abd1d2; font-size: 13px; font-weight: 400; }
+
+.departures { padding: clamp(70px, 9vw, 132px) clamp(18px, 5vw, 76px); background: #f4f0e5; }
+.departures > header { display: grid; grid-template-columns: minmax(360px, .85fr) minmax(340px, 1.15fr); gap: 70px; align-items: end; margin-bottom: 50px; }
+.departures header > div p { margin-bottom: 17px; }
+.departures h2,
+.recordCopy h2 { margin: 0; font-size: clamp(42px, 5.4vw, 74px); letter-spacing: -.055em; }
+.departures > header > p { max-width: 42em; margin: 0; font-size: 16px; line-height: 1.85; }
+
+.departureBoard { border-top: 3px solid #102b3b; }
+.boardHead,
+.departureBoard li a {
+  display: grid;
+  grid-template-columns: minmax(190px, .85fr) minmax(280px, 1.65fr) 120px 90px 70px;
+  gap: 20px;
+  align-items: center;
+}
+.boardHead { min-height: 48px; border-bottom: 1px solid #102b3b; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.boardHead span:nth-last-child(-n + 2) { text-align: right; }
+.departureBoard ol { margin: 0; padding: 0; list-style: none; }
+.departureBoard li { border-bottom: 1px solid #a9aaa1; }
+.departureBoard li a { min-height: 88px; padding: 12px 0; color: inherit; text-decoration: none; }
+.departureBoard li a:hover { background: #e5e1d4; }
+.facilityName { display: flex; flex-direction: column; gap: 4px; }
+.facilityName b { font-size: 17px; }
+.facilityName small { color: #8e4233; font-family: var(--font-mono); font-size: 13px; }
+.facilitySummary { font-size: 16px; line-height: 1.65; }
+.facilityType { font-size: 13px; font-weight: 700; }
+.facilityStatus { justify-self: end; min-height: 34px; display: grid; place-items: center; padding: 0 9px; border: 1px solid currentColor; font-size: 13px; font-weight: 700; }
+.facilityStatus.open,
+.facilityStatus.live { border-color: #3f705a; color: #3f705a; }
+.facilityStatus.building { color: #576868; }
+.enter { justify-self: end; display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; }
+.enter svg { width: 16px; }
+
+.travelRecord { display: grid; grid-template-columns: minmax(400px, .9fr) minmax(480px, 1.1fr); min-height: 680px; background: #102b3b; color: #e5e1d4; }
+.recordCopy { display: flex; flex-direction: column; justify-content: center; padding: clamp(52px, 7vw, 104px) clamp(26px, 6vw, 90px); }
+.recordCopy > p:first-child { color: #f3c85e; }
+.recordCopy > p:not(:first-child) { max-width: 38em; margin: 30px 0 0; color: #c5d9d8; font-size: 16px; line-height: 1.9; }
+.shortJourney { margin: 38px 0 0; border-top: 1px solid #366b78; }
+.shortJourney div { min-height: 54px; display: grid; grid-template-columns: 110px 1fr; align-items: center; border-bottom: 1px solid #366b78; }
+.shortJourney dt { color: #abd1d2; font-family: var(--font-mono); font-size: 13px; }
+.shortJourney dd { margin: 0; font-size: 14px; font-weight: 700; }
+.shortJourney b { margin-left: 12px; padding: 4px 7px; background: #f3c85e; color: #102b3b; font-size: 13px; }
+
+.recordStill { position: relative; min-height: 570px; display: block; overflow: hidden; color: #fff; text-decoration: none; }
+.recordStill::after { position: absolute; inset: auto 0 0; height: 44%; background: linear-gradient(transparent, rgba(8, 25, 35, .96)); content: ""; }
+.recordStill img { width: 100%; height: 100%; object-fit: cover; }
+.play { position: absolute; z-index: 2; top: 30px; right: 30px; width: 58px; height: 58px; display: grid; place-items: center; background: #f3c85e; color: #102b3b; }
+.play svg { width: 20px; }
+.stillCaption { position: absolute; z-index: 2; right: 34px; bottom: 34px; left: 34px; }
+.stillCaption small { display: block; margin-bottom: 10px; color: #f3c85e; font-family: var(--font-mono); font-size: 13px; }
+.stillCaption strong { max-width: 30em; display: block; font-size: clamp(22px, 3vw, 34px); line-height: 1.45; }
+
+.footer { min-height: 184px; display: grid; grid-template-columns: .7fr 1.3fr; gap: 40px; align-items: center; padding: 34px clamp(18px, 5vw, 76px); background: #e5e1d4; }
+.footer > div span { display: block; margin-bottom: 9px; }
+.footer > div p { margin: 0; font-size: 14px; line-height: 1.7; }
+.footer nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.footer nav a { min-height: 44px; display: inline-flex; align-items: center; gap: 9px; padding: 0 12px; border: 1px solid #7b8887; color: inherit; font-size: 13px; font-weight: 700; text-decoration: none; }
+.footer nav a:hover { border-color: #ed6a55; background: #ed6a55; color: #fff; }
+.footer nav svg { width: 14px; }
+
+@media (max-width: 1050px) {
+  .concourse { grid-template-columns: 82px 1fr 1fr; }
+  .boardHead,
+  .departureBoard li a { grid-template-columns: minmax(170px, .8fr) minmax(250px, 1.5fr) 100px 78px; }
+  .boardHead span:nth-child(3),
+  .facilityType { display: none; }
+  .travelRecord { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 820px) {
+  .concourse { grid-template-columns: 1fr; }
+  .platformMark { min-height: 70px; flex-direction: row; gap: 8px; border-right: 0; border-bottom: 1px solid #7b8887; }
+  .platformMark strong { font-size: 30px; }
+  .platformMark i { width: 15px; height: 15px; margin: 0 0 0 12px; }
+  .identity { padding: 64px 24px; }
+  .currentBoard { padding: 48px 24px; }
+  .departures > header { grid-template-columns: 1fr; gap: 24px; }
+  .boardHead { display: none; }
+  .departureBoard li a { grid-template-columns: 1fr auto 34px; gap: 8px 14px; min-height: 112px; }
+  .facilityName { grid-column: 1; grid-row: 1; }
+  .facilitySummary { grid-column: 1 / 2; grid-row: 2; }
+  .facilityStatus { grid-column: 2; grid-row: 1; }
+  .enter { grid-column: 3; grid-row: 1 / 3; }
+  .enter span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .travelRecord { grid-template-columns: 1fr; }
+  .recordStill { min-height: 520px; }
+  .footer { grid-template-columns: 1fr; }
+  .footer nav { justify-content: flex-start; }
+}
+
+@media (max-width: 390px) {
+  .identity { padding-inline: 18px; }
+  .identity h1 { font-size: 52px; }
+  .primaryRoutes a { width: 100%; justify-content: center; }
+  .currentBoard { padding-inline: 18px; }
+  .departures { padding-inline: 14px; }
+  .departures h2,
+  .recordCopy h2 { font-size: 40px; }
+  .facilitySummary { padding-right: 5px; font-size: 16px; }
+  .recordCopy { padding-inline: 18px; }
+  .recordStill { min-height: 420px; }
+  .stillCaption { right: 20px; bottom: 20px; left: 20px; }
+  .footer { padding-inline: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip { transition: none; }
+}

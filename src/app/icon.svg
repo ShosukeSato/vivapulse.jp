@@ -1,15 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#e8f9ff"/>
-      <stop offset="1" stop-color="#b8e8f5"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="15" fill="url(#sky)"/>
-  <path d="M7 37L32 24l25 13-25 13z" fill="#72c9df"/>
-  <path d="M20 34l12-6 12 6-12 6z" fill="#fff"/>
-  <path d="M20 34v10l12 6V40z" fill="#347eb5"/>
-  <path d="M44 34v10l-12 6V40z" fill="#1aa4bd"/>
-  <path d="M32 28V15" stroke="#1d6298" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="32" cy="14" r="4" fill="#ff6b5f"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <rect width="64" height="64" fill="#081923"/>
+  <rect x="6" y="6" width="52" height="52" fill="none" stroke="#E5E1D4" stroke-width="4"/>
+  <rect x="14" y="14" width="12" height="12" fill="#F3C85E"/>
+  <rect x="38" y="14" width="12" height="12" fill="#F3C85E"/>
+  <rect x="14" y="38" width="12" height="12" fill="#F3C85E"/>
+  <rect x="38" y="38" width="12" height="12" fill="#ED6A55"/>
 </svg>
