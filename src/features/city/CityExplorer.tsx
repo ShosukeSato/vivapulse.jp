@@ -18,6 +18,7 @@ import SemanticText from "@/features/shared/SemanticText";
 import styles from "./city.module.css";
 
 const PRIMARY_PLACE_IDS = ["tripvlog", "haku", "stocka"];
+const GUIDE_ID = "city-guide";
 const LOWER_MAP_IDS = new Set(["cinema", "harbor"]);
 
 export default function CityExplorer() {
@@ -35,6 +36,7 @@ export default function CityExplorer() {
     () => cityPlaces.find((place) => place.id === selectedId) ?? null,
     [selectedId],
   );
+  const guideSelected = selectedId === GUIDE_ID;
 
   useEffect(() => {
     if (directoryOpen) {
@@ -190,18 +192,28 @@ export default function CityExplorer() {
               <Link className={styles.textAction} href="/places/city-01-central" prefetch={false}>プロフィールと現在地</Link>
             </div>
 
-            {selectedPlace ? (
+            {selectedPlace || guideSelected ? (
               <aside className={styles.placeInspector} aria-live="polite" data-map-selection-ui>
                 <div className={styles.inspectorMeta}>
-                  <span>{selectedPlace.code}</span>
+                  <span>{guideSelected ? "CITY GUIDE" : selectedPlace?.code}</span>
                   <button type="button" onClick={() => setSelectedId(null)} aria-label="施設情報を閉じる">×</button>
                 </div>
-                <p>{selectedPlace.destination}</p>
-                <h2>{selectedPlace.name}</h2>
-                <p className={styles.inspectorSummary}>{selectedPlace.summary}</p>
-                <Link href={selectedPlace.path} prefetch={false}>
-                  <span>この施設に入る</span><PixelIcon name="enter" />
-                </Link>
+                <p>{guideSelected ? "この街の案内人" : selectedPlace?.destination}</p>
+                <h2>{guideSelected ? "SHOSUKE" : selectedPlace?.name}</h2>
+                <p className={styles.inspectorSummary}>
+                  {guideSelected
+                    ? "この街をつくり、旅を続けている本人です。建物を選ぶか、施設一覧から行き先を探せます。"
+                    : selectedPlace?.summary}
+                </p>
+                {guideSelected ? (
+                  <button type="button" onClick={() => openDirectory(desktopGuideButtonRef.current)}>
+                    <span>施設一覧を開く</span><PixelIcon name="directory" />
+                  </button>
+                ) : (
+                  <Link href={selectedPlace!.path} prefetch={false}>
+                    <span>この施設に入る</span><PixelIcon name="enter" />
+                  </Link>
+                )}
               </aside>
             ) : (
               <dl className={styles.currentQuest}>
@@ -223,8 +235,8 @@ export default function CityExplorer() {
               <CityScene
                 selectedId={selectedId}
                 onSelect={setSelectedId}
-                guideSelected={directoryOpen}
-                onGuideHover={() => setSelectedId(null)}
+                guideSelected={guideSelected}
+                onGuideHover={() => setSelectedId(GUIDE_ID)}
                 onGuideSelect={() => openDirectory(desktopGuideButtonRef.current)}
                 guideButtonRef={desktopGuideButtonRef}
               />
@@ -233,8 +245,8 @@ export default function CityExplorer() {
               <CityScene
                 selectedId={selectedId}
                 onSelect={setSelectedId}
-                guideSelected={directoryOpen}
-                onGuideHover={() => setSelectedId(null)}
+                guideSelected={guideSelected}
+                onGuideHover={() => setSelectedId(GUIDE_ID)}
                 onGuideSelect={() => openDirectory(mobileGuideButtonRef.current)}
                 preview
                 interactive
@@ -243,7 +255,11 @@ export default function CityExplorer() {
             </div>
 
             <p className={styles.mapStatus} role="status" aria-live="polite" aria-atomic="true">
-              {selectedPlace ? `${selectedPlace.shortName}を選択しました。詳細を表示しています。` : ""}
+              {guideSelected
+                ? "街の案内人SHOSUKEを選択しました。詳細を表示しています。"
+                : selectedPlace
+                  ? `${selectedPlace.shortName}を選択しました。詳細を表示しています。`
+                  : ""}
             </p>
 
             {selectedPlace && (
