@@ -3,6 +3,8 @@
   overflow: clip;
   background: #0b0b1d;
   color: #f0e9df;
+  line-break: strict;
+  word-break: auto-phrase;
 }
 
 .page a { color: inherit; }
@@ -77,7 +79,13 @@
   letter-spacing: -.075em;
   word-break: keep-all;
 }
-.introduction h1 span { word-break: keep-all; overflow-wrap: anywhere; }
+.introduction h1 span {
+  max-width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 
 .lead {
   max-width: 700px;
@@ -87,7 +95,12 @@
   line-height: 1.9;
 }
 
-.lead span { word-break: keep-all; overflow-wrap: anywhere; }
+.lead span {
+  max-width: 100%;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .people {
   margin: 25px 0 0;
   color: #e4b95c;
@@ -141,22 +154,41 @@
   font-size: 13px;
 }
 
-.featureCopy > strong { font-size: clamp(25px, 3.2vw, 42px); line-height: 1.35; letter-spacing: -.035em; }
+.featureCopy > strong {
+  min-width: 0;
+  font-size: clamp(25px, 3.2vw, 42px);
+  line-height: 1.35;
+  letter-spacing: -.035em;
+  text-wrap: pretty;
+  word-break: auto-phrase;
+}
+.featureCopy > strong :global(.semanticPhrase),
+.ledger li a > strong :global(.semanticPhrase) {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .watch { min-height: 44px; display: inline-flex; align-items: center; gap: 12px; color: #e4b95c; font-size: 14px; font-weight: 700; }
 .watch svg { width: 16px; }
 .featureLink:hover .watch { text-decoration: underline; text-underline-offset: 5px; }
 
 .ledger { margin-top: clamp(76px, 9vw, 116px); }
 .ledger > header { display: flex; align-items: end; justify-content: space-between; gap: 30px; padding-bottom: 22px; border-bottom: 2px solid #f0e9df; }
+.ledger > header > div { min-width: 0; }
 .ledger header > div > span { display: block; margin-bottom: 10px; }
 .ledger h2 { margin: 0; font-size: clamp(36px, 5vw, 64px); line-height: 1; letter-spacing: -.055em; }
+.ledger h2 > span {
+  display: inline-block;
+  white-space: nowrap;
+  word-break: keep-all;
+}
 .ledger > header > strong { margin-bottom: 5px; color: #a49ab0; font-family: var(--font-mono); font-size: 13px; }
 .ledger ol { margin: 0; padding: 0; list-style: none; }
 .ledger li { border-bottom: 1px solid #4f456b; }
 .ledger li a {
   min-height: 112px;
   display: grid;
-  grid-template-columns: 108px minmax(0, 1fr) 54px 18px;
+  grid-template-columns: max-content minmax(0, 1fr) max-content 18px;
   gap: 22px;
   align-items: center;
   padding: 18px 4px;
@@ -170,7 +202,13 @@
   font-size: 13px;
 }
 
-.ledger li a > strong { font-size: clamp(17px, 2vw, 23px); line-height: 1.55; }
+.ledger li a > strong {
+  min-width: 0;
+  font-size: clamp(17px, 2vw, 23px);
+  line-height: 1.55;
+  text-wrap: pretty;
+  word-break: auto-phrase;
+}
 .ledger li svg { width: 16px; color: #e4b95c; }
 .ledger li a:hover { background: #17142d; }
 .ledger li a:hover strong { text-decoration: underline; text-underline-offset: 5px; }
@@ -195,6 +233,15 @@
 @media (max-width: 920px) {
   .room { grid-template-columns: 220px minmax(0, 1fr); }
   .studio { padding-inline: 32px; }
+  .ledger li a { grid-template-columns: minmax(0, 1fr) max-content 18px; gap: 12px; }
+  .ledger time { grid-column: 1; }
+  .ledger li a > strong { grid-column: 1 / -1; }
+  .ledger li a > span { grid-column: 2; }
+  .ledger li svg { grid-column: 3; }
+}
+
+@media (max-width: 1280px) {
+  .ledger > header { align-items: start; flex-direction: column; gap: 12px; }
 }
 
 @media (max-width: 760px) {
@@ -202,25 +249,19 @@
   .level { position: relative; min-height: 220px; border-right: 0; border-bottom: 1px solid #4f456b; }
   .level span { right: 28px; bottom: 28px; font-size: 130px; }
   .studio { padding: 58px 20px 72px; }
-  .introduction h1 { font-size: 58px; }
+  .introduction h1 { font-size: 46px; }
   .lead { font-size: 16px; }
   .featureCopy { grid-template-columns: 1fr; }
   .watch { justify-self: start; }
-  .ledger > header { align-items: start; flex-direction: column; gap: 12px; }
-  .ledger li a { grid-template-columns: minmax(0, 1fr) 48px 18px; gap: 12px; }
-  .ledger time { grid-column: 1; }
-  .ledger li a > strong { grid-column: 1 / -1; }
-  .ledger li a > span { grid-column: 2; }
-  .ledger li svg { grid-column: 3; }
   .footer { align-items: stretch; flex-direction: column; }
   .footer a { width: 100%; justify-content: space-between; }
 }
 
 @media (max-width: 360px) {
-  .introduction h1 { font-size: 52px; }
+  .introduction h1 { font-size: 44px; }
   .monitor { padding: 6px; }
-  .ledger h2 { font-size: 40px; }
-  .ledger li a { grid-template-columns: minmax(0, 1fr) 42px 16px; gap: 8px; }
+  .ledger h2 { font-size: 34px; }
+  .ledger li a { grid-template-columns: minmax(0, 1fr) max-content 16px; gap: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,13 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Fragment } from "react";
 import type { CityPlace } from "@/data/city";
 import { featuredArticle } from "@/data/content";
 import archiveNotes from "@/data/note-archive.json";
 import PixelIcon from "@/features/city/PixelIcon";
+import SemanticText from "@/features/shared/SemanticText";
 import FacilityBar from "../FacilityBar";
-import FeaturedArticleTitle from "@/features/shared/FeaturedArticleTitle";
 import ClientCatalogue from "./ClientCatalogue";
 import styles from "./archive.module.css";
+
+const archiveDisplayTitle = [
+  "東大を",
+  "休学して",
+  "貯金",
+  "0円で",
+  "世界一周",
+  "してるけど、",
+  "僕には",
+  "「やりたい",
+  "こと」が",
+  "1つも",
+  "なかった",
+] as const;
 
 export default function Archive({ place }: { place: CityPlace }) {
   return (
@@ -20,8 +35,17 @@ export default function Archive({ place }: { place: CityPlace }) {
           <div className={styles.featureCopy}>
             <p className={styles.issue}>THE ARCHIVE · FEATURED STORY</p>
             <p className={styles.date}>{featuredArticle.date}</p>
-            <h1 id="archive-title"><FeaturedArticleTitle /></h1>
-            <p className={styles.excerpt}>{featuredArticle.excerpt}</p>
+            <h1 id="archive-title" aria-label={featuredArticle.title}>
+              {archiveDisplayTitle.map((phrase, index) => (
+                <Fragment key={phrase}>
+                  {index > 0 ? <wbr /> : null}
+                  <span className={styles.featureTitleUnit} aria-hidden="true">{phrase}</span>
+                </Fragment>
+              ))}
+            </h1>
+            <p className={styles.excerpt}>
+              <SemanticText phrases={featuredArticle.excerptPhrases ?? [featuredArticle.excerpt]} />
+            </p>
             <a className={styles.readFeature} href={featuredArticle.href} target="_blank" rel="noreferrer">
               <span>この文章をnoteで読む</span><PixelIcon name="external" />
             </a>
@@ -48,7 +72,10 @@ export default function Archive({ place }: { place: CityPlace }) {
           <header className={styles.catalogueHeader}>
             <div>
               <p>PUBLIC WRITING · 2019—</p>
-              <h2 id="catalogue-title">書いたものの、公開目録。</h2>
+              <h2 id="catalogue-title">
+                <span>書いた</span><wbr /><span>ものの、</span><wbr />
+                <span>公開</span><wbr /><span>目録。</span>
+              </h2>
             </div>
             <p>
               旅、個人開発、学び、暮らしと思考。背表紙ではなく、題名と年月から探せる横組みの公開目録です。

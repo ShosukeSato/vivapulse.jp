@@ -24,14 +24,27 @@ export type CitySceneProps = {
 };
 
 const PLACE_BY_ID = new Map(cityPlaces.map((place) => [place.id, place]));
+const MAP_LABELS: Record<CityScenePlaceId, string> = {
+  construction: "01 YARD",
+  tripvlog: "TRIPVLOG",
+  stocka: "STOCKA",
+  haku: "HAKU",
+  station: "CENTRAL",
+  strategy: "B2",
+  library: "ARCHIVE",
+  cinema: "CINEMA",
+  harbor: "TERMINAL",
+};
 
-type SelectableElement = HTMLAnchorElement | SVGAElement;
+type SelectableElement = HTMLAnchorElement | HTMLButtonElement | SVGAElement;
 
 function beginTouchSelection<T extends SelectableElement>(event: ReactTouchEvent<T>) {
   const touch = event.touches[0];
   if (!touch) return;
   event.currentTarget.dataset.touchStartX = String(touch.clientX);
   event.currentTarget.dataset.touchStartY = String(touch.clientY);
+  event.currentTarget.dataset.pressed = "true";
+  delete event.currentTarget.dataset.touchSelection;
   delete event.currentTarget.dataset.touchMoved;
 }
 
@@ -42,7 +55,15 @@ function trackTouchSelection<T extends SelectableElement>(event: ReactTouchEvent
   if (!touch || !Number.isFinite(startX) || !Number.isFinite(startY)) return;
   if (Math.hypot(touch.clientX - startX, touch.clientY - startY) > 10) {
     event.currentTarget.dataset.touchMoved = "true";
+    delete event.currentTarget.dataset.pressed;
   }
+}
+
+function clearTouchSelection<T extends SelectableElement>(target: T) {
+  delete target.dataset.touchStartX;
+  delete target.dataset.touchStartY;
+  delete target.dataset.touchMoved;
+  delete target.dataset.pressed;
 }
 
 function finishTouchSelection<T extends SelectableElement>(
@@ -52,14 +73,16 @@ function finishTouchSelection<T extends SelectableElement>(
 ) {
   const target = event.currentTarget;
   const moved = target.dataset.touchMoved === "true";
-  delete target.dataset.touchStartX;
-  delete target.dataset.touchStartY;
-  delete target.dataset.touchMoved;
-  if (moved) return;
+  clearTouchSelection(target);
+  if (moved) {
+    target.dataset.touchSelection = "cancelled";
+    window.setTimeout(() => delete target.dataset.touchSelection, 400);
+    return;
+  }
   if (alreadySelected) return;
   event.preventDefault();
-  target.dataset.touchSelection = "true";
-  window.setTimeout(() => delete target.dataset.touchSelection, 0);
+  target.dataset.touchSelection = "selected";
+  window.setTimeout(() => delete target.dataset.touchSelection, 400);
   onSelect();
 }
 
@@ -436,15 +459,13 @@ function HarborLandmark() {
 
 function SceneLabel({ place, id }: { place: CityPlace; id: CityScenePlaceId }) {
   const { x, y, width } = CITY_SCENE_PLACEMENTS[id].label;
-  const selectedName = place.shortName === "CITY 01 CENTRAL" ? "CITY 01 CENTRAL" : place.shortName;
 
   return (
     <g className={`city-scene__label city-scene__label--${id}`} transform={`translate(${x} ${y})`}>
-      <rect width={width} height="44" fill={P.blackDepth} stroke={P.outline} />
-      <rect width="4" height="44" fill={P.selection} />
-      <text x="12" y="15" fill={P.warmLight} className="city-scene__code">{place.code}</text>
-      <text x="12" y="36" fill={P.lightStone} className="city-scene__name">{selectedName}</text>
-      <path d={`M${width - 22} 17h9v11h-9`} fill="none" stroke={P.lightStone} />
+      <title>{place.code} {place.name}</title>
+      <rect width={width} height="64" fill={P.blackDepth} stroke={P.outline} />
+      <rect width="4" height="64" fill={P.selection} />
+      <text x="14" y="32" dominantBaseline="middle" fill={P.lightStone} className="city-scene__name">{MAP_LABELS[id]}</text>
     </g>
   );
 }
@@ -490,15 +511,16 @@ function SceneLandmark({
 
   const artwork = (
     <g aria-hidden="true" pointerEvents="none">
-      <LandmarkArtwork id={id} brickPatternId={brickPatternId} />
-      {!preview && <SceneLabel place={place} id={id} />}
+      <g className="city-scene__artwork">
+        <LandmarkArtwork id={id} brickPatternId={brickPatternId} />
+      </g>
       {interactive && (
         <g
           className={`city-scene__focus${selected ? " city-scene__focus--selected" : ""}`}
           pointerEvents="none"
         >
           <path d={focusPath} fill="none" stroke={P.blackDepth} strokeWidth="7" vectorEffect="non-scaling-stroke" />
-          <path d={focusPath} fill="none" stroke={P.selection} strokeWidth="3" vectorEffect="non-scaling-stroke" />
+          <path d={focusPath} fill="none" stroke="currentColor" strokeWidth="3" vectorEffect="non-scaling-stroke" />
         </g>
       )}
     </g>
@@ -511,12 +533,17 @@ function SceneLandmark({
       className="city-scene__landmark"
       data-map-target="place"
       href={place.path}
-      aria-label={`${place.code} ${place.name}へ入る`}
+      aria-label={preview
+        ? `${place.code} ${place.name}の詳細を表示。選択後にもう一度タップすると施設へ入ります`
+        : `${place.code} ${place.name}へ入る`}
       data-selected={selected ? "true" : undefined}
       onClick={(event) => {
-        const touchSelection = preview && event.currentTarget.dataset.touchSelection === "true";
+        const touchSelection = preview ? event.currentTarget.dataset.touchSelection : undefined;
         delete event.currentTarget.dataset.touchSelection;
-        if (touchSelection) event.preventDefault();
+        if (touchSelection) {
+          event.preventDefault();
+          if (touchSelection === "cancelled") return;
+        }
         onSelect(id);
       }}
       onFocus={() => onSelect(id)}
@@ -526,11 +553,7 @@ function SceneLandmark({
       onTouchStart={preview ? beginTouchSelection : undefined}
       onTouchMove={preview ? trackTouchSelection : undefined}
       onTouchEnd={preview ? (event) => finishTouchSelection(event, () => onSelect(id), selected) : undefined}
-      onTouchCancel={preview ? (event) => {
-        delete event.currentTarget.dataset.touchStartX;
-        delete event.currentTarget.dataset.touchStartY;
-        delete event.currentTarget.dataset.touchMoved;
-      } : undefined}
+      onTouchCancel={preview ? (event) => clearTouchSelection(event.currentTarget) : undefined}
     >
       <rect
         x={hitBounds.x}
@@ -644,6 +667,10 @@ function Player({
             event.stopPropagation();
             onSelect();
           }}
+          onTouchStart={preview ? beginTouchSelection : undefined}
+          onTouchMove={preview ? trackTouchSelection : undefined}
+          onTouchEnd={preview ? (event) => clearTouchSelection(event.currentTarget) : undefined}
+          onTouchCancel={preview ? (event) => clearTouchSelection(event.currentTarget) : undefined}
         />
       </foreignObject>
       <g
@@ -651,15 +678,14 @@ function Player({
         pointerEvents="none"
       >
         <path d={focusPath} fill="none" stroke={P.blackDepth} strokeWidth="7" vectorEffect="non-scaling-stroke" />
-        <path d={focusPath} fill="none" stroke={P.selection} strokeWidth="3" vectorEffect="non-scaling-stroke" />
+        <path d={focusPath} fill="none" stroke="currentColor" strokeWidth="3" vectorEffect="non-scaling-stroke" />
       </g>
       {artwork}
       {!preview && (
-        <g className="city-scene__guide-label" transform="translate(612 660)" pointerEvents="none">
-          <rect width="216" height="40" fill={P.blackDepth} stroke={P.outline} />
-          <rect width="4" height="40" fill={P.selection} />
-          <text x="12" y="14" fill={P.warmLight}>CITY GUIDE</text>
-          <text x="12" y="32" fill={P.lightStone}>SHOSUKE / 案内人</text>
+        <g className="city-scene__guide-label" transform="translate(570 660)" pointerEvents="none">
+          <rect width="300" height="64" fill={P.blackDepth} stroke={P.outline} />
+          <rect width="4" height="64" fill={P.selection} />
+          <text x="14" y="32" dominantBaseline="middle" fill={P.lightStone}>SHOSUKE</text>
         </g>
       )}
     </g>
@@ -758,35 +784,41 @@ export default function CityScene({
         .city-scene__landmark { cursor: pointer; outline: none; }
         .city-scene__player-action { cursor: pointer; outline: none; }
         .city-scene__guide-button { width: 100%; height: 100%; display: block; padding: 0; border: 0; background: transparent; cursor: pointer; }
-        .city-scene__focus { opacity: 0; }
-        .city-scene__focus--selected { opacity: 1; }
+        .city-scene__artwork { opacity: 1; transition: opacity 80ms linear; }
+        .city-scene__focus { color: ${P.selection}; opacity: 0; transition: opacity 80ms linear; }
+        .city-scene__focus--selected { color: ${P.selection}; opacity: 1; }
         .city-scene__landmark:hover .city-scene__focus,
         .city-scene__landmark:focus-visible .city-scene__focus { opacity: 1; }
-        .city-scene__guide-focus { opacity: 0; }
+        .city-scene__landmark[data-pressed="true"] .city-scene__artwork { opacity: .9; }
+        .city-scene__landmark[data-pressed="true"] .city-scene__focus {
+          color: ${P.warmLight};
+          opacity: 1;
+          transition: none;
+        }
+        .city-scene__player { opacity: 1; transition: opacity 80ms linear; }
+        .city-scene__guide-focus { color: ${P.selection}; opacity: 0; transition: opacity 80ms linear; }
         .city-scene__guide-focus--selected,
         .city-scene__player-action:hover .city-scene__guide-focus,
         .city-scene__player-action:focus-within .city-scene__guide-focus { opacity: 1; }
-        .city-scene__code {
-          font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-          font-size: 20px;
-          font-weight: 700;
-          letter-spacing: .06em;
+        .city-scene__player-action:has(.city-scene__guide-button:active) .city-scene__player,
+        .city-scene__player-action:has(.city-scene__guide-button[data-pressed="true"]) .city-scene__player { opacity: .9; }
+        .city-scene__player-action:has(.city-scene__guide-button:active) .city-scene__guide-focus,
+        .city-scene__player-action:has(.city-scene__guide-button[data-pressed="true"]) .city-scene__guide-focus {
+          color: ${P.warmLight};
+          opacity: 1;
+          transition: none;
         }
         .city-scene__name {
           font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
-          font-size: 26px;
+          font-size: 24px;
           font-weight: 700;
           letter-spacing: .02em;
         }
-        .city-scene__guide-label text:first-of-type {
-          font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-          font-size: 18px;
-          font-weight: 700;
-        }
-        .city-scene__guide-label text:last-of-type {
+        .city-scene__guide-label text {
           font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 700;
+          letter-spacing: .02em;
         }
         .city-scene__reserved-code,
         .city-scene__reserved-name {
@@ -810,6 +842,10 @@ export default function CityScene({
           87%, 100% { transform: translateY(0); }
         }
         @media (prefers-reduced-motion: reduce) {
+          .city-scene__artwork,
+          .city-scene__focus,
+          .city-scene__player,
+          .city-scene__guide-focus { transition: none; }
           .city-scene__water-frame,
           .city-scene__train { animation: none; }
           .city-scene__water-frame--two,
@@ -838,6 +874,15 @@ export default function CityScene({
           />
         );
       })}
+
+      {!preview && (
+        <g aria-hidden="true" pointerEvents="none">
+          {CITY_SCENE_ORDER.map((id) => {
+            const place = PLACE_BY_ID.get(id);
+            return place ? <SceneLabel key={`label-${id}`} place={place} id={id} /> : null;
+          })}
+        </g>
+      )}
 
       <Player
         preview={preview}

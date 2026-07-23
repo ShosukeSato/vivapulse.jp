@@ -2,7 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CityPlace } from "@/data/city";
 import { cityPlaces } from "@/data/city";
-import { DEPARTURE_DATE, featuredFilm, journey, profile, socials } from "@/data/content";
+import {
+  currentJourneyStop,
+  DEPARTURE_DATE,
+  featuredFilm,
+  journey,
+  nextJourneyStop,
+  profile,
+  socials,
+} from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
 import CurrentLocationName from "@/features/shared/CurrentLocationName";
@@ -11,9 +19,6 @@ import styles from "./central.module.css";
 
 const departureOrder = ["tripvlog", "haku", "stocka", "cinema", "library", "harbor", "construction", "strategy"];
 const departures = departureOrder.map((id) => cityPlaces.find((place) => place.id === id)!);
-const currentStop = journey.find((stop) => stop.status === "now")!;
-const nextStop = journey.find((stop) => stop.status === "next")!;
-
 const facilityType: Record<CityPlace["kind"], string> = {
   station: "案内所",
   tripvlog: "iOSアプリ",
@@ -40,7 +45,9 @@ export default function Central({ place }: { place: CityPlace }) {
 
           <div className={styles.identity}>
             <p className={styles.kicker}>CITY 01 CENTRAL&nbsp;· PROFILE</p>
-            <h1 id="central-title"><span>さとう</span><wbr /><span>しょうすけ</span></h1>
+            <h1 id="central-title">
+              <span>さとう</span><wbr /><span>しょう</span><wbr /><span>すけ</span>
+            </h1>
             <p className={styles.nameEn}>{profile.nameEn}</p>
             <p className={styles.bio}>
               <SemanticText phrases={profile.bioPhrases} />
@@ -53,14 +60,14 @@ export default function Central({ place }: { place: CityPlace }) {
 
           <aside className={styles.currentBoard} id="current-location" aria-labelledby="current-title">
             <div className={styles.boardTop}>
-              <span>現在地</span><time dateTime={currentStop.period.replace(".", "-")}>{currentStop.period}</time>
+              <span>現在地</span><span>WORLD JOURNEY</span>
             </div>
             <div className={styles.locationPin}><PixelIcon name="location" /></div>
-            <h2 id="current-title"><CurrentLocationName place={profile.currentLocation.place} /></h2>
-            <p>{profile.currentLocation.detail}</p>
+            <h2 id="current-title"><CurrentLocationName place={currentJourneyStop.place} /></h2>
+            <p>世界一周の旅の途中</p>
             <dl>
               <div><dt>旅の出発</dt><dd>東京&nbsp;· {DEPARTURE_DATE.replaceAll("-", ".")}</dd></div>
-              <div><dt>次の目的地</dt><dd>{nextStop.place}</dd></div>
+              <div><dt>次の目的地</dt><dd>{nextJourneyStop.place}</dd></div>
             </dl>
           </aside>
         </section>
@@ -69,7 +76,9 @@ export default function Central({ place }: { place: CityPlace }) {
           <header>
             <div>
               <p>DEPARTURES&nbsp;· PORTFOLIO DIRECTORY</p>
-              <h2 id="departures-title">作品と活動の出発案内。</h2>
+              <h2 id="departures-title">
+                <SemanticText phrases={["作品と", "活動の", "出発", "案内。"]} />
+              </h2>
             </div>
             <p>代表作や映像、文章、旅程を施設ごとに案内します。地図を使わず、ここから直接移動できます。</p>
           </header>
@@ -99,8 +108,28 @@ export default function Central({ place }: { place: CityPlace }) {
         <section className={styles.travelRecord} aria-labelledby="record-title">
           <div className={styles.recordCopy}>
             <p>WHY THIS CITY EXISTS</p>
-            <h2 id="record-title">つくることと旅することを、ひとつの街に。</h2>
-            <p>旅の途中で必要になったものをアプリにする。出会った景色を映像にして、考えたことを文章にする。CITY 01は、それらを別々の実績ではなく、いまも続く一つの活動として案内する街です。</p>
+            <h2 id="record-title">
+              <SemanticText phrases={["つくる", "ことと", "旅する", "ことを、", "ひとつの", "街に。"]} />
+            </h2>
+            <p>
+              <SemanticText phrases={[
+                "旅の途中で",
+                "必要になった",
+                "ものを",
+                "アプリにする。",
+                "出会った景色を",
+                "映像にして、",
+                "考えたことを",
+                "文章にする。",
+                "CITY 01は、",
+                "それらを",
+                "別々の実績",
+                "ではなく、",
+                "いまも続く",
+                "一つの活動として",
+                "案内する街です。",
+              ]} />
+            </p>
             <dl className={styles.shortJourney}>
               {journey.slice(0, 4).map((stop) => (
                 <div key={stop.place}>
@@ -125,7 +154,7 @@ export default function Central({ place }: { place: CityPlace }) {
             <span className={styles.play}><PixelIcon name="play" /></span>
             <span className={styles.stillCaption}>
               <small>旅先の記録&nbsp;· YouTubeサムネイル</small>
-              <strong>{featuredFilm.title}</strong>
+              <strong><SemanticText phrases={featuredFilm.displayTitleLines ?? [featuredFilm.title]} /></strong>
             </span>
           </a>
         </section>

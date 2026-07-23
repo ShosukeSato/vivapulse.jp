@@ -24,9 +24,9 @@ export default function TripVlog({ place }: { place: CityPlace }) {
             </div>
             <p className={styles.kicker}>TRIPVLOG STUDIO</p>
             <h1 id="tripvlog-title">
-              <span>撮るだけ。</span>
-              <span>旅の一日が、</span>
-              <span>一本になる。</span>
+              <span className={styles.titleLine}><span>撮るだけ。</span></span>
+              <span className={styles.titleLine}><span>旅の一日が、</span></span>
+              <span className={styles.titleLine}><span>一本になる。</span></span>
             </h1>
             <p className={styles.lead}>
               <SemanticText phrases={tripVlog.descriptionPhrases ?? [tripVlog.description]} />
@@ -56,8 +56,22 @@ export default function TripVlog({ place }: { place: CityPlace }) {
         <section className={styles.sequence} id="production-sequence" aria-labelledby="sequence-title">
           <header className={styles.sequenceHeader}>
             <p>実際のアプリ画面で見る</p>
-            <h2 id="sequence-title">撮影から完成まで。</h2>
-            <p>旅先で撮った短いクリップを、一日単位で集める。日付、場所、国旗、地図を自動で組み、縦型vlogとして書き出します。</p>
+            <h2 id="sequence-title">
+              <span>撮影から</span><wbr /><span>完成まで。</span>
+            </h2>
+            <p>
+              <SemanticText phrases={[
+                "旅先で撮った",
+                "短いクリップを、",
+                "一日単位で",
+                "集める。",
+                "日付、場所、",
+                "国旗、地図を",
+                "自動で組み、",
+                "縦型vlogとして",
+                "書き出します。",
+              ]} />
+            </p>
           </header>
 
           <ol className={styles.stages}>
@@ -65,8 +79,19 @@ export default function TripVlog({ place }: { place: CityPlace }) {
               <div className={styles.stageCopy}>
                 <span className={styles.number}>01</span>
                 <p className={styles.stageLabel}>RECORD / COLLECT</p>
-                <h3>旅を撮る。</h3>
-                <p>編集のことは考えず、その瞬間を短く撮影。クリップは日付と場所ごとに一日の記録へまとまります。</p>
+                <h3><SemanticText phrases={["旅を", "撮る。"]} /></h3>
+                <p>
+                  <SemanticText phrases={[
+                    "編集のことは",
+                    "考えず、",
+                    "その瞬間を",
+                    "短く撮影。",
+                    "クリップは",
+                    "日付と場所ごとに",
+                    "一日の記録へ",
+                    "まとまります。",
+                  ]} />
+                </p>
                 <dl>
                   <div><dt>この日の記録</dt><dd>19 clips / 0:50</dd></div>
                   <div><dt>移動</dt><dd>11 spots / 83 km</dd></div>
@@ -88,8 +113,21 @@ export default function TripVlog({ place }: { place: CityPlace }) {
               <div className={styles.stageCopy}>
                 <span className={styles.number}>02</span>
                 <p className={styles.stageLabel}>AUTOMATIC EDIT</p>
-                <h3>旅の情報を、映像にする。</h3>
-                <p>冒頭には日付と旅のタイトル。最後には、訪れた場所と移動の記録。編集作業を増やさず、旅の文脈を残します。</p>
+                <h3><SemanticText phrases={["旅の", "情報を、", "映像にする。"]} /></h3>
+                <p>
+                  <SemanticText phrases={[
+                    "冒頭には",
+                    "日付と旅の",
+                    "タイトル。",
+                    "最後には、",
+                    "訪れた場所と",
+                    "移動の記録。",
+                    "編集作業を",
+                    "増やさず、",
+                    "旅の文脈を",
+                    "残します。",
+                  ]} />
+                </p>
               </div>
               <div className={styles.generatedCards}>
                 <figure className={styles.cardFrame}>
@@ -131,8 +169,21 @@ export default function TripVlog({ place }: { place: CityPlace }) {
               <div className={styles.stageCopy}>
                 <span className={styles.number}>03</span>
                 <p className={styles.stageLabel}>EXPORT</p>
-                <h3>一本のvlogが完成。</h3>
-                <p>一日のクリップを時系列につなぎ、選んだスタンプとBGMを反映。カメラロールへ書き出して、そのまま旅の記録として残せます。</p>
+                <h3><SemanticText phrases={["一本の", "vlogが", "完成。"]} /></h3>
+                <p>
+                  <SemanticText phrases={[
+                    "一日のクリップを",
+                    "時系列に",
+                    "つなぎ、",
+                    "選んだスタンプと",
+                    "BGMを反映。",
+                    "カメラロールへ",
+                    "書き出して、",
+                    "そのまま",
+                    "旅の記録として",
+                    "残せます。",
+                  ]} />
+                </p>
                 <a className={styles.finalAction} href={tripVlog.appStore} target="_blank" rel="noreferrer">
                   <span>TripVlogを使ってみる</span><PixelIcon name="external" />
                 </a>
@@ -144,7 +195,16 @@ export default function TripVlog({ place }: { place: CityPlace }) {
 
       <footer className={styles.footer}>
         <span>TRIPVLOG STUDIO / CITY 01</span>
-        <p>旅の途中で、毎日の編集が追いつかなくなった自分のためにつくりました。</p>
+        <p>
+          <SemanticText phrases={[
+            "旅の途中で、",
+            "毎日の編集が",
+            "追いつかなく",
+            "なった自分の",
+            "ために",
+            "つくりました。",
+          ]} />
+        </p>
         <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>

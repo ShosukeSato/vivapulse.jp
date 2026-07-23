@@ -190,6 +190,6 @@ export const cityPlaces: CityPlace[] = [
     status: "live",
     path: "/places/route-terminal",
     action: "施設に入る",
-    summary: "東京から世界へ。旅が進むたびに航路が延びる中央港。",
+    summary: "東京から世界へ。現在地と、この先の航路をひらく水際の港。",
   },
 ];

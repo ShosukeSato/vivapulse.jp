@@ -3,6 +3,8 @@
   overflow: clip;
   background: #071e2b;
   color: #e5f1f2;
+  line-break: strict;
+  word-break: auto-phrase;
 }
 
 .page a { color: inherit; }
@@ -57,17 +59,28 @@
 .introCopy h1 {
   max-width: 700px;
   margin: 15px 0 0;
-  font-size: clamp(42px, 5.8vw, 84px);
+  font-size: clamp(34px, 3.6vw, 52px);
   line-height: 1.12;
   letter-spacing: -.065em;
 }
-.introCopy h1 > span { display: block; word-break: keep-all; overflow-wrap: anywhere; }
+.introCopy h1 > .titleLine { display: block; }
+.titleLine > span,
+.sequenceHeader h2 > span,
+.stageCopy h3 :global(.semanticPhrase) {
+  max-width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .lead {
   max-width: 630px;
   margin: 30px 0 0;
   color: #bad5d9;
   font-size: 16px;
   line-height: 1.9;
+  text-wrap: pretty;
+  word-break: auto-phrase;
 }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 38px; }
 .actions a,
@@ -76,7 +89,7 @@
   display: inline-flex;
   align-items: center;
   gap: 16px;
-  padding: 0 17px;
+  padding: 12px 17px;
   border: 1px solid #5fc4cc;
   font-size: 14px;
   font-weight: 700;
@@ -93,13 +106,15 @@
   min-width: 0;
   min-height: 700px;
   margin: 0;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   background: #17658a;
 }
 .finishedPreview img {
   width: auto;
   max-width: 100%;
-  height: 100%;
+  height: min(100svh, 900px);
   display: block;
   margin-inline: auto;
   object-fit: contain;
@@ -122,12 +137,13 @@
 .sequence { background: #dceced; color: #071e2b; }
 .sequenceHeader {
   display: grid;
-  grid-template-columns: minmax(150px, .45fr) minmax(300px, 1fr) minmax(300px, .85fr);
+  grid-template-columns: minmax(150px, .35fr) minmax(0, 1.65fr);
   align-items: end;
   gap: 48px;
   padding: clamp(88px, 11vw, 170px) clamp(24px, 7vw, 108px) clamp(56px, 7vw, 104px);
   border-bottom: 3px solid #071e2b;
 }
+.sequenceHeader > * { min-width: 0; max-width: 100%; }
 .sequenceHeader > p:first-child {
   margin: 0 0 8px;
   color: #17658a;
@@ -141,7 +157,14 @@
   line-height: 1;
   letter-spacing: -.07em;
 }
-.sequenceHeader > p:last-child { margin: 0; font-size: 16px; line-height: 1.85; }
+.sequenceHeader > p:last-child {
+  grid-column: 2;
+  max-width: 48em;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.85;
+  text-wrap: pretty;
+}
 .stages { margin: 0; padding: 0; list-style: none; }
 .stage {
   min-height: 100svh;
@@ -172,11 +195,18 @@
 }
 .stageCopy h3 {
   margin: 13px 0 0;
-  font-size: clamp(42px, 5vw, 76px);
+  font-size: clamp(26px, 2.5vw, 38px);
   line-height: 1.08;
   letter-spacing: -.06em;
 }
-.stageCopy > p:last-of-type { max-width: 520px; margin: 28px 0 0; font-size: 17px; line-height: 1.9; }
+.stageCopy > p:last-of-type {
+  max-width: 520px;
+  margin: 28px 0 0;
+  font-size: 17px;
+  line-height: 1.9;
+  text-wrap: pretty;
+  word-break: auto-phrase;
+}
 .stageCopy dl { margin: 40px 0 0; border-top: 1px solid currentColor; }
 .stageCopy dl div { display: flex; justify-content: space-between; gap: 20px; padding: 14px 0; border-bottom: 1px solid currentColor; }
 .stageCopy dt,
@@ -221,6 +251,7 @@
 .footer {
   min-height: 250px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 36px;
@@ -228,57 +259,58 @@
   background: #071e2b;
 }
 .footer span { color: #5fc4cc; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
-.footer p { max-width: 580px; margin: 0; color: #bad5d9; font-size: 17px; line-height: 1.8; }
+.footer p { max-width: 580px; flex: 1 1 360px; margin: 0; color: #bad5d9; font-size: 17px; line-height: 1.8; }
 .footer > a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; border-bottom: 1px solid #5fc4cc; color: #e5f1f2; font-size: 13px; font-weight: 700; text-decoration: none; }
 .footer > a:hover { color: #5fc4cc; }
 .footer > a svg { width: 15px; }
 
 @media (min-width: 981px) {
-  .introduction { height: calc(100svh - 56px); min-height: 680px; }
+  .introduction { min-height: max(680px, calc(100svh - 56px)); }
   .introCopy { padding-block: clamp(38px, 4.2vw, 64px); }
   .kicker { margin-top: 32px; }
   .lead { margin-top: 22px; line-height: 1.8; }
   .actions { margin-top: 28px; }
-  .finishedPreview { height: 100%; min-height: 0; }
+  .finishedPreview { min-height: max(700px, calc(100svh - 56px)); }
 }
 
 @media (max-width: 980px) {
   .introduction { grid-template-columns: 1fr; }
   .finishedPreview { min-height: 82svh; }
-  .finishedPreview img { object-position: center 35%; }
+  .finishedPreview img { height: 82svh; object-position: center 35%; }
   .sequenceHeader { grid-template-columns: 1fr; align-items: start; }
+  .sequenceHeader > p:last-child { grid-column: auto; }
   .stage { grid-template-columns: 1fr; }
   .stageCopy { max-width: 720px; }
   .captureScreen img,
   .export .screen img { max-height: none; width: min(100%, 520px); }
   .exportControls { order: 2; }
+  .footer { align-items: flex-start; flex-direction: column; }
+  .footer p { flex-basis: auto; }
+  .footer > a { width: 100%; justify-content: space-between; }
 }
 
 @media (max-width: 620px) {
   .introCopy { padding: 54px 20px 68px; }
   .productMark img { width: 56px; height: 56px; border-radius: 13px; }
   .kicker { margin-top: 40px; }
-  .introCopy h1 { font-size: 44px; }
+  .introCopy h1 { font-size: clamp(25px, 7vw, 36px); }
   .lead { font-size: 16px; }
   .actions { align-items: stretch; flex-direction: column; }
   .actions a { width: 100%; justify-content: space-between; }
   .finishedPreview { min-height: 72svh; }
+  .finishedPreview img { height: 72svh; }
   .sequenceHeader { gap: 28px; padding: 82px 20px 58px; }
-  .sequenceHeader h2 { font-size: 48px; }
+  .sequenceHeader h2 { font-size: clamp(34px, 10vw, 40px); }
   .stage { min-height: auto; gap: 54px; padding: 76px 20px; }
-  .stageCopy h3 { font-size: 44px; }
+  .stageCopy h3 { font-size: clamp(25px, 7vw, 32px); }
   .stageCopy > p:last-of-type { font-size: 16px; }
   .generatedCards { gap: 8px; }
   .cardFrame:nth-child(2) { transform: none; }
   .cardFrame figcaption { font-size: 13px; }
-  .footer { align-items: flex-start; flex-direction: column; padding: 58px 20px; }
-  .footer > a { width: 100%; justify-content: space-between; }
+  .footer { padding: 58px 20px; }
 }
 
 @media (max-width: 360px) {
-  .introCopy h1,
-  .stageCopy h3 { font-size: 39px; }
-  .sequenceHeader h2 { font-size: 43px; }
   .generatedCards { grid-template-columns: 1fr; gap: 38px; }
   .cardFrame img { max-height: 76svh; }
 }

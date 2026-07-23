@@ -4,7 +4,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import DayCounter from "@/components/DayCounter";
 import { cityPlaces } from "@/data/city";
-import { featuredArticle, featuredFilm, products, profile } from "@/data/content";
+import {
+  currentJourneyStop,
+  featuredArticle,
+  featuredFilm,
+  nextJourneyStop,
+  products,
+} from "@/data/content";
 import CityScene from "./CityScene";
 import PixelIcon from "./PixelIcon";
 import FeaturedArticleTitle from "@/features/shared/FeaturedArticleTitle";
@@ -211,8 +217,8 @@ export default function CityExplorer() {
               </aside>
             ) : (
               <dl className={styles.currentQuest}>
-                <div><dt><PixelIcon name="location" />現在地</dt><dd>{profile.currentLocation.place}</dd></div>
-                <div><dt>次の街</dt><dd>{profile.nextLocation}</dd></div>
+                <div><dt><PixelIcon name="location" />現在地</dt><dd>{currentJourneyStop.place}</dd></div>
+                <div><dt>次の街</dt><dd>{nextJourneyStop.place}</dd></div>
               </dl>
             )}
           </div>
@@ -246,9 +252,19 @@ export default function CityExplorer() {
               />
             </div>
 
+            <p className={styles.mapStatus} role="status" aria-live="polite" aria-atomic="true">
+              {guideSelected
+                ? "街の案内人SHOSUKEを選択しました。詳細を表示しています。"
+                : selectedPlace
+                  ? `${selectedPlace.shortName}を選択しました。詳細を表示しています。`
+                  : ""}
+            </p>
+
             {(selectedPlace || guideSelected) && (
               <article
                 className={styles.mobilePlaceCard}
+                id="mobile-place-card"
+                key={selectedId}
                 ref={mobileCardRef}
                 data-dock={LOWER_MAP_IDS.has(selectedId ?? "") ? "top" : "bottom"}
                 data-map-selection-ui
@@ -276,8 +292,8 @@ export default function CityExplorer() {
 
           <div className={styles.mobileWayfinding}>
             <div className={styles.mobileStatus}>
-              <span><small><PixelIcon name="location" />現在地</small><strong>{profile.currentLocation.place}</strong></span>
-              <span><small>次の街</small><strong>{profile.nextLocation}</strong></span>
+              <span><small><PixelIcon name="location" />現在地</small><strong>{currentJourneyStop.place}</strong></span>
+              <span><small>次の街</small><strong>{nextJourneyStop.place}</strong></span>
               <Link href="/places/city-01-central" prefetch={false}>プロフィールと現在地 <PixelIcon name="enter" /></Link>
             </div>
             <nav aria-label="施設から作品を選ぶ">
@@ -285,7 +301,14 @@ export default function CityExplorer() {
               {cityPlaces.map((place) => (
                 <Link href={place.path} key={place.id} prefetch={false}>
                   <span>{place.code}</span>
-                  <span><strong>{place.shortName}</strong><small>{place.destination}</small></span>
+                  <span>
+                    <strong>{place.shortName}</strong>
+                    <small>
+                      {place.id === "strategy"
+                        ? <SemanticText phrases={["ビデオ", "ポッドキャスト"]} />
+                        : place.destination}
+                    </small>
+                  </span>
                   <PixelIcon name="enter" />
                 </Link>
               ))}
@@ -299,7 +322,13 @@ export default function CityExplorer() {
       <section className={styles.works} id="works" aria-labelledby="works-title">
         <div className={styles.sectionLead}>
           <span>MAKERS QUAY / 代表作</span>
-          <h2 id="works-title">旅の途中で、<br />必要なものをつくる。</h2>
+          <h2 id="works-title">
+            <span className="semanticPhrase">旅の</span><wbr />
+            <span className="semanticPhrase">途中で、</span><br />
+            <span className="semanticPhrase">必要な</span><wbr />
+            <span className="semanticPhrase">ものを</span><wbr />
+            <span className="semanticPhrase">つくる。</span>
+          </h2>
           <p>旅の途中でつくり、企画から公開まで、ひとりで手を動かしているiOSアプリ。</p>
         </div>
 
@@ -348,7 +377,11 @@ export default function CityExplorer() {
           <span className={styles.dispatchCopy}><small><span>VOYAGE CINEMA /</span><wbr /> <span>代表映像</span></small><strong><SemanticText phrases={featuredFilm.displayTitleLines ?? [featuredFilm.title]} /></strong><span>再生する <PixelIcon name="play" /></span></span>
         </a>
         <a className={styles.articleDispatch} href={featuredArticle.href} target="_blank" rel="noreferrer">
-          <div><small><span>THE ARCHIVE /</span><wbr /> <span>編集者選</span></small><strong><FeaturedArticleTitle /></strong><p>{featuredArticle.excerpt}</p></div>
+          <div>
+            <small><span>THE ARCHIVE /</span><wbr /> <span>編集者選</span></small>
+            <strong><FeaturedArticleTitle /></strong>
+            <p><SemanticText phrases={featuredArticle.excerptPhrases ?? [featuredArticle.excerpt]} /></p>
+          </div>
           <span className={styles.dispatchExternal}>記事を読む <PixelIcon name="external" /></span>
         </a>
       </section>

@@ -70,11 +70,11 @@ export type CityScenePlacement = {
 export const CITY_SCENE_PLACEMENTS = {
   construction: {
     bounds: { x: 48, y: 48, width: 312, height: 216 },
-    label: { x: 48, y: 228, width: 264 },
+    label: { x: 48, y: 228, width: 276 },
   },
   tripvlog: {
     bounds: { x: 420, y: 48, width: 240, height: 216 },
-    label: { x: 408, y: 228, width: 264 },
+    label: { x: 408, y: 228, width: 312 },
   },
   stocka: {
     bounds: { x: 1032, y: 48, width: 336, height: 216 },

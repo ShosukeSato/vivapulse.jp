@@ -23,7 +23,13 @@ export default function Stocka({ place }: { place: CityPlace }) {
           </div>
           <div className={styles.titleBlock}>
             <p>「調べて、終わり」を終わらせる。</p>
-            <h1 id="stocka-title"><span>翻訳を、</span><span>あなたの英語に</span><span>変える。</span></h1>
+            <h1 id="stocka-title">
+              <span className={styles.titleLine}><span>翻訳を、</span></span>
+              <span className={styles.titleLine}>
+                <span>あなたの</span><wbr /><span>英語に</span>
+              </span>
+              <span className={styles.titleLine}><span>変える。</span></span>
+            </h1>
           </div>
           <div className={styles.overview}>
             <p><SemanticText phrases={stocka.descriptionPhrases ?? [stocka.description]} /></p>
@@ -53,8 +59,24 @@ export default function Stocka({ place }: { place: CityPlace }) {
             <div className={styles.lessonCopy}>
               <span className={styles.lessonNumber}>01</span>
               <p className={styles.lessonType}>TRANSLATE</p>
-              <h2>まず、言いたかったことを訳す。</h2>
-              <p>旅先の会話や、伝えたかった日本語を入力する。直訳を一つ返すだけでなく、フォーマル、標準、カジュアルなど、場面に合う複数の言い方を示します。</p>
+              <h2><SemanticText phrases={["まず、", "言いたかった", "ことを", "訳す。"]} /></h2>
+              <p>
+                <SemanticText phrases={[
+                  "旅先の会話や、",
+                  "伝えたかった",
+                  "日本語を",
+                  "入力する。",
+                  "直訳を",
+                  "一つ返す",
+                  "だけでなく、",
+                  "フォーマル、",
+                  "標準、",
+                  "カジュアルなど、",
+                  "場面に合う",
+                  "複数の言い方を",
+                  "示します。",
+                ]} />
+              </p>
               <blockquote>
                 <span>入力</span>
                 <p>残業には慣れているよ。</p>
@@ -88,8 +110,21 @@ export default function Stocka({ place }: { place: CityPlace }) {
             <div className={styles.lessonCopy}>
               <span className={styles.lessonNumber}>02</span>
               <p className={styles.lessonType}>UNDERSTAND</p>
-              <h2>文を、構文・文法・単語にほどく。</h2>
-              <p>なぜその英語になるのかを、学習ポイントとして分解。使った文の中で理解するから、文法書の例文ではなく自分の場面と結びつきます。</p>
+              <h2><SemanticText phrases={["文を、", "構文・", "文法・", "単語に", "ほどく。"]} /></h2>
+              <p>
+                <SemanticText phrases={[
+                  "なぜその英語に",
+                  "なるのかを、",
+                  "学習ポイントとして",
+                  "分解。",
+                  "使った文の中で",
+                  "理解するから、",
+                  "文法書の",
+                  "例文ではなく、",
+                  "自分の場面と",
+                  "結びつきます。",
+                ]} />
+              </p>
               <dl className={styles.breakdown}>
                 <div><dt>文法</dt><dd>be used to + 動詞ing</dd></div>
                 <div><dt>単語</dt><dd>overtime「残業」</dd></div>
@@ -102,9 +137,34 @@ export default function Stocka({ place }: { place: CityPlace }) {
             <div className={styles.lessonCopy}>
               <span className={styles.lessonNumber}>03</span>
               <p className={styles.lessonType}>STOCK</p>
-              <h2>わからなかった言葉を、手元に残す。</h2>
-              <p>翻訳と学習ポイントは、そのまま知識カードとして蓄積。構文、文法、単語で探せて、理解したものと次に復習するものを一つの場所で見渡せます。</p>
-              <p className={styles.note}>検索して、比べて、復習する。調べた言葉が、自分の英語として少しずつ蓄積していきます。</p>
+              <h2><SemanticText phrases={["わからなかった", "言葉を、", "手元に", "残す。"]} /></h2>
+              <p>
+                <SemanticText phrases={[
+                  "翻訳と",
+                  "学習ポイントは、",
+                  "そのまま",
+                  "知識カードとして",
+                  "蓄積。",
+                  "構文、文法、",
+                  "単語で探せて、",
+                  "理解したものと",
+                  "次に復習する",
+                  "ものを",
+                  "一つの場所で",
+                  "見渡せます。",
+                ]} />
+              </p>
+              <p className={styles.note}>
+                <SemanticText phrases={[
+                  "検索して、",
+                  "比べて、",
+                  "復習する。",
+                  "調べた言葉が、",
+                  "自分の英語として",
+                  "少しずつ",
+                  "蓄積していきます。",
+                ]} />
+              </p>
             </div>
             <figure className={styles.realScreen}>
               <Image
@@ -132,8 +192,21 @@ export default function Stocka({ place }: { place: CityPlace }) {
             <div className={styles.lessonCopy}>
               <span className={styles.lessonNumber}>04</span>
               <p className={styles.lessonType}>REVIEW</p>
-              <h2>忘れる前に、思い出す。</h2>
-              <p>覚えたつもりで終わらせず、復習待ちのカードをもう一度。旅先で調べた言葉を、自分で使える言葉へ変えていきます。</p>
+              <h2><SemanticText phrases={["忘れる", "前に、", "思い出す。"]} /></h2>
+              <p>
+                <SemanticText phrases={[
+                  "覚えたつもりで",
+                  "終わらせず、",
+                  "復習待ちの",
+                  "カードを",
+                  "もう一度。",
+                  "旅先で調べた",
+                  "言葉を、",
+                  "自分で使える",
+                  "言葉へ",
+                  "変えていきます。",
+                ]} />
+              </p>
               <a className={styles.start} href={stocka.appStore} target="_blank" rel="noreferrer">
                 <span>Stockaで学び始める</span><PixelIcon name="external" />
               </a>
@@ -143,8 +216,11 @@ export default function Stocka({ place }: { place: CityPlace }) {
       </main>
 
       <footer className={styles.footer}>
-        <div><span>STOCKA LAB / CITY 01</span><p>旅の会話から生まれた、自分のための学習装置。</p></div>
-        <a href={stocka.lp} target="_blank" rel="noreferrer">機能を詳しく見る <PixelIcon name="external" /></a>
+        <div>
+          <span>STOCKA LAB / CITY 01</span>
+          <p><SemanticText phrases={["旅の会話から", "生まれた、", "自分のための", "学習装置。"]} /></p>
+        </div>
+        <a href={stocka.lp} target="_blank" rel="noreferrer"><span>機能を詳しく見る</span><PixelIcon name="external" /></a>
         <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>

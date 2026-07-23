@@ -22,7 +22,10 @@ body {
   color: #102b3b;
   font-family: var(--font-sans);
   font-feature-settings: "palt";
+  line-break: strict;
+  overflow-wrap: normal;
   text-rendering: optimizeLegibility;
+  word-break: auto-phrase;
 }
 
 button,
@@ -50,6 +53,13 @@ svg { max-width: 100%; }
 /* Inline-block sizing keeps short units together at normal sizes; under text
    zoom, an oversized unit can still reflow instead of creating overflow. */
 .semanticUnit { white-space: normal; }
+
+.protectedTerm {
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
 
 a:focus-visible,
 button:focus-visible,

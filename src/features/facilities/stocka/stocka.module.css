@@ -3,6 +3,8 @@
   overflow: clip;
   background: #e4efe8;
   color: #153f31;
+  line-break: strict;
+  word-break: auto-phrase;
 }
 
 .page a { color: inherit; }
@@ -37,8 +39,15 @@
 .identity p { margin: 8px 0 0; color: #365c4b; font-size: 13px; line-height: 1.6; }
 .titleBlock { display: flex; flex-direction: column; justify-content: flex-end; }
 .titleBlock > p { margin: 0; padding-left: 11px; border-left: 4px solid #38a56d; color: #153f31; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
-.titleBlock h1 { margin: 15px 0 0; font-size: clamp(46px, 4.8vw, 72px); line-height: 1.12; letter-spacing: -.068em; }
-.titleBlock h1 span { display: block; word-break: keep-all; overflow-wrap: anywhere; }
+.titleBlock h1 { margin: 15px 0 0; font-size: clamp(46px, 4.2vw, 64px); line-height: 1.12; letter-spacing: -.068em; }
+.titleBlock h1 > .titleLine { display: block; }
+.titleLine > span {
+  max-width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .overview { display: flex; flex-direction: column; justify-content: flex-end; }
 .overview > p { margin: 0; color: #365c4b; font-size: 16px; line-height: 1.9; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
@@ -49,7 +58,7 @@
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  padding: 0 15px;
+  padding: 11px 15px;
   border: 1px solid #153f31;
   font-size: 14px;
   font-weight: 700;
@@ -98,8 +107,13 @@
   font-weight: 700;
 }
 .lessonType { margin: 42px 0 0; padding-left: 11px; border-left: 4px solid #38a56d; color: #153f31; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .07em; }
-.lessonCopy h2 { margin: 13px 0 0; font-size: clamp(42px, 5vw, 74px); line-height: 1.15; letter-spacing: -.06em; }
-.lessonCopy > p:not(.lessonType, .note) { margin: 29px 0 0; font-size: 17px; line-height: 1.9; }
+.lessonCopy h2 { margin: 13px 0 0; font-size: clamp(38px, 3.8vw, 58px); line-height: 1.15; letter-spacing: -.06em; text-wrap: pretty; word-break: auto-phrase; }
+.lessonCopy h2 :global(.semanticPhrase) {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+.lessonCopy > p:not(.lessonType, .note) { margin: 29px 0 0; font-size: 17px; line-height: 1.9; text-wrap: pretty; word-break: auto-phrase; }
 .realScreen { min-width: 0; margin: 0; }
 .realScreen img { width: auto; max-width: 100%; height: min(78svh, 910px); display: block; margin-inline: auto; object-fit: contain; }
 .realScreen figcaption { margin-top: 14px; font-family: var(--font-mono); font-size: 13px; font-weight: 700; text-align: center; }
@@ -127,6 +141,7 @@
 .footer {
   min-height: 250px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 36px;
@@ -152,6 +167,8 @@
   .lessonCopy { max-width: 720px; }
   .stock .realScreen { order: 0; }
   .realScreen img { max-height: none; width: min(100%, 540px); }
+  .footer { align-items: flex-start; flex-direction: column; }
+  .footer > a { width: 100%; justify-content: space-between; }
 }
 
 @media (max-width: 620px) {
@@ -159,7 +176,7 @@
   .masthead > div { padding: 40px 20px; border-right: 0; border-bottom: 1px solid #92ae9d; }
   .masthead > div:last-child { border-bottom: 0; }
   .identity img { width: 64px; height: 64px; border-radius: 15px; }
-  .titleBlock h1 { font-size: 45px; }
+  .titleBlock h1 { font-size: clamp(34px, 10vw, 45px); }
   .actions { align-items: stretch; flex-direction: column; }
   .actions a { width: 100%; justify-content: space-between; }
   .syllabus ol { grid-template-columns: 1fr 1fr; }
@@ -168,18 +185,16 @@
   .lesson,
   .analyse,
   .review { min-height: auto; gap: 54px; padding: 74px 20px; }
-  .lessonCopy h2 { font-size: 43px; }
+  .lessonCopy h2 { font-size: clamp(22px, 7vw, 31px); }
   .lessonCopy > p:not(.lessonType, .note) { font-size: 16px; }
   .start { width: 100%; justify-content: space-between; }
-  .footer { align-items: flex-start; flex-direction: column; padding: 56px 20px; }
-  .footer > a { width: 100%; justify-content: space-between; }
+  .footer { padding: 56px 20px; }
 }
 
 @media (max-width: 360px) {
-  .titleBlock h1 { font-size: 40px; }
+  .titleBlock h1 { font-size: 34px; }
   .syllabus ol { grid-template-columns: 1fr; }
   .syllabus li { border-right: 0; }
-  .lessonCopy h2 { font-size: 38px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

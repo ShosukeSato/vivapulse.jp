@@ -71,7 +71,7 @@
   line-height: 1.06;
   letter-spacing: -.07em;
 }
-.identity h1 span { word-break: keep-all; overflow-wrap: anywhere; }
+.identity h1 span { white-space: nowrap; word-break: keep-all; overflow-wrap: normal; }
 
 .nameEn { margin: 13px 0 0; font-family: var(--font-mono); font-size: 15px; font-weight: 700; letter-spacing: .06em; }
 .bio { max-width: 35em; margin: 34px 0 0; font-size: 17px; line-height: 1.9; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
@@ -101,23 +101,27 @@
   color: #e5e1d4;
 }
 
-.boardTop { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 15px; border-bottom: 1px solid #366b78; font-family: var(--font-mono); font-size: 13px; }
+.boardTop { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; padding-bottom: 15px; border-bottom: 1px solid #366b78; font-family: var(--font-mono); font-size: 13px; }
 .boardTop span { color: #f3c85e; font-weight: 700; }
 .locationPin { width: 42px; height: 42px; display: grid; place-items: center; margin-top: 42px; border: 1px solid #6fa1ad; color: #f3c85e; }
 .locationPin svg { width: 20px; }
-.currentBoard h2 { margin: 24px 0 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.3; letter-spacing: -.04em; }
+.currentBoard h2 { margin: 24px 0 0; font-size: clamp(29px, 2.7vw, 42px); line-height: 1.3; letter-spacing: -.04em; }
+.currentBoard h2 :global(.semanticPhrase) { white-space: nowrap; }
 .currentBoard > p { margin: 10px 0 0; color: #abd1d2; font-size: 16px; line-height: 1.75; }
 .currentBoard dl { margin: 40px 0 0; border-top: 1px solid #366b78; }
 .currentBoard dl div { min-height: 61px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; border-bottom: 1px solid #366b78; }
 .currentBoard dt { color: #abd1d2; font-size: 13px; }
-.currentBoard dd { max-width: 100%; margin: 0; font-family: var(--font-mono); font-size: 13px; font-weight: 700; overflow-wrap: anywhere; text-align: right; }
+.currentBoard dd { max-width: 100%; margin: 0; font-family: var(--font-mono); font-size: 13px; font-weight: 700; overflow-wrap: normal; text-align: right; word-break: auto-phrase; }
 .currentBoard dd small { display: block; margin-top: 4px; color: #abd1d2; font-size: 13px; font-weight: 400; }
 
 .departures { padding: clamp(70px, 9vw, 132px) clamp(18px, 5vw, 76px); background: #f4f0e5; }
 .departures > header { display: grid; grid-template-columns: minmax(360px, .85fr) minmax(340px, 1.15fr); gap: 70px; align-items: end; margin-bottom: 50px; }
 .departures header > div p { margin-bottom: 17px; }
 .departures h2,
-.recordCopy h2 { margin: 0; font-size: clamp(42px, 5.4vw, 74px); letter-spacing: -.055em; overflow-wrap: anywhere; text-wrap: balance; word-break: auto-phrase; }
+.recordCopy h2 { margin: 0; font-size: clamp(42px, 5.4vw, 74px); letter-spacing: -.055em; overflow-wrap: normal; text-wrap: balance; word-break: auto-phrase; }
+.departures h2 :global(.semanticPhrase) { white-space: nowrap; }
+.recordCopy h2 { font-size: clamp(30px, 3.3vw, 44px); }
+.recordCopy h2 :global(.semanticPhrase) { white-space: nowrap; }
 .departures > header > * { min-width: 0; }
 .departures > header > p { max-width: 42em; margin: 0; font-size: 16px; line-height: 1.85; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
 
@@ -148,6 +152,7 @@
 .enter svg { width: 16px; }
 
 .travelRecord { display: grid; grid-template-columns: minmax(400px, .9fr) minmax(480px, 1.1fr); min-height: 680px; background: #102b3b; color: #e5e1d4; }
+.travelRecord > * { min-width: 0; max-width: 100%; }
 .recordCopy { display: flex; flex-direction: column; justify-content: center; padding: clamp(52px, 7vw, 104px) clamp(26px, 6vw, 90px); }
 .recordCopy > p:first-child { color: #f3c85e; }
 .recordCopy > p:not(:first-child) { max-width: 38em; margin: 30px 0 0; color: #c5d9d8; font-size: 16px; line-height: 1.9; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
@@ -165,6 +170,7 @@
 .stillCaption { position: absolute; z-index: 2; right: 34px; bottom: 34px; left: 34px; }
 .stillCaption small { display: block; margin-bottom: 10px; color: #f3c85e; font-family: var(--font-mono); font-size: 13px; }
 .stillCaption strong { max-width: 30em; display: block; font-size: clamp(22px, 3vw, 34px); line-height: 1.45; }
+.stillCaption strong :global(.semanticPhrase) { white-space: nowrap; }
 
 .footer { min-height: 184px; display: grid; grid-template-columns: .7fr 1.3fr; gap: 40px; align-items: center; padding: 34px clamp(18px, 5vw, 76px); background: #e5e1d4; }
 .footer > div span { display: block; margin-bottom: 9px; }
@@ -206,12 +212,13 @@
 
 @media (max-width: 390px) {
   .identity { padding-inline: 18px; }
-  .identity h1 { font-size: 52px; }
+  .identity h1 { font-size: clamp(40px, 12vw, 52px); }
   .primaryRoutes a { width: 100%; justify-content: center; }
   .currentBoard { padding-inline: 18px; }
+  .currentBoard h2 { font-size: clamp(25px, 8vw, 34px); }
   .departures { padding-inline: 14px; }
-  .departures h2,
-  .recordCopy h2 { font-size: 40px; }
+  .departures h2 { font-size: 40px; }
+  .recordCopy h2 { font-size: 30px; }
   .departureBoard li a {
     min-height: 132px;
     grid-template-columns: minmax(0, 1fr) 34px;
@@ -222,6 +229,14 @@
   .enter { grid-column: 2; grid-row: 1 / 4; }
   .facilitySummary { padding-right: 5px; font-size: 16px; }
   .recordCopy { padding-inline: 18px; }
+  .shortJourney div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    align-content: center;
+    padding-block: 12px;
+  }
+  .shortJourney dd { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .shortJourney b { margin-left: 0; }
   .recordStill { min-height: 420px; }
   .stillCaption { right: 20px; bottom: 20px; left: 20px; }
   .footer { padding-inline: 18px; }

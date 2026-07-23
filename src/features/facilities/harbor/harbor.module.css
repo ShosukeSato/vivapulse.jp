@@ -20,21 +20,23 @@
 .skip:focus { transform: none; }
 
 .harborHead {
-  min-height: 470px;
+  position: relative;
+  min-height: 560px;
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(360px, .65fr);
   align-items: stretch;
+  padding-bottom: 82px;
   border-bottom: 1px solid #2a7c91;
 }
 
-.harborHead > div:first-child {
+.departureIntro {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: clamp(54px, 8vw, 118px) clamp(26px, 6vw, 90px);
 }
 
-.harborHead > div:first-child > p,
+.departureIntro > p:first-child,
 .chartRoom header p,
 .logbook header p,
 .dispatches header p {
@@ -55,22 +57,177 @@
 }
 
 .titleLine { display: block; }
-.titleLine > span { word-break: keep-all; overflow-wrap: anywhere; }
+.titleLine > span { white-space: nowrap; word-break: keep-all; overflow-wrap: normal; }
 
-.nowBoard {
+.departureNote {
+  max-width: 34em;
+  margin: 32px 0 0;
+  color: #17596c;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.routeBoard {
+  container-name: route-signal;
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: clamp(38px, 5vw, 72px);
+  justify-content: center;
+  padding: clamp(34px, 4.5vw, 64px);
   border-left: 1px solid #2a7c91;
   background: #0e4054;
   color: #cee8e5;
 }
 
-.nowBoard > span:first-child { color: #f0c85a; font-family: var(--font-mono); font-size: 13px; }
-.nowBoard strong { margin-top: 18px; font-size: clamp(28px, 3.2vw, 46px); line-height: 1.3; }
-.nowBoard p { margin: 10px 0 34px; font-size: 16px; line-height: 1.75; }
-.nextPort { min-height: 48px; display: flex; align-items: center; padding: 0 14px; border: 1px solid #2a7c91; font-size: 14px; font-weight: 700; }
+.routeBoard > p {
+  margin: 0 0 20px;
+  color: #f0c85a;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.routeBoard ol {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #2a7c91;
+  list-style: none;
+}
+
+.routeBoard ol::before {
+  position: absolute;
+  z-index: 0;
+  top: calc(100% / 6);
+  bottom: calc(100% / 6);
+  left: 0;
+  border-left: 1px solid #2a7c91;
+  content: "";
+}
+
+.routeBoard li {
+  position: relative;
+  z-index: 1;
+  min-height: 84px;
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  align-content: center;
+  gap: 4px 18px;
+  padding: 14px 14px 14px 22px;
+  border-bottom: 1px solid #2a7c91;
+}
+
+.routeBoard li::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #cee8e5;
+  background: #0e4054;
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.routeBoard li > span {
+  grid-row: 1 / 3;
+  align-self: center;
+  color: #8fc2c4;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.routeBoard li strong {
+  min-width: 0;
+  font-size: clamp(21px, 2.2vw, 31px);
+  line-height: 1.2;
+  overflow-wrap: normal;
+  word-break: auto-phrase;
+}
+
+.routeBoard li small {
+  color: #a8cdce;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.routeBoard .currentSignal {
+  background: #f0c85a;
+  color: #0e4054;
+}
+
+.routeBoard .currentSignal::before {
+  border-color: #0e4054;
+  background: #0e4054;
+}
+
+.routeBoard .currentSignal > span,
+.routeBoard .currentSignal small { color: #174f5e; }
+
+@container route-signal (max-width: 400px) {
+  .routeBoard li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .routeBoard li > span {
+    grid-row: auto;
+    align-self: auto;
+  }
+
+  .routeBoard li strong { white-space: nowrap; }
+}
+
+.quayEdge {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 82px;
+  overflow: hidden;
+  border-top: 8px solid #e7e0cf;
+  background:
+    linear-gradient(#2a7c91 0 2px, transparent 2px 17px, rgba(206, 232, 229, .26) 17px 19px, transparent 19px 34px, rgba(206, 232, 229, .15) 34px 36px, transparent 36px),
+    #0b3545;
+}
+
+.quayEdge::before {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  left: 0;
+  height: 8px;
+  border-top: 1px solid #0e4054;
+  background: repeating-linear-gradient(90deg, #d5cebd 0 72px, #b9b6aa 72px 73px);
+  content: "";
+}
+
+.quayEdge span {
+  position: absolute;
+  top: -4px;
+  width: 26px;
+  height: 13px;
+  border: 2px solid #081923;
+  background: #f0c85a;
+  box-shadow: 0 4px 0 rgba(8, 25, 35, .34);
+}
+
+.quayEdge span:nth-child(1) { left: 8%; }
+.quayEdge span:nth-child(2) { left: 48%; }
+.quayEdge span:nth-child(3) { right: 8%; }
+
+.quayEdge b {
+  position: absolute;
+  right: clamp(18px, 5vw, 72px);
+  bottom: 12px;
+  color: #8fc2c4;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+}
 
 .chartRoom { padding: clamp(64px, 8vw, 120px) clamp(18px, 5vw, 76px); background: #0e4054; color: #cee8e5; }
 .chartRoom > header { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 42px; }
@@ -104,6 +261,7 @@
 .mapStop.planned rect { stroke-dasharray: 3 2; }
 
 .mapNote { margin: 14px 0 0; color: #a8cdce; font-size: 16px; line-height: 1.7; }
+.mapNote :global(.semanticPhrase) { max-width: none; }
 
 .logbook { padding: clamp(70px, 9vw, 132px) clamp(18px, 8vw, 128px); }
 .logbook > header { display: grid; grid-template-columns: 160px 1fr; align-items: end; margin-bottom: 40px; }
@@ -141,6 +299,13 @@
 .dispatchMeta,
 .routeDispatches small { display: block; margin-top: 15px; color: #17596c; font-family: var(--font-mono); font-size: 13px; font-style: normal; font-weight: 700; }
 .departureDispatch > strong { max-width: 31em; display: block; margin-top: 8px; font-size: clamp(23px, 3vw, 38px); line-height: 1.45; }
+.departureDispatch,
+.dispatchLayout,
+.routeDispatches,
+.routeDispatches a,
+.routeDispatches a > span { min-width: 0; max-width: 100%; }
+.departureDispatch > strong :global(.semanticPhrase),
+.routeDispatches strong :global(.semanticPhrase) { white-space: nowrap; }
 .routeDispatches { display: grid; align-content: start; gap: 28px; }
 .routeDispatches a { display: grid; grid-template-columns: 43% 1fr; gap: 18px; padding-bottom: 26px; border-bottom: 1px solid #78aaae; }
 .routeDispatches img { width: 100%; height: 100%; min-height: 130px; object-fit: cover; }
@@ -156,43 +321,93 @@
 
 @media (max-width: 900px) {
   .harborHead { grid-template-columns: 1fr; }
-  .nowBoard { border-top: 1px solid #2a7c91; border-left: 0; }
+  .routeBoard { border-top: 1px solid #2a7c91; border-left: 0; }
   .dispatchLayout { grid-template-columns: 1fr; }
-  .routeDispatches { grid-template-columns: 1fr 1fr; }
+  .routeDispatches { grid-template-columns: 1fr; }
   .logbook > header { grid-template-columns: 1fr; gap: 8px; }
-}
-
-@media (max-width: 680px) {
-  .harborHead > div:first-child { padding-inline: 20px; }
-  .harborHead h1 { font-size: 43px; }
-  .nowBoard { padding: 38px 20px; }
-  .chartRoom > header { align-items: flex-start; flex-direction: column; }
+  .chartRoom > header,
+  .dispatches > header { align-items: flex-start; flex-direction: column; }
   .worldMap { display: none; }
   .regionMap { display: block; }
-  .mapStop text { font-size: 13px; }
+  .mapStop[data-stop-index="0"] text {
+    text-anchor: end;
+    transform: translateX(-30px);
+  }
+  .mapStop[data-stop-index="1"] text {
+    text-anchor: end;
+    transform: translateX(-30px);
+  }
   .logbook { padding-inline: 18px; }
-  .logbook li { grid-template-columns: 38px 1fr auto; gap: 10px 12px; padding: 18px 0; }
+  .logbook li { grid-template-columns: 38px minmax(0, 1fr) auto; gap: 10px 12px; padding: 18px 0; }
   .logbook time { grid-column: 2; grid-row: 1; }
   .logbook li > div { grid-column: 2 / 4; grid-row: 2; }
   .stopNumber { grid-column: 1; grid-row: 1 / 3; align-self: start; padding-top: 3px; }
   .state { grid-column: 3; grid-row: 1; min-height: 34px; }
   .logbook li.now > *:first-child { margin-left: 10px; }
   .logbook li.now > *:last-child { margin-right: 10px; }
-  .dispatches > header { align-items: flex-start; flex-direction: column; }
-  .routeDispatches { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+  .harborHead { padding-bottom: 70px; }
+  .departureIntro { padding: 54px 20px 48px; }
+  .harborHead h1 { font-size: clamp(30px, 9vw, 43px); }
+  .departureNote { margin-top: 24px; }
+  .routeBoard { padding: 34px 20px 38px; }
+  .routeBoard li {
+    min-height: 98px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+    padding: 17px 10px 17px 18px;
+  }
+  .routeBoard li > span { grid-row: auto; }
+  .routeBoard li strong { font-size: 24px; }
+  .quayEdge { height: 70px; }
+  .mapStop text { font-size: 13px; }
   .footer { align-items: flex-start; flex-direction: column; }
   .footer a { width: 100%; justify-content: space-between; }
 }
 
 @media (max-width: 390px) {
-  .harborHead h1 { font-size: 38px; }
   .chartRoom,
   .dispatches { padding-inline: 14px; }
   .chartRoom h2,
   .logbook h2,
-  .dispatches h2 { font-size: 38px; }
+  .dispatches h2 { font-size: clamp(26px, 8vw, 38px); }
   .routeDispatches a { grid-template-columns: 1fr; }
   .routeDispatches img { aspect-ratio: 16 / 9; min-height: 0; }
+  .departureDispatch > strong { font-size: 20px; }
+  .dispatchMeta,
+  .routeDispatches small {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .logbook li {
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 10px 12px;
+  }
+  .logbook time {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .state {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+  }
+  .logbook li > div {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .logbook li > div strong {
+    font-size: clamp(20px, 5.5vw, 22px);
+    white-space: nowrap;
+  }
+  .stopNumber {
+    grid-column: 1;
+    grid-row: 1 / 4;
+  }
+  .logbook li.now > *:first-child { margin-left: 8px; }
+  .logbook li.now > *:last-child { margin-right: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

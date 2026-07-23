@@ -26,11 +26,6 @@ export const profile = {
   bio: profileBioPhrases.join(""),
   bioPhrases: profileBioPhrases,
   departureNote: "二〇二六年五月二三日、東京を発つ。",
-  currentLocation: {
-    place: "スリランカ、ガラハ",
-    detail: "山あいのプレスクールに滞在中",
-  },
-  nextLocation: "インド",
 };
 
 export const socials = [
@@ -175,6 +170,7 @@ export type Article = {
   issue?: string;
   thumbnail?: string;
   excerpt?: string;
+  excerptPhrases?: readonly string[];
 };
 
 const featuredArticleDisplayTitle = {
@@ -191,6 +187,20 @@ export const featuredArticle = {
   thumbnail: "/media/archive/nc7487ff91841.webp",
   excerpt:
     "「何者か」になりたかった二年前から、やりたいことのないまま世界一周へ出るまで。肩書きと行動力の奥にあった怖さをたどり直した文章。",
+  excerptPhrases: [
+    "「何者か」に",
+    "なりたかった",
+    "二年前から、",
+    "やりたいことの",
+    "ないまま",
+    "世界一周へ",
+    "出るまで。",
+    "肩書きと",
+    "行動力の奥に",
+    "あった怖さを",
+    "たどり直した",
+    "文章。",
+  ],
 } satisfies Article;
 
 export const articles: Article[] = [
@@ -436,6 +446,7 @@ export const films: Video[] = [
   {
     id: "exr5-6Sb9h0",
     title: "【トラブル有り】貯金ほぼ0円、9ヶ月間の世界一周の旅がスタートしました。",
+    displayTitleLines: ["【トラブル", "有り】", "貯金ほぼ0円、", "9ヶ月間の", "世界一周の", "旅が", "スタート", "しました。"],
     date: "2026.05",
     place: "東京から世界へ",
     duration: "5:35",
@@ -450,7 +461,7 @@ export const films: Video[] = [
   {
     id: "WqQ4d-KwOZg",
     title: "東大を休学して、貯金ほぼ0で世界一周を始めました。",
-    displayTitleLines: ["東大を休学して、", "貯金ほぼ0で", "世界一周を", "始めました。"],
+    displayTitleLines: ["東大を", "休学して、", "貯金ほぼ0で", "世界一周を", "始めました。"],
     date: "2026.05",
     place: "東京",
     duration: "6:43",
@@ -466,6 +477,7 @@ export type Stop = {
   place: string;
   period: string;
   note: string;
+  notePhrases?: readonly string[];
   status: "done" | "now" | "next" | "planned";
 };
 
@@ -474,18 +486,21 @@ export const journey: Stop[] = [
     place: "東京",
     period: "2026.05",
     note: "東京大学大学院を休学し、人生初の一人旅へ。",
+    notePhrases: ["東京大学", "大学院を", "休学し、", "人生初の", "一人旅へ。"],
     status: "done",
   },
   {
     place: "インドネシア",
     period: "2026.06",
     note: "ジャワ島の家々に泊めてもらいながら暮らす。犠牲祭と、活火山と。",
+    notePhrases: ["ジャワ島の", "家々に泊めて", "もらいながら", "暮らす。", "犠牲祭と、", "活火山と。"],
     status: "done",
   },
   {
     place: "スリランカ",
     period: "2026.07",
-    note: "ガラハの山あいのプレスクールに滞在中。",
+    note: "スリランカを移動しながら、旅と制作を続ける。",
+    notePhrases: ["スリランカを", "移動しながら、", "旅と制作を", "続ける。"],
     status: "now",
   },
   {
@@ -498,6 +513,11 @@ export const journey: Stop[] = [
     place: "ジョージア",
     period: "予定",
     note: "旅は九ヶ月、続く。",
+    notePhrases: ["旅は九ヶ月、", "続く。"],
     status: "planned",
   },
 ];
+
+/** The live route state has one canonical source for the map, Central and terminal. */
+export const currentJourneyStop = journey.find((stop) => stop.status === "now")!;
+export const nextJourneyStop = journey.find((stop) => stop.status === "next")!;

@@ -12,11 +12,25 @@ import styles from "./b2.module.css";
 
 const [featuredEpisode, ...pastEpisodes] = niwakaPhilosophyEpisodes;
 
-const episodeTitlePhrases: Record<string, readonly string[]> = {
-  "AFEKFEwe-tU": ["ゴルフ", "じゃないと", "ダメですか？"],
-  "o_9XUgJ7K_c": ["【言葉と", "コミニュケーション】", "通じ合うって", "なんだ...？", "【にわか哲学】"],
-  vGR0XhCqbbk: ["自己紹介って", "なんだ？", "【にわか哲学】"],
+const episodeTitleSegmentLengths: Record<string, readonly number[]> = {
+  "AFEKFEwe-tU": [3, 4, 3],
+  "o_9XUgJ7K_c": [4, 6, 4, 6, 7],
+  vGR0XhCqbbk: [6, 4],
 };
+
+function episodeTitlePhrases(id: string, title: string) {
+  const lengths = episodeTitleSegmentLengths[id];
+  if (!lengths) return [title];
+
+  let offset = 0;
+  const phrases = lengths.map((length) => {
+    const phrase = title.slice(offset, offset + length);
+    offset += length;
+    return phrase;
+  });
+  phrases.push(title.slice(offset));
+  return phrases.filter(Boolean);
+}
 
 export default function B2({ place }: { place: CityPlace }) {
   return (
@@ -41,8 +55,7 @@ export default function B2({ place }: { place: CityPlace }) {
                 "立場で考え、",
                 "話す",
                 "ビデオ",
-                "ポッドキャスト",
-                "です。",
+                "ポッドキャストです。",
               ]} />
             </p>
             <p className={styles.people}>さとうしょうすけ × やまもとあやと</p>
@@ -69,7 +82,7 @@ export default function B2({ place }: { place: CityPlace }) {
               <span className={styles.featureCopy}>
                 <span className={styles.episodeMeta}>{featuredEpisode.date} · {featuredEpisode.duration}</span>
                 <strong id="featured-episode-title">
-                  <SemanticText phrases={episodeTitlePhrases[featuredEpisode.id] ?? [featuredEpisode.title]} />
+                  <SemanticText phrases={episodeTitlePhrases(featuredEpisode.id, featuredEpisode.title)} />
                 </strong>
                 <span className={styles.watch}>YouTubeで見る <PixelIcon name="play" /></span>
               </span>
@@ -78,7 +91,10 @@ export default function B2({ place }: { place: CityPlace }) {
 
           <section className={styles.ledger} aria-labelledby="episode-ledger-title">
             <header>
-              <div><span>EPISODE LEDGER</span><h2 id="episode-ledger-title">これまでの回</h2></div>
+              <div>
+                <span>EPISODE LEDGER</span>
+                <h2 id="episode-ledger-title"><span>これまで</span><wbr /><span>の回</span></h2>
+              </div>
               <strong>CONVERSATION ARCHIVE</strong>
             </header>
             <ol>
@@ -87,7 +103,7 @@ export default function B2({ place }: { place: CityPlace }) {
                   <a href={`https://www.youtube.com/watch?v=${episode.id}`} target="_blank" rel="noreferrer">
                     <time>{episode.date}</time>
                     <strong>
-                      <SemanticText phrases={episodeTitlePhrases[episode.id] ?? [episode.title]} />
+                      <SemanticText phrases={episodeTitlePhrases(episode.id, episode.title)} />
                     </strong>
                     <span>{episode.duration}</span>
                     <PixelIcon name="external" />

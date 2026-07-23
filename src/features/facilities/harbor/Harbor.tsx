@@ -1,25 +1,35 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CityPlace } from "@/data/city";
-import { featuredArticle, films, journey, profile } from "@/data/content";
+import {
+  currentJourneyStop,
+  DEPARTURE_DATE,
+  featuredArticle,
+  films,
+  journey,
+  nextJourneyStop,
+} from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
-import CurrentLocationName from "@/features/shared/CurrentLocationName";
 import FeaturedArticleTitle from "@/features/shared/FeaturedArticleTitle";
+import SemanticText from "@/features/shared/SemanticText";
 import styles from "./harbor.module.css";
 
 const departureFilm = films.find((film) => film.id === "exr5-6Sb9h0")!;
 const indonesiaFilm = films.find((film) => film.id === "Vkf4wQSLD04")!;
-const currentStop = journey.find((stop) => stop.status === "now")!;
-const nextStop = journey.find((stop) => stop.status === "next")!;
 
-const routePoints = [
-  { x: 888, y: 139, name: "東京", state: "done" },
-  { x: 797, y: 246, name: "インドネシア", state: "done" },
-  { x: 724, y: 211, name: "スリランカ", state: "now" },
-  { x: 697, y: 184, name: "インド", state: "next" },
-  { x: 623, y: 126, name: "ジョージア", state: "planned" },
+const routeCoordinates = [
+  { x: 888, y: 139, labelX: 900, labelY: 122, anchor: "start" },
+  { x: 797, y: 246, labelX: 815, labelY: 271, anchor: "start" },
+  { x: 724, y: 211, labelX: 744, labelY: 235, anchor: "start" },
+  { x: 697, y: 184, labelX: 680, labelY: 171, anchor: "end" },
+  { x: 623, y: 126, labelX: 607, labelY: 112, anchor: "end" },
 ] as const;
+
+const routePoints = journey.map((stop, index) => ({
+  ...routeCoordinates[index],
+  stop,
+}));
 
 function WorldLand() {
   return (
@@ -44,11 +54,11 @@ function Routes() {
     <g>
       <polyline className={styles.routeDone} points="888,139 797,246 724,211" />
       <polyline className={styles.routeNext} points="724,211 697,184 623,126" />
-      {routePoints.map((stop) => (
-        <g className={`${styles.mapStop} ${styles[stop.state]}`} key={stop.name}>
-          <rect x={stop.x - 7} y={stop.y - 7} width="14" height="14" />
-          <circle cx={stop.x} cy={stop.y} r="3" />
-          <text x={stop.x} y={stop.y - 14} textAnchor="middle">{stop.name}</text>
+      {routePoints.map(({ stop, ...point }, index) => (
+        <g className={`${styles.mapStop} ${styles[stop.status]}`} data-stop-index={index} key={stop.place}>
+          <rect x={point.x - 7} y={point.y - 7} width="14" height="14" />
+          <circle cx={point.x} cy={point.y} r="3" />
+          <text x={point.labelX} y={point.labelY} textAnchor={point.anchor}>{stop.place}</text>
         </g>
       ))}
     </g>
@@ -93,18 +103,43 @@ export default function Harbor({ place }: { place: CityPlace }) {
 
       <main>
         <header className={styles.harborHead}>
-          <div>
-            <p>ROUTE TERMINAL · WORLD JOURNEY</p>
+          <div className={styles.departureIntro}>
+            <p>DEPARTURE QUAY · TOKYO</p>
             <h1>
-              <span className={styles.titleLine}><span>東京から</span><wbr /><span>世界へ。</span></span>
-              <span className={styles.titleLine}><span>旅の現在地を</span><wbr /><span>ひらく港。</span></span>
+              <span className={styles.titleLine}>
+                <span>東京を</span><wbr /><span>発ち、</span><wbr /><span>世界へ。</span>
+              </span>
+              <span className={styles.titleLine}>
+                <span>旅の</span><wbr /><span>航路を</span><wbr /><span>ひらく港。</span>
+              </span>
             </h1>
+            <p className={styles.departureNote}>
+              <SemanticText phrases={["二〇二六年", "五月二三日、", "東京から", "世界一周へ。"]} />
+            </p>
           </div>
-          <div className={styles.nowBoard}>
-            <span>現在地 · {currentStop.period}</span>
-            <strong><CurrentLocationName place={profile.currentLocation.place} /></strong>
-            <p>{profile.currentLocation.detail}</p>
-            <span className={styles.nextPort}>次の目的地　{nextStop.place}</span>
+          <div className={styles.routeBoard}>
+            <p>ROUTE SIGNAL · LIVE</p>
+            <ol aria-label="旅の出発地、現在地、次の目的地">
+              <li>
+                <span>DEPARTURE</span>
+                <strong>東京</strong>
+                <small>{DEPARTURE_DATE.replaceAll("-", ".")}</small>
+              </li>
+              <li className={styles.currentSignal}>
+                <span>CURRENT</span>
+                <strong>{currentJourneyStop.place}</strong>
+                <small>世界一周の旅の途中</small>
+              </li>
+              <li>
+                <span>NEXT</span>
+                <strong>{nextJourneyStop.place}</strong>
+                <small>次の目的地</small>
+              </li>
+            </ol>
+          </div>
+          <div className={styles.quayEdge} aria-hidden="true">
+            <span /><span /><span />
+            <b>TOKYO / DEPARTURE LINE</b>
           </div>
         </header>
 
@@ -112,7 +147,9 @@ export default function Harbor({ place }: { place: CityPlace }) {
           <header>
             <div>
               <p>ROUTE CHART · 2026.05—</p>
-              <h2 id="chart-title">世界一周、現在の航路。</h2>
+              <h2 id="chart-title">
+                <SemanticText phrases={["世界一周、", "現在の航路。"]} />
+              </h2>
             </div>
             <ul className={styles.legend} aria-label="航路の凡例">
               <li><i className={styles.doneMark} />移動済み</li>
@@ -121,7 +158,18 @@ export default function Harbor({ place }: { place: CityPlace }) {
             </ul>
           </header>
           <RouteMap />
-          <p className={styles.mapNote}>等距円筒図法の概略図。位置は国・地域単位で示し、確定していない都市や座標は記載していません。</p>
+          <p className={styles.mapNote}>
+            <SemanticText phrases={[
+              "等距円筒図法の",
+              "概略図。",
+              "位置は",
+              "国・地域単位で",
+              "示し、",
+              "確定していない",
+              "都市や座標は",
+              "記載していません。",
+            ]} />
+          </p>
         </section>
 
         <section className={styles.logbook} aria-labelledby="logbook-title">
@@ -134,7 +182,10 @@ export default function Harbor({ place }: { place: CityPlace }) {
               <li className={styles[stop.status]} key={`${stop.place}-${stop.period}`}>
                 <span className={styles.stopNumber}>{String(index + 1).padStart(2, "0")}</span>
                 <time>{stop.period}</time>
-                <div><strong>{stop.place}</strong>{stop.note && <p>{stop.note}</p>}</div>
+                <div>
+                  <strong>{stop.place}</strong>
+                  {stop.note && <p><SemanticText phrases={stop.notePhrases ?? [stop.note]} /></p>}
+                </div>
                 <span className={styles.state}>{stateCopy[stop.status]}</span>
               </li>
             ))}
@@ -144,7 +195,9 @@ export default function Harbor({ place }: { place: CityPlace }) {
         <section className={styles.dispatches} aria-labelledby="dispatch-title">
           <header>
             <p>DISPATCHES FROM THE ROUTE</p>
-            <h2 id="dispatch-title">航路から届いた記録</h2>
+            <h2 id="dispatch-title">
+              <SemanticText phrases={["航路から", "届いた記録"]} />
+            </h2>
           </header>
 
           <div className={styles.dispatchLayout}>
@@ -154,13 +207,16 @@ export default function Harbor({ place }: { place: CityPlace }) {
                 <i><PixelIcon name="play" /></i>
               </span>
               <span className={styles.dispatchMeta}>TOKYO · {departureFilm.date} · FILM</span>
-              <strong>{departureFilm.title}</strong>
+              <strong><SemanticText phrases={departureFilm.displayTitleLines ?? [departureFilm.title]} /></strong>
             </a>
 
             <div className={styles.routeDispatches}>
               <a href={`https://www.youtube.com/watch?v=${indonesiaFilm.id}`} target="_blank" rel="noreferrer">
                 <Image src={`/media/cinema/${indonesiaFilm.id}.jpg`} alt="インドネシアの年越しを記録したYouTube映像サムネイル" width={1280} height={720} />
-                <span><small>INDONESIA · FILM</small><strong>{indonesiaFilm.title}</strong></span>
+                <span>
+                  <small>INDONESIA · FILM</small>
+                  <strong><SemanticText phrases={indonesiaFilm.displayTitleLines ?? [indonesiaFilm.title]} /></strong>
+                </span>
               </a>
               <a href={featuredArticle.href} target="_blank" rel="noreferrer">
                 <Image src={featuredArticle.thumbnail} alt="世界一周の旅と、これまでに出会った人々を重ねた記事の見出し画像" width={1280} height={670} />
@@ -173,7 +229,7 @@ export default function Harbor({ place }: { place: CityPlace }) {
 
       <footer className={styles.footer}>
         <span>ROUTE TERMINAL / CITY 01</span>
-        <p>旅が進むたびに、地図と記録を更新します。</p>
+        <p>東京から始まった、旅の航路と記録。</p>
         <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>

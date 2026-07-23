@@ -1,4 +1,4 @@
-.page { min-height: 100dvh; overflow: clip; background: #e6ddce; color: #262c2c; }
+.page { min-height: 100dvh; overflow: clip; background: #e6ddce; color: #262c2c; line-break: strict; word-break: auto-phrase; }
 .page a { color: inherit; }
 .page svg { display: block; }
 .skip { position: fixed; z-index: 100; top: 0; left: 50%; min-height: 44px; display: grid; place-items: center; padding: 0 18px; background: #e37334; color: #1c2323 !important; font-weight: 700; text-decoration: none; transform: translate(-50%, -120%); }
@@ -14,14 +14,21 @@
 .title { border-right: 1px solid #8e8d82; }
 .title p { margin: 0; color: #8f3c16; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .07em; }
 .title h1 { margin: 20px 0 0; font-size: clamp(48px, 4.8vw, 72px); line-height: 1.08; letter-spacing: -.065em; }
-.title h1 span { display: block; word-break: keep-all; overflow-wrap: anywhere; }
+.title h1 > .titleLine { display: block; }
+.titleLine > span,
+.ledgerHead h2 > span {
+  max-width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .intro { margin: 0; font-size: 17px; line-height: 1.95; }
 
 .ledger { padding: clamp(82px, 10vw, 150px) clamp(20px, 7vw, 108px); }
 .ledgerHead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 28px; padding-bottom: 24px; border-bottom: 3px solid #262c2c; }
 .ledgerHead > div > span { color: #8f3c16; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .07em; }
 .ledgerHead h2 { margin: 10px 0 0; font-size: clamp(46px, 6vw, 82px); line-height: 1; letter-spacing: -.06em; }
-.ledgerHead h2 span { word-break: keep-all; }
 .ledgerHead > strong { margin-bottom: 8px; font-family: var(--font-mono); font-size: 13px; }
 .ledger ol { margin: 0; padding: 0; list-style: none; }
 .ledger li { border-bottom: 1px solid #929087; }
@@ -34,12 +41,17 @@
 .project small span + span::before { margin-right: 12px; color: #8f3c16; content: "/"; }
 .ledger li a:hover .project small { color: #df9567; }
 .ledger li a:hover .project small span + span::before { color: #f0a36f; }
-.project strong { font-size: clamp(25px, 3.4vw, 48px); line-height: 1.15; letter-spacing: -.04em; }
+.project strong { min-width: 0; font-size: clamp(25px, 3.4vw, 48px); line-height: 1.15; letter-spacing: -.04em; }
 .open { min-height: 46px; display: inline-flex; align-items: center; gap: 14px; padding: 0 14px; border: 1px solid currentColor; font-size: 13px; font-weight: 700; }
 .open svg { width: 15px; }
 .note { min-height: 320px; display: grid; grid-template-columns: minmax(150px, .35fr) minmax(0, 1.45fr) auto; gap: 40px; align-items: center; padding: 54px clamp(20px, 7vw, 108px); background: #262c2c; color: #e6ddce; }
 .note > span { color: #e37334; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
-.note p { max-width: 850px; margin: 0; font-size: clamp(27px, 4vw, 54px); font-weight: 700; line-height: 1.4; letter-spacing: -.045em; }
+.note p { max-width: 850px; min-width: 0; margin: 0; font-size: clamp(27px, 4vw, 54px); font-weight: 700; line-height: 1.4; letter-spacing: -.045em; }
+.note p :global(.semanticPhrase) {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .note a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; border-bottom: 1px solid currentColor; font-size: 13px; font-weight: 700; text-decoration: none; }
 .note a:hover { color: #f0a36f; }
 .note a svg { width: 15px; }
@@ -47,6 +59,7 @@
 @media (max-width: 980px) {
   .header { grid-template-columns: 170px 1fr; }
   .intro { grid-column: 1 / -1; border-top: 1px solid #8e8d82; }
+  .note { grid-template-columns: 1fr; gap: 28px; }
 }
 @media (max-width: 620px) {
   .header { min-height: 0; grid-template-columns: 1fr; }
@@ -57,17 +70,17 @@
   .intro { padding: 26px 20px 58px; font-size: 16px; }
   .ledger { padding: 80px 18px; }
   .ledgerHead { align-items: start; flex-direction: column; }
-  .ledgerHead h2 { font-size: 49px; }
-  .ledger li a { min-height: 112px; grid-template-columns: 34px minmax(0, 1fr) 18px; gap: 10px; }
-  .project strong { font-size: 25px; }
+  .ledgerHead h2 { font-size: clamp(23px, 7vw, 34px); }
+  .ledger li a { min-height: 112px; grid-template-columns: 28px minmax(0, 1fr) 16px; gap: 7px; }
+  .project strong { font-size: clamp(18px, 6vw, 22px); }
   .open { min-height: 44px; padding: 0; border: 0; font-size: 0; }
   .open svg { width: 17px; }
   .note { grid-template-columns: 1fr; gap: 28px; padding: 70px 20px; }
-  .note p { font-size: 30px; }
+  .note p { font-size: 24px; }
 }
 @media (max-width: 360px) {
   .title h1 { font-size: 40px; }
-  .ledgerHead h2 { font-size: 43px; }
-  .project strong { font-size: 22px; }
+  .ledgerHead h2 { font-size: clamp(23px, 7vw, 34px); }
+  .project strong { font-size: 17px; }
 }
 @media (prefers-reduced-motion: reduce) { .skip { transition: none; } }

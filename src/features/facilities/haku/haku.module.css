@@ -3,6 +3,8 @@
   overflow: clip;
   background: #f6f2ea;
   color: #2d2828;
+  line-break: strict;
+  word-break: auto-phrase;
 }
 
 .page a { color: inherit; }
@@ -30,6 +32,7 @@
   grid-template-columns: minmax(360px, .85fr) minmax(390px, 1.15fr);
 }
 .entranceCopy {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,12 +52,19 @@
   max-width: 700px;
   margin: 18px 0 0;
   font-family: var(--font-serif);
-  font-size: clamp(44px, 4.2vw, 64px);
+  font-size: clamp(28px, 2.5vw, 36px);
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: -.055em;
 }
-.entranceCopy h1 span { display: block; word-break: keep-all; overflow-wrap: anywhere; }
+.entranceCopy h1 > .titleLine { display: block; }
+.titleLine > span {
+  max-width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .entranceCopy > p:not(.kicker) {
   max-width: 590px;
   margin: 30px 0 0;
@@ -63,7 +73,7 @@
   line-height: 1.95;
 }
 .entranceCopy dl { margin: 40px 0 0; border-top: 1px solid #aaa098; }
-.entranceCopy dl div { display: flex; justify-content: space-between; gap: 24px; padding: 12px 0; border-bottom: 1px solid #aaa098; }
+.entranceCopy dl div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 12px 0; border-bottom: 1px solid #aaa098; }
 .entranceCopy dt,
 .entranceCopy dd { margin: 0; font-family: var(--font-mono); font-size: 13px; }
 .entranceCopy dd { font-weight: 700; }
@@ -74,7 +84,7 @@
   display: inline-flex;
   align-items: center;
   gap: 16px;
-  padding: 0 17px;
+  padding: 12px 17px;
   border: 1px solid #2d2828;
   font-size: 14px;
   font-weight: 700;
@@ -109,6 +119,7 @@
   bottom: 18px;
   left: 22px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 18px;
   color: #f6f2ea;
@@ -126,8 +137,13 @@
   border-top: 1px solid #aaa098;
   border-bottom: 3px solid #2d2828;
 }
-.exhibitionHeader span { padding-left: 11px; border-left: 4px solid #b87783; color: #2d2828; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
-.exhibitionHeader h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(50px, 6.4vw, 94px); font-weight: 600; line-height: 1.1; letter-spacing: -.06em; }
+.exhibitionHeader > span { padding-left: 11px; border-left: 4px solid #b87783; color: #2d2828; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.exhibitionHeader h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(36px, 3.5vw, 48px); font-weight: 600; line-height: 1.1; letter-spacing: -.06em; }
+.exhibitionHeader h2 > span {
+  display: inline-block;
+  white-space: nowrap;
+  word-break: keep-all;
+}
 .exhibitionHeader p { margin: 0; color: #625958; font-size: 16px; line-height: 1.9; }
 
 .exhibit {
@@ -148,7 +164,7 @@
   display: block;
   object-fit: contain;
 }
-.placard { max-width: 520px; }
+.placard { min-width: 0; max-width: 520px; }
 .placard > span {
   width: 46px;
   height: 46px;
@@ -161,12 +177,21 @@
 .placard h3 {
   margin: 38px 0 0;
   font-family: var(--font-serif);
-  font-size: clamp(38px, 4.6vw, 68px);
+  font-size: clamp(32px, 3vw, 42px);
   font-weight: 600;
   line-height: 1.28;
   letter-spacing: -.05em;
+  text-wrap: pretty;
+  word-break: auto-phrase;
 }
-.placard p { margin: 28px 0 0; font-size: 17px; line-height: 1.95; }
+.placard h3 :global(.semanticPhrase) {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+.placard p { margin: 28px 0 0; font-size: 17px; line-height: 1.95; text-wrap: pretty; word-break: auto-phrase; overflow-wrap: normal; }
+.placard p :global(.semanticPhrase),
+.admission > div > p:last-of-type :global(.semanticPhrase) { white-space: nowrap; }
 .placard small { display: block; margin-top: 42px; font-family: var(--font-mono); font-size: 13px; letter-spacing: .04em; }
 .toneIvory { background: #f6f2ea; color: #2d2828; }
 .toneNight { background: #2d2828; color: #f6f2ea; }
@@ -192,13 +217,19 @@
 .admission > div { display: flex; flex-direction: column; justify-content: center; padding: clamp(60px, 8vw, 126px) clamp(24px, 7vw, 108px); }
 .admission .icon { width: 70px; height: 70px; border-radius: 16px; }
 .admission > div > p:first-of-type { margin: 44px 0 0; color: #9fbabd; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
-.admission h2 { margin: 14px 0 0; font-family: var(--font-serif); font-size: clamp(44px, 5.5vw, 80px); font-weight: 600; line-height: 1.25; letter-spacing: -.055em; }
+.admission h2 { margin: 14px 0 0; font-family: var(--font-serif); font-size: clamp(44px, 4.6vw, 64px); font-weight: 600; line-height: 1.25; letter-spacing: -.055em; }
+.admission h2 :global(.semanticPhrase) {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
 .admission > div > p:last-of-type { max-width: 570px; margin: 30px 0 0; color: #d5cdca; font-size: 17px; line-height: 1.9; }
 .admission a { width: fit-content; margin-top: 38px; border-color: #f6f2ea; background: #f6f2ea; color: #2d2828; }
 
 .footer {
   min-height: 220px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 32px;
@@ -214,11 +245,14 @@
 @media (max-width: 980px) {
   .entrance,
   .admission { grid-template-columns: 1fr; }
+  .entranceCopy h1 { font-size: 32px; }
   .entranceWork { min-height: 88svh; }
   .exhibitionHeader { grid-template-columns: 1fr; align-items: start; }
   .exhibit,
   .exhibit:nth-of-type(even) { grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr); }
   .exhibit:nth-of-type(even) figure { order: 0; }
+  .footer { align-items: flex-start; flex-direction: column; }
+  .footer > a { width: 100%; justify-content: space-between; }
 }
 
 @media (max-width: 700px) {
@@ -226,32 +260,30 @@
   .entranceWork > img { width: auto; max-width: 100%; height: 62svh; }
   .entranceWork figcaption { position: static; width: min(100%, 340px); margin-top: 14px; }
   .entranceCopy { padding: 70px 20px; }
-  .entranceCopy h1 { font-size: 44px; }
+  .entranceCopy h1 { font-size: clamp(22px, 7vw, 32px); }
   .actions { align-items: stretch; flex-direction: column; }
   .actions a { width: 100%; justify-content: space-between; }
   .exhibitionHeader { gap: 28px; padding: 84px 20px 58px; }
-  .exhibitionHeader h2 { font-size: 49px; }
+  .exhibitionHeader h2 { font-size: 28px; }
   .exhibit,
   .exhibit:nth-of-type(even) { min-height: auto; grid-template-columns: 1fr; gap: 48px; padding: 62px 20px 76px; }
   .exhibit figure,
   .exhibit:nth-of-type(even) figure { order: 0; }
   .exhibit figure img { width: 100%; height: auto; }
-  .placard h3 { margin-top: 28px; font-size: 40px; }
+  .placard h3 { margin-top: 28px; font-size: 28px; }
   .placard p { font-size: 16px; }
   .admission > figure { padding: 52px 20px; }
   .admission > figure > img { width: 100%; height: auto; }
   .admission > div { padding: 72px 20px 82px; }
-  .admission h2 { font-size: 45px; }
+  .admission h2 { font-size: clamp(34px, 10vw, 45px); }
   .admission a { width: 100%; justify-content: space-between; }
-  .footer { align-items: flex-start; flex-direction: column; padding: 54px 20px; }
-  .footer > a { width: 100%; justify-content: space-between; }
+  .footer { padding: 54px 20px; }
 }
 
 @media (max-width: 360px) {
-  .entranceCopy h1 { font-size: 39px; }
-  .exhibitionHeader h2 { font-size: 44px; }
-  .placard h3 { font-size: 36px; }
-  .admission h2 { font-size: 40px; }
+  .exhibitionHeader h2 { font-size: 28px; }
+  .placard h3 { font-size: 28px; }
+  .admission h2 { font-size: 34px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

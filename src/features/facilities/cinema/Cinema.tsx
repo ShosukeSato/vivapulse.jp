@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CityPlace } from "@/data/city";
 import { channelUrl, featuredFilm, films } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
+import ProtectedText from "@/features/shared/ProtectedText";
 import FacilityBar from "../FacilityBar";
 import CinemaProgrammeLoader from "./CinemaProgrammeLoader";
 import styles from "./cinema.module.css";
@@ -65,9 +66,12 @@ export default function Cinema({ place }: { place: CityPlace }) {
               {(feature.displayTitleLines ?? [feature.title]).map((line) => <span aria-hidden="true" key={line}>{line}</span>)}
             </h1>
             <p className={styles.featureLead}>
-              <span>世界一周の途中で出会った</span><wbr />
+              <span>世界一周の</span><wbr />
+              <span>途中で</span><wbr />
+              <span>出会った</span><wbr />
               <span>景色と人を、</span><wbr />
-              <span>一本ずつ上映しています。</span>
+              <span>一本ずつ</span><wbr />
+              <span>上映しています。</span>
             </p>
             <a className={styles.watchButton} href={`https://www.youtube.com/watch?v=${feature.id}`} target="_blank" rel="noreferrer">
               <span>本編を観る</span><PixelIcon name="play" />
@@ -78,7 +82,12 @@ export default function Cinema({ place }: { place: CityPlace }) {
         <section className={styles.programme} id="programme" aria-labelledby="programme-title">
           <CinemaProgrammeLoader />
           <header className={styles.programmeHead}>
-            <div><span>CITY PROGRAMME</span><h2 id="programme-title">上映プログラム</h2></div>
+            <div>
+              <span>CITY PROGRAMME</span>
+              <h2 id="programme-title">
+                <span>上映</span><wbr /><span>プログラム</span>
+              </h2>
+            </div>
             <p>VOYAGE FILMS / 2026—</p>
           </header>
 
@@ -113,7 +122,7 @@ export default function Cinema({ place }: { place: CityPlace }) {
                     <span className={styles.smallPlay}><PixelIcon name="play" /></span>
                   </span>
                   <span className={styles.filmMeta}>{film.place} · {film.date}</span>
-                  <strong>{film.title}</strong>
+                  <strong><ProtectedText text={film.title} /></strong>
                 </a>
               );
             })}
@@ -121,7 +130,7 @@ export default function Cinema({ place }: { place: CityPlace }) {
 
           <footer className={styles.cinemaFooter}>
             <div><span>NEXT SCREENING</span><p>次の上映は、旅先から届き次第。</p></div>
-            <a href={channelUrl} target="_blank" rel="noreferrer">YouTubeチャンネルへ <PixelIcon name="external" /></a>
+            <a href={channelUrl} target="_blank" rel="noreferrer"><span>YouTube<wbr />チャンネルへ</span><PixelIcon name="external" /></a>
             <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
           </footer>
         </section>

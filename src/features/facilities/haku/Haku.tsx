@@ -4,7 +4,6 @@ import type { CityPlace } from "@/data/city";
 import { products } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
-import CurrentLocationName from "@/features/shared/CurrentLocationName";
 import SemanticText from "@/features/shared/SemanticText";
 import styles from "./haku.module.css";
 
@@ -15,7 +14,9 @@ const exhibits = [
     number: "I",
     image: "/media/products/haku/auto.webp",
     title: "光を読み、色を選ぶ。",
+    titlePhrases: ["光を", "読み、", "色を", "選ぶ。"],
     description: "光と被写体を解析し、15のスタイルから写真に合う仕上げを自動で選ぶ。夜景では夜を残し、人物では肌の色を守ります。",
+    descriptionPhrases: ["光と被写体を", "解析し、", "15の", "スタイルから", "写真に合う", "仕上げを", "自動で選ぶ。", "夜景では", "夜を残し、", "人物では", "肌の色を", "守ります。"],
     alt: "スリランカの山あいを写すHAKUのカメラ画面と『シーンを読んで、最適な色。』という実機能の紹介",
     tone: "ivory",
   },
@@ -23,7 +24,9 @@ const exhibits = [
     number: "II",
     image: "/media/products/haku/frame.webp",
     title: "余白まで、一枚ごとに。",
+    titlePhrases: ["余白", "まで、", "一枚", "ごとに。"],
     description: "写真の明暗と色を見て、マットと余白を設計する。草むらの小さな花が、白い額装のなかで一つの展示作品になります。",
+    descriptionPhrases: ["写真の明暗と", "色を見て、", "マットと余白を", "設計する。", "草むらの", "小さな花が、", "白い額装の", "なかで", "一つの", "展示作品に", "なります。"],
     alt: "草むらの黄色い花を白い余白で額装したHAKUの実作品",
     tone: "night",
   },
@@ -31,7 +34,9 @@ const exhibits = [
     number: "III",
     image: "/media/products/haku/food.webp",
     title: "料理には、料理の色。",
+    titlePhrases: ["料理には、", "料理の", "色。"],
     description: "夕焼け、街、緑、夜、ポートレート、料理。撮るものに合わせて、色の温度と質感を変えます。",
+    descriptionPhrases: ["夕焼け、街、", "緑、夜、", "ポートレート、", "料理。", "撮るものに", "合わせて、", "色の温度と", "質感を", "変えます。"],
     alt: "スリランカ料理を自然な色で仕上げたHAKUの実作品",
     tone: "rose",
   },
@@ -39,7 +44,9 @@ const exhibits = [
     number: "IV",
     image: "/media/products/haku/control.webp",
     title: "自動の先にも、撮る自由を。",
+    titlePhrases: ["自動の", "先にも、", "撮る", "自由を。"],
     description: "スタイル、ズーム、露出、AE・AFロックはいつでも手動に切り替えられる。自動に任せるか、自分で決めるかも撮る人の選択です。",
+    descriptionPhrases: ["スタイル、", "ズーム、露出、", "AE・AFロックは", "いつでも", "手動に", "切り替えられる。", "自動に任せるか、", "自分で決めるかも", "撮る人の", "選択です。"],
     alt: "スタイルと露出を手動調整できるHAKUの実際の撮影画面",
     tone: "blue",
   },
@@ -56,9 +63,13 @@ export default function Haku({ place }: { place: CityPlace }) {
           <div className={styles.entranceCopy}>
             <p className={styles.kicker}>HAKU GALLERY</p>
             <h1 id="haku-title">
-              <span>撮った写真を、</span>
-              <span>飾りたくなる</span>
-              <span>一枚へ。</span>
+              <span className={styles.titleLine}>
+                <span>撮った</span><wbr /><span>写真を、</span>
+              </span>
+              <span className={styles.titleLine}>
+                <span>飾りたくなる</span>
+              </span>
+              <span className={styles.titleLine}><span>一枚へ。</span></span>
             </h1>
             <p><SemanticText phrases={haku.descriptionPhrases ?? [haku.description]} /></p>
             <dl>
@@ -84,14 +95,16 @@ export default function Haku({ place }: { place: CityPlace }) {
               height={1560}
               priority
             />
-            <figcaption><span>HAKU / iOSカメラアプリ</span><b><CurrentLocationName place="スリランカ、ガラハ" /></b></figcaption>
+            <figcaption><span>HAKU / iOSカメラアプリ</span><b>スリランカ / 2026</b></figcaption>
           </figure>
         </section>
 
         <section className={styles.exhibition} id="exhibition" aria-labelledby="exhibition-title">
           <header className={styles.exhibitionHeader}>
             <span>EXHIBITION 01</span>
-            <h2 id="exhibition-title">一枚ずつ、見る。</h2>
+            <h2 id="exhibition-title">
+              <span>一枚ずつ、</span><wbr /><span>見る。</span>
+            </h2>
             <p>ここにあるのは、旅の途中で実際に撮り、HAKUで仕上げた写真と実際のアプリ画面です。</p>
           </header>
 
@@ -111,8 +124,10 @@ export default function Haku({ place }: { place: CityPlace }) {
               </figure>
               <div className={styles.placard}>
                 <span>{exhibit.number}</span>
-                <h3>{exhibit.title}</h3>
-                <p>{exhibit.description}</p>
+                <h3 aria-label={exhibit.title}>
+                  <SemanticText phrases={exhibit.titlePhrases} />
+                </h3>
+                <p><SemanticText phrases={exhibit.descriptionPhrases} /></p>
                 <small>HAKU / 2026 / 旅の途中で撮影</small>
               </div>
             </article>
@@ -132,8 +147,22 @@ export default function Haku({ place }: { place: CityPlace }) {
           <div>
             <Image className={styles.icon} src="/media/products/haku/icon.webp" alt="" width={74} height={74} />
             <p>作品をつくる入口</p>
-            <h2 id="admission-title">まずは無料で、<br />月30枚。</h2>
-            <p>すべてのスタイルと機能を、無料枠から試せます。旅先の日常を、飾りたくなる一枚として残してください。</p>
+            <h2 id="admission-title">
+              <SemanticText phrases={["まずは", "無料で、", "月30枚。"]} />
+            </h2>
+            <p>
+              <SemanticText phrases={[
+                "すべての",
+                "スタイルと",
+                "機能を、",
+                "無料枠から",
+                "試せます。",
+                "旅先の日常を、",
+                "飾りたくなる",
+                "一枚として",
+                "残してください。",
+              ]} />
+            </p>
             <a href={haku.appStore} target="_blank" rel="noreferrer">
               <span>HAKUを使ってみる</span><PixelIcon name="external" />
             </a>

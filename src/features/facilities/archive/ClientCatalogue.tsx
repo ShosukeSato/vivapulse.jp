@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import PixelIcon from "@/features/city/PixelIcon";
+import ProtectedText from "@/features/shared/ProtectedText";
 import styles from "./archive.module.css";
 
 export type ArchiveNote = {
@@ -112,7 +113,17 @@ export default function ClientCatalogue({ notes }: { notes: ArchiveNote[] }) {
         </div>
 
         <div className={styles.result} aria-live="polite">
-          <strong>{filtersActive ? "絞り込み中" : "公開目録"}</strong>
+          <strong>
+            {filtersActive
+              ? <span className={styles.resultTitleUnit}>絞り込み中</span>
+              : (
+                  <>
+                    <span className={styles.resultTitleUnit}>公開</span>
+                    <wbr />
+                    <span className={styles.resultTitleUnit}>目録</span>
+                  </>
+                )}
+          </strong>
           <span>{filtered.length > 0 ? "文章を表示しています" : "一致する文章はありません"}</span>
         </div>
       </div>
@@ -128,7 +139,7 @@ export default function ClientCatalogue({ notes }: { notes: ArchiveNote[] }) {
                 <a href={note.href} target="_blank" rel="noreferrer">
                   <time dateTime={note.date}>{note.date.replace("-", ".")}</time>
                   <span className={styles.theme}>{themeFor(note.title)}</span>
-                  <strong>{note.title}</strong>
+                  <strong><ProtectedText text={note.title} /></strong>
                   <span className={styles.open}><span>読む</span><PixelIcon name="external" /></span>
                 </a>
               </li>
