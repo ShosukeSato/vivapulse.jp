@@ -1,13 +1,12 @@
 import Link from "next/link";
 import type { CityPlace } from "@/data/city";
-import { channelUrl, films } from "@/data/content";
+import { channelUrl, featuredFilm, films } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
 import CinemaProgrammeLoader from "./CinemaProgrammeLoader";
 import styles from "./cinema.module.css";
 
 const availableFilms = films.filter((film) => film.id !== "IR-GR-u0kMM");
-const featureFilmId = "WqQ4d-KwOZg";
 const native640FilmId = "ywBornpZvrE";
 const transparentPixel = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
@@ -26,8 +25,8 @@ function cinemaStillSrcSet(id: string) {
 }
 
 export default function Cinema({ place }: { place: CityPlace }) {
-  const feature = availableFilms.find((film) => film.id === featureFilmId)!;
-  const programme = availableFilms.filter((film) => film.id !== featureFilmId);
+  const feature = featuredFilm;
+  const programme = availableFilms.filter((film) => film.id !== featuredFilm.id);
 
   return (
     <div className={styles.page}>

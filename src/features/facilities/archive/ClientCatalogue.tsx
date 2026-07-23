@@ -69,6 +69,7 @@ export default function ClientCatalogue({ notes }: { notes: ArchiveNote[] }) {
   };
 
   const visible = filtered.slice(0, visibleCount);
+  const filtersActive = query.trim() !== "" || year !== "すべて" || theme !== "すべて";
 
   return (
     <div className={styles.index}>
@@ -111,8 +112,8 @@ export default function ClientCatalogue({ notes }: { notes: ArchiveNote[] }) {
         </div>
 
         <div className={styles.result} aria-live="polite">
-          <strong>{filtered.length}</strong>
-          <span>件の文章が見つかりました</span>
+          <strong>{filtersActive ? "絞り込み中" : "公開目録"}</strong>
+          <span>{filtered.length > 0 ? "文章を表示しています" : "一致する文章はありません"}</span>
         </div>
       </div>
 
@@ -144,8 +145,8 @@ export default function ClientCatalogue({ notes }: { notes: ArchiveNote[] }) {
 
       {visible.length < filtered.length && (
         <button className={styles.more} type="button" onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}>
-          <span>次の{Math.min(PAGE_SIZE, filtered.length - visible.length)}本を表示</span>
-          <small>{visible.length} / {filtered.length}</small>
+          <span>さらに表示</span>
+          <small>MORE</small>
         </button>
       )}
     </div>

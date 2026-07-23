@@ -2,17 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CityPlace } from "@/data/city";
 import { cityPlaces } from "@/data/city";
-import { films, journey, profile, socials } from "@/data/content";
+import { DEPARTURE_DATE, featuredFilm, journey, profile, socials } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
 import CurrentLocationName from "@/features/shared/CurrentLocationName";
+import SemanticText from "@/features/shared/SemanticText";
 import styles from "./central.module.css";
 
 const departureOrder = ["tripvlog", "haku", "stocka", "cinema", "library", "harbor", "construction", "strategy"];
 const departures = departureOrder.map((id) => cityPlaces.find((place) => place.id === id)!);
 const currentStop = journey.find((stop) => stop.status === "now")!;
 const nextStop = journey.find((stop) => stop.status === "next")!;
-const departureFilm = films.find((film) => film.id === "WqQ4d-KwOZg")!;
 
 const facilityType: Record<CityPlace["kind"], string> = {
   station: "案内所",
@@ -39,13 +39,11 @@ export default function Central({ place }: { place: CityPlace }) {
           </div>
 
           <div className={styles.identity}>
-            <p className={styles.kicker}>CITY 01 CENTRAL · PROFILE</p>
+            <p className={styles.kicker}>CITY 01 CENTRAL&nbsp;· PROFILE</p>
             <h1 id="central-title"><span>さとう</span><wbr /><span>しょうすけ</span></h1>
             <p className={styles.nameEn}>{profile.nameEn}</p>
             <p className={styles.bio}>
-              <span>東京大学大学院を休学し、</span><span>世界一周の旅の途中。</span>
-              <span>アプリをつくり、</span><span>文章を書き、映像を撮りながら、</span>
-              <span>世界のどこかで暮らしています。</span>
+              <SemanticText phrases={profile.bioPhrases} />
             </p>
             <div className={styles.primaryRoutes}>
               <a href="#departures">作品と活動を見る</a>
@@ -55,14 +53,14 @@ export default function Central({ place }: { place: CityPlace }) {
 
           <aside className={styles.currentBoard} id="current-location" aria-labelledby="current-title">
             <div className={styles.boardTop}>
-              <span>現在地</span><time>{currentStop.period} 更新</time>
+              <span>現在地</span><time dateTime={currentStop.period.replace(".", "-")}>{currentStop.period}</time>
             </div>
             <div className={styles.locationPin}><PixelIcon name="location" /></div>
             <h2 id="current-title"><CurrentLocationName place={profile.currentLocation.place} /></h2>
             <p>{profile.currentLocation.detail}</p>
             <dl>
-              <div><dt>旅の出発</dt><dd>東京 · 2026.05.23</dd></div>
-              <div><dt>次の目的地</dt><dd>{nextStop.place}<small>{currentStop.period} 更新</small></dd></div>
+              <div><dt>旅の出発</dt><dd>東京&nbsp;· {DEPARTURE_DATE.replaceAll("-", ".")}</dd></div>
+              <div><dt>次の目的地</dt><dd>{nextStop.place}</dd></div>
             </dl>
           </aside>
         </section>
@@ -70,10 +68,10 @@ export default function Central({ place }: { place: CityPlace }) {
         <section className={styles.departures} id="departures" aria-labelledby="departures-title">
           <header>
             <div>
-              <p>DEPARTURES · PORTFOLIO DIRECTORY</p>
+              <p>DEPARTURES&nbsp;· PORTFOLIO DIRECTORY</p>
               <h2 id="departures-title">作品と活動の出発案内。</h2>
             </div>
-            <p>代表作、映像、文章、旅程を、街の各施設で見られます。地図を読まなくても、この案内から直接入れます。</p>
+            <p>代表作や映像、文章、旅程を施設ごとに案内します。地図を使わず、ここから直接移動できます。</p>
           </header>
 
           <nav className={styles.departureBoard} aria-label="CITY 01施設への出発案内">
@@ -101,8 +99,8 @@ export default function Central({ place }: { place: CityPlace }) {
         <section className={styles.travelRecord} aria-labelledby="record-title">
           <div className={styles.recordCopy}>
             <p>WHY THIS CITY EXISTS</p>
-            <h2 id="record-title">つくることと、旅することを、ひとつの街に。</h2>
-            <p>世界を旅しながら、困ったことからアプリをつくる。出会った景色を映像にして、考えたことを文章にする。CITY 01は、それらを別々の実績ではなく、いま続いている一つの活動として案内するための街です。</p>
+            <h2 id="record-title">つくることと旅することを、ひとつの街に。</h2>
+            <p>旅の途中で必要になったものをアプリにする。出会った景色を映像にして、考えたことを文章にする。CITY 01は、それらを別々の実績ではなく、いまも続く一つの活動として案内する街です。</p>
             <dl className={styles.shortJourney}>
               {journey.slice(0, 4).map((stop) => (
                 <div key={stop.place}>
@@ -114,20 +112,20 @@ export default function Central({ place }: { place: CityPlace }) {
 
           <a
             className={styles.recordStill}
-            href={`https://www.youtube.com/watch?v=${departureFilm.id}`}
+            href={`https://www.youtube.com/watch?v=${featuredFilm.id}`}
             target="_blank"
             rel="noreferrer"
           >
             <Image
-              src={`/media/cinema/${departureFilm.id}.jpg`}
+              src={`/media/cinema/${featuredFilm.id}.jpg`}
               alt=""
               width={480}
               height={360}
             />
             <span className={styles.play}><PixelIcon name="play" /></span>
             <span className={styles.stillCaption}>
-              <small>旅先の記録 · YouTubeサムネイル</small>
-              <strong>{departureFilm.title}</strong>
+              <small>旅先の記録&nbsp;· YouTubeサムネイル</small>
+              <strong>{featuredFilm.title}</strong>
             </span>
           </a>
         </section>

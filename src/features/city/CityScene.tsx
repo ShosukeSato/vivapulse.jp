@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, type TouchEvent as ReactTouchEvent } from "react";
+import { useId, type Ref, type TouchEvent as ReactTouchEvent } from "react";
 import { cityPlaces, type CityPlace } from "@/data/city";
 import {
   CITY_SCENE_HEIGHT,
@@ -20,14 +20,14 @@ export type CitySceneProps = {
   interactive?: boolean;
   guideSelected?: boolean;
   onGuideSelect?: () => void;
+  guideButtonRef?: Ref<HTMLButtonElement>;
 };
 
 const PLACE_BY_ID = new Map(cityPlaces.map((place) => [place.id, place]));
-const GUIDE_PATH = "/places/city-01-central";
 
-type LinkElement = HTMLAnchorElement | SVGAElement;
+type SelectableElement = HTMLAnchorElement | SVGAElement;
 
-function beginTouchSelection<T extends LinkElement>(event: ReactTouchEvent<T>) {
+function beginTouchSelection<T extends SelectableElement>(event: ReactTouchEvent<T>) {
   const touch = event.touches[0];
   if (!touch) return;
   event.currentTarget.dataset.touchStartX = String(touch.clientX);
@@ -35,7 +35,7 @@ function beginTouchSelection<T extends LinkElement>(event: ReactTouchEvent<T>) {
   delete event.currentTarget.dataset.touchMoved;
 }
 
-function trackTouchSelection<T extends LinkElement>(event: ReactTouchEvent<T>) {
+function trackTouchSelection<T extends SelectableElement>(event: ReactTouchEvent<T>) {
   const touch = event.touches[0];
   const startX = Number(event.currentTarget.dataset.touchStartX);
   const startY = Number(event.currentTarget.dataset.touchStartY);
@@ -45,16 +45,21 @@ function trackTouchSelection<T extends LinkElement>(event: ReactTouchEvent<T>) {
   }
 }
 
-function finishTouchSelection<T extends LinkElement>(event: ReactTouchEvent<T>, onSelect: () => void) {
+function finishTouchSelection<T extends SelectableElement>(
+  event: ReactTouchEvent<T>,
+  onSelect: () => void,
+  alreadySelected: boolean,
+) {
   const target = event.currentTarget;
   const moved = target.dataset.touchMoved === "true";
   delete target.dataset.touchStartX;
   delete target.dataset.touchStartY;
   delete target.dataset.touchMoved;
   if (moved) return;
+  if (alreadySelected) return;
   event.preventDefault();
   target.dataset.touchSelection = "true";
-  window.setTimeout(() => delete target.dataset.touchSelection, 750);
+  window.setTimeout(() => delete target.dataset.touchSelection, 0);
   onSelect();
 }
 
@@ -358,24 +363,25 @@ function ArchiveLandmark({ brickPatternId }: { brickPatternId: string }) {
   );
 }
 
-function CinemaLandmark({ posterClipId }: { posterClipId: string }) {
+function CinemaLandmark() {
+  const marqueeLights = [144, 168, 192, 216, 240, 264, 288, 312];
+
   return (
     <g>
       <CastShadow x={84} y={600} width={288} height={108} />
       <Mass x={96} y={672} width={240} depth={36} height={52} roof={P.asphalt} south={P.blackDepth} east={P.outline} />
-      <rect x="132" y="646" width="192" height="10" fill={P.selection} stroke={P.outline} />
+      <rect x="132" y="642" width="192" height="14" fill={P.selection} stroke={P.outline} />
+      {marqueeLights.map((x) => <rect key={x} x={x} y="646" width="5" height="5" fill={P.lightCore} />)}
 
-      <rect x="144" y="654" width="36" height="46" fill={P.lightCore} stroke={P.outline} />
-      <image
-        href="/media/cinema/Vkf4wQSLD04-map.webp"
-        x="146"
-        y="656"
-        width="32"
-        height="42"
-        preserveAspectRatio="xMidYMid slice"
-        clipPath={`url(#${posterClipId})`}
-        style={{ imageRendering: "auto" }}
-      />
+      <rect x="140" y="652" width="44" height="52" fill={P.lightCore} stroke={P.outline} />
+      <rect x="146" y="658" width="32" height="40" fill={P.deepWater} stroke={P.outline} />
+      <rect x="146" y="682" width="32" height="16" fill={P.glassShadow} />
+      <rect x="146" y="658" width="32" height="14" fill={P.warmLight} />
+      <rect x="146" y="672" width="16" height="10" fill={P.glass} />
+      <rect x="162" y="672" width="16" height="10" fill={P.selection} />
+      <rect x="174" y="658" width="4" height="40" fill={P.selection} />
+      <rect x="188" y="674" width="18" height="26" fill={P.warmLight} stroke={P.outline} />
+      <rect x="192" y="678" width="10" height="8" fill={P.lightCore} />
       <rect x="216" y="660" width="24" height="48" fill={P.glassShadow} stroke={P.outline} />
       <rect x="264" y="660" width="24" height="48" fill={P.glassShadow} stroke={P.outline} />
       <rect x="222" y="665" width="12" height="8" fill={P.lightCore} />
@@ -443,10 +449,9 @@ function SceneLabel({ place, id }: { place: CityPlace; id: CityScenePlaceId }) {
   );
 }
 
-function LandmarkArtwork({ id, brickPatternId, posterClipId }: {
+function LandmarkArtwork({ id, brickPatternId }: {
   id: CityScenePlaceId;
   brickPatternId: string;
-  posterClipId: string;
 }) {
   switch (id) {
     case "construction": return <YardLandmark />;
@@ -455,8 +460,8 @@ function LandmarkArtwork({ id, brickPatternId, posterClipId }: {
     case "haku": return <HakuLandmark />;
     case "station": return <CentralLandmark />;
     case "strategy": return <StrategyLandmark />;
-    case "library": return <g transform="translate(-96 0)"><ArchiveLandmark brickPatternId={brickPatternId} /></g>;
-    case "cinema": return <g transform="translate(120 0)"><CinemaLandmark posterClipId={posterClipId} /></g>;
+    case "library": return <ArchiveLandmark brickPatternId={brickPatternId} />;
+    case "cinema": return <g transform="translate(120 0)"><CinemaLandmark /></g>;
     case "harbor": return <g transform="translate(-96 0)"><HarborLandmark /></g>;
   }
 }
@@ -467,7 +472,6 @@ function SceneLandmark({
   selected,
   onSelect,
   brickPatternId,
-  posterClipId,
   preview,
   interactive,
 }: {
@@ -476,16 +480,17 @@ function SceneLandmark({
   selected: boolean;
   onSelect: (id: string) => void;
   brickPatternId: string;
-  posterClipId: string;
   preview: boolean;
   interactive: boolean;
 }) {
-  const bounds = CITY_SCENE_PLACEMENTS[id].bounds;
+  const placement = CITY_SCENE_PLACEMENTS[id];
+  const bounds = placement.bounds;
+  const hitBounds = "hitBounds" in placement ? placement.hitBounds : bounds;
   const focusPath = `M${bounds.x} ${bounds.y + 14}V${bounds.y}H${bounds.x + 14} M${bounds.x + bounds.width - 14} ${bounds.y}H${bounds.x + bounds.width}V${bounds.y + 14} M${bounds.x} ${bounds.y + bounds.height - 14}V${bounds.y + bounds.height}H${bounds.x + 14} M${bounds.x + bounds.width - 14} ${bounds.y + bounds.height}H${bounds.x + bounds.width}V${bounds.y + bounds.height - 14}`;
 
   const artwork = (
-    <g aria-hidden="true">
-      <LandmarkArtwork id={id} brickPatternId={brickPatternId} posterClipId={posterClipId} />
+    <g aria-hidden="true" pointerEvents="none">
+      <LandmarkArtwork id={id} brickPatternId={brickPatternId} />
       {!preview && <SceneLabel place={place} id={id} />}
       {interactive && (
         <g
@@ -515,10 +520,12 @@ function SceneLandmark({
         onSelect(id);
       }}
       onFocus={() => onSelect(id)}
-      onPointerEnter={() => onSelect(id)}
+      onPointerEnter={(event) => {
+        if (event.pointerType !== "touch") onSelect(id);
+      }}
       onTouchStart={preview ? beginTouchSelection : undefined}
       onTouchMove={preview ? trackTouchSelection : undefined}
-      onTouchEnd={preview ? (event) => finishTouchSelection(event, () => onSelect(id)) : undefined}
+      onTouchEnd={preview ? (event) => finishTouchSelection(event, () => onSelect(id), selected) : undefined}
       onTouchCancel={preview ? (event) => {
         delete event.currentTarget.dataset.touchStartX;
         delete event.currentTarget.dataset.touchStartY;
@@ -526,10 +533,10 @@ function SceneLandmark({
       } : undefined}
     >
       <rect
-        x={bounds.x}
-        y={bounds.y}
-        width={bounds.width}
-        height={bounds.height}
+        x={hitBounds.x}
+        y={hitBounds.y}
+        width={hitBounds.width}
+        height={hitBounds.height}
         fill={P.lightStone}
         fillOpacity="0"
         stroke="none"
@@ -571,6 +578,7 @@ function PlayerArtwork({ preview }: { preview: boolean }) {
     <g
       className="city-scene__player"
       aria-hidden="true"
+      pointerEvents="none"
       transform={`translate(${preview ? 660 : 684} ${preview ? 574 : 604}) scale(${preview ? 4 : 2})`}
     >
       <rect x="1" y="21" width="14" height="3" fill={P.blackDepth} opacity="0.4" />
@@ -600,45 +608,44 @@ function Player({
   interactive,
   selected,
   onSelect,
+  buttonRef,
 }: {
   preview: boolean;
   interactive: boolean;
   selected: boolean;
   onSelect: () => void;
+  buttonRef?: Ref<HTMLButtonElement>;
 }) {
   const artwork = <PlayerArtwork preview={preview} />;
   if (!interactive) return artwork;
 
-  const x = preview ? 628 : 660;
-  const y = preview ? 546 : 576;
-  const size = preview ? 112 : 76;
-  const focusPath = `M${x + 8} ${y + 16}V${y + 8}H${x + 16} M${x + size - 16} ${y + 8}H${x + size - 8}V${y + 16} M${x + 8} ${y + size - 16}V${y + size - 8}H${x + 16} M${x + size - 16} ${y + size - 8}H${x + size - 8}V${y + size - 16}`;
+  const focusX = preview ? 628 : 660;
+  const focusY = preview ? 552 : 576;
+  const focusSize = preview ? 120 : 76;
+  const hitX = preview ? 612 : focusX;
+  const hitY = preview ? 552 : focusY;
+  const hitSize = preview ? 198 : focusSize;
+  const focusPath = `M${focusX + 8} ${focusY + 16}V${focusY + 8}H${focusX + 16} M${focusX + focusSize - 16} ${focusY + 8}H${focusX + focusSize - 8}V${focusY + 16} M${focusX + 8} ${focusY + focusSize - 16}V${focusY + focusSize - 8}H${focusX + 16} M${focusX + focusSize - 16} ${focusY + focusSize - 8}H${focusX + focusSize - 8}V${focusY + focusSize - 16}`;
 
   return (
-    <a
+    <g
       className="city-scene__player-action"
-      data-map-target="guide"
-      href={GUIDE_PATH}
-      aria-label="街の案内人 SHOSUKEについて"
       data-selected={selected ? "true" : undefined}
-      onClick={(event) => {
-        const touchSelection = preview && event.currentTarget.dataset.touchSelection === "true";
-        delete event.currentTarget.dataset.touchSelection;
-        if (touchSelection) event.preventDefault();
-        onSelect();
-      }}
-      onFocus={onSelect}
-      onPointerEnter={onSelect}
-      onTouchStart={preview ? beginTouchSelection : undefined}
-      onTouchMove={preview ? trackTouchSelection : undefined}
-      onTouchEnd={preview ? (event) => finishTouchSelection(event, onSelect) : undefined}
-      onTouchCancel={preview ? (event) => {
-        delete event.currentTarget.dataset.touchStartX;
-        delete event.currentTarget.dataset.touchStartY;
-        delete event.currentTarget.dataset.touchMoved;
-      } : undefined}
     >
-      <rect x={x} y={y} width={size} height={size} fill="transparent" pointerEvents="all" />
+      <foreignObject x={hitX} y={hitY} width={hitSize} height={hitSize}>
+        <button
+          className="city-scene__guide-button"
+          data-map-target="guide"
+          type="button"
+          ref={buttonRef}
+          aria-label="街の案内人SHOSUKEに話しかける"
+          aria-pressed={selected}
+          onClick={(event) => {
+            event.stopPropagation();
+            onSelect();
+          }}
+        />
+      </foreignObject>
       <g
         className={`city-scene__guide-focus${selected ? " city-scene__guide-focus--selected" : ""}`}
         pointerEvents="none"
@@ -648,14 +655,14 @@ function Player({
       </g>
       {artwork}
       {!preview && (
-        <g className="city-scene__guide-label" transform="translate(612 660)">
+        <g className="city-scene__guide-label" transform="translate(612 660)" pointerEvents="none">
           <rect width="216" height="40" fill={P.blackDepth} stroke={P.outline} />
           <rect width="4" height="40" fill={P.selection} />
           <text x="12" y="14" fill={P.warmLight}>CITY GUIDE</text>
           <text x="12" y="32" fill={P.lightStone}>SHOSUKE / 案内人</text>
         </g>
       )}
-    </a>
+    </g>
   );
 }
 
@@ -667,10 +674,9 @@ function ReservedSite() {
       {[8, 32, 56, 80, 104].map((x) => (
         <rect key={x} x={x} y="8" width="5" height="104" fill={P.lightStone} stroke={P.outline} />
       ))}
-      <rect x="20" y="38" width="80" height="48" fill={P.blackDepth} stroke={P.outline} />
-      <rect x="20" y="38" width="4" height="48" fill={P.selection} />
-      <text x="31" y="57" fill={P.warmLight} className="city-scene__reserved-code">NEW SITE</text>
-      <text x="31" y="76" fill={P.lightStone} className="city-scene__reserved-name">PLANNING</text>
+      <rect x="20" y="38" width="80" height="48" fill={P.stoneShadow} stroke={P.outline} />
+      <text x="31" y="57" fill={P.lightStone} className="city-scene__reserved-code">計画区画</text>
+      <text x="31" y="76" fill={P.midStone} className="city-scene__reserved-name">PLANNING</text>
     </g>
   );
 }
@@ -714,11 +720,11 @@ export default function CityScene({
   interactive = !preview,
   guideSelected = false,
   onGuideSelect = () => undefined,
+  guideButtonRef,
 }: CitySceneProps) {
   const instanceId = useId().replaceAll(":", "");
   const pavingPatternId = `${instanceId}-city-paving`;
   const brickPatternId = `${instanceId}-archive-brick`;
-  const posterClipId = `${instanceId}-cinema-poster`;
 
   return (
     <svg
@@ -732,7 +738,7 @@ export default function CityScene({
       <title id={`${instanceId}-title`}>CITY 01 都市探索マップ</title>
       <desc id={`${instanceId}-description`}>
         {interactive
-          ? "18時42分の海辺の街。9つの施設と街の案内人は、キーボードやタップでも選択できます。"
+          ? "18時42分の海辺の街。街の施設と案内人は、キーボードやタップでも選択できます。"
           : "18時42分の海辺の街を見渡す全景。各施設へのリンクは、この画像の下に一覧で並んでいます。"}
       </desc>
 
@@ -746,14 +752,12 @@ export default function CityScene({
           <rect width="16" height="8" fill={P.brick} />
           <path d="M0 4h16M8 0v4M4 4v4" stroke={P.outline} />
         </pattern>
-        <clipPath id={posterClipId}>
-          <rect x="146" y="656" width="32" height="42" />
-        </clipPath>
       </defs>
 
       <style>{`
         .city-scene__landmark { cursor: pointer; outline: none; }
         .city-scene__player-action { cursor: pointer; outline: none; }
+        .city-scene__guide-button { width: 100%; height: 100%; display: block; padding: 0; border: 0; background: transparent; cursor: pointer; }
         .city-scene__focus { opacity: 0; }
         .city-scene__focus--selected { opacity: 1; }
         .city-scene__landmark:hover .city-scene__focus,
@@ -761,7 +765,7 @@ export default function CityScene({
         .city-scene__guide-focus { opacity: 0; }
         .city-scene__guide-focus--selected,
         .city-scene__player-action:hover .city-scene__guide-focus,
-        .city-scene__player-action:focus-visible .city-scene__guide-focus { opacity: 1; }
+        .city-scene__player-action:focus-within .city-scene__guide-focus { opacity: 1; }
         .city-scene__code {
           font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
           font-size: 20px;
@@ -829,7 +833,6 @@ export default function CityScene({
             selected={selectedId === id}
             onSelect={onSelect}
             brickPatternId={brickPatternId}
-            posterClipId={posterClipId}
             preview={preview}
             interactive={interactive}
           />
@@ -841,6 +844,7 @@ export default function CityScene({
         interactive={interactive}
         selected={guideSelected}
         onSelect={onGuideSelect}
+        buttonRef={guideButtonRef}
       />
     </svg>
   );

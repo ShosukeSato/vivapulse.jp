@@ -4,10 +4,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import DayCounter from "@/components/DayCounter";
 import { cityPlaces } from "@/data/city";
-import { featuredArticle, films, products, profile } from "@/data/content";
+import { featuredArticle, featuredFilm, products, profile } from "@/data/content";
 import CityScene from "./CityScene";
 import PixelIcon from "./PixelIcon";
 import FeaturedArticleTitle from "@/features/shared/FeaturedArticleTitle";
+import SemanticText from "@/features/shared/SemanticText";
 import styles from "./city.module.css";
 
 const PRIMARY_PLACE_IDS = ["tripvlog", "haku", "stocka"];
@@ -18,6 +19,10 @@ export default function CityExplorer() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [directoryOpen, setDirectoryOpen] = useState(false);
   const directoryButtonRef = useRef<HTMLButtonElement>(null);
+  const directoryReturnFocusRef = useRef<HTMLElement | null>(null);
+  const pendingReturnFocusRef = useRef<HTMLElement | null>(null);
+  const desktopGuideButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileGuideButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const mobileCardRef = useRef<HTMLElement>(null);
 
@@ -28,7 +33,15 @@ export default function CityExplorer() {
   const guideSelected = selectedId === GUIDE_ID;
 
   useEffect(() => {
-    if (directoryOpen) closeButtonRef.current?.focus();
+    if (directoryOpen) {
+      closeButtonRef.current?.focus();
+      return;
+    }
+
+    const returnTarget = pendingReturnFocusRef.current;
+    if (!returnTarget) return;
+    returnTarget.focus();
+    pendingReturnFocusRef.current = null;
   }, [directoryOpen]);
 
   useEffect(() => {
@@ -86,9 +99,16 @@ export default function CityExplorer() {
     };
   }, [directoryOpen]);
 
+  const openDirectory = useCallback((returnFocusTo: HTMLElement | null) => {
+    directoryReturnFocusRef.current = returnFocusTo;
+    setDirectoryOpen(true);
+  }, []);
+
   const closeDirectory = useCallback(() => {
+    pendingReturnFocusRef.current =
+      directoryReturnFocusRef.current ?? directoryButtonRef.current;
+    directoryReturnFocusRef.current = null;
     setDirectoryOpen(false);
-    window.requestAnimationFrame(() => directoryButtonRef.current?.focus());
   }, []);
 
   useEffect(() => {
@@ -131,7 +151,7 @@ export default function CityExplorer() {
             <span><strong>CITY 01</strong><small>SHOSUKE SATO / PORTFOLIO CITY</small></span>
           </Link>
 
-          <div className={styles.cityTime} aria-label="街の固定時刻と旅の日数">
+          <div className={styles.cityTime}>
             <span>CITY TIME 18:42</span>
             <span>JOURNEY DAY <DayCounter /></span>
           </div>
@@ -143,7 +163,7 @@ export default function CityExplorer() {
             aria-expanded={directoryOpen}
             aria-controls="city-directory"
             aria-label="施設一覧を開く"
-            onClick={() => setDirectoryOpen(true)}
+            onClick={(event) => openDirectory(event.currentTarget)}
           >
             <PixelIcon name="directory" />
             <span>施設一覧</span>
@@ -163,7 +183,7 @@ export default function CityExplorer() {
               <a className={styles.primaryAction} href="#works">
                 <span>代表作を見る</span><PixelIcon name="enter" />
               </a>
-              <Link className={styles.textAction} href="/places/city-01-central" prefetch={false}>本人について</Link>
+              <Link className={styles.textAction} href="/places/city-01-central" prefetch={false}>プロフィールと現在地</Link>
             </div>
 
             {selectedPlace || guideSelected ? (
@@ -176,12 +196,18 @@ export default function CityExplorer() {
                 <h2>{guideSelected ? "SHOSUKE" : selectedPlace?.name}</h2>
                 <p className={styles.inspectorSummary}>
                   {guideSelected
-                    ? `この街をつくっている、さとうしょうすけです。現在地は${profile.currentLocation.place}。`
+                    ? "この街をつくり、旅を続けている本人です。建物を選ぶか、施設一覧から行き先を探せます。"
                     : selectedPlace?.summary}
                 </p>
-                <Link href={guideSelected ? "/places/city-01-central" : selectedPlace!.path} prefetch={false}>
-                  <span>{guideSelected ? "本人について" : "この施設に入る"}</span><PixelIcon name="enter" />
-                </Link>
+                {guideSelected ? (
+                  <button type="button" onClick={() => openDirectory(desktopGuideButtonRef.current)}>
+                    <span>施設一覧を開く</span><PixelIcon name="directory" />
+                  </button>
+                ) : (
+                  <Link href={selectedPlace!.path} prefetch={false}>
+                    <span>この施設に入る</span><PixelIcon name="enter" />
+                  </Link>
+                )}
               </aside>
             ) : (
               <dl className={styles.currentQuest}>
@@ -205,6 +231,7 @@ export default function CityExplorer() {
                 onSelect={setSelectedId}
                 guideSelected={guideSelected}
                 onGuideSelect={() => setSelectedId(GUIDE_ID)}
+                guideButtonRef={desktopGuideButtonRef}
               />
             </div>
             <div className={styles.mobileScene}>
@@ -215,6 +242,7 @@ export default function CityExplorer() {
                 onGuideSelect={() => setSelectedId(GUIDE_ID)}
                 preview
                 interactive
+                guideButtonRef={mobileGuideButtonRef}
               />
             </div>
 
@@ -230,12 +258,18 @@ export default function CityExplorer() {
                   <button type="button" onClick={() => setSelectedId(null)} aria-label="施設情報を閉じる">×</button>
                 </div>
                 <div className={styles.mobileCardCopy}>
-                  <p>{guideSelected ? "この街の案内人" : selectedPlace?.destination}</p>
+                  <p>{guideSelected ? "街の施設を案内します" : selectedPlace?.destination}</p>
                   <h2>{guideSelected ? "SHOSUKE" : selectedPlace?.shortName}</h2>
                 </div>
-                <Link href={guideSelected ? "/places/city-01-central" : selectedPlace!.path} prefetch={false}>
-                  <span>{guideSelected ? "本人について" : "この施設に入る"}</span><PixelIcon name="enter" />
-                </Link>
+                {guideSelected ? (
+                  <button type="button" onClick={() => openDirectory(mobileGuideButtonRef.current)}>
+                    <span>施設一覧を開く</span><PixelIcon name="directory" />
+                  </button>
+                ) : (
+                  <Link href={selectedPlace!.path} prefetch={false}>
+                    <span>この施設に入る</span><PixelIcon name="enter" />
+                  </Link>
+                )}
               </article>
             )}
           </div>
@@ -244,7 +278,7 @@ export default function CityExplorer() {
             <div className={styles.mobileStatus}>
               <span><small><PixelIcon name="location" />現在地</small><strong>{profile.currentLocation.place}</strong></span>
               <span><small>次の街</small><strong>{profile.nextLocation}</strong></span>
-              <Link href="/places/city-01-central" prefetch={false}>本人について <PixelIcon name="enter" /></Link>
+              <Link href="/places/city-01-central" prefetch={false}>プロフィールと現在地 <PixelIcon name="enter" /></Link>
             </div>
             <nav aria-label="施設から作品を選ぶ">
               <p>街の施設</p>
@@ -266,7 +300,7 @@ export default function CityExplorer() {
         <div className={styles.sectionLead}>
           <span>MAKERS QUAY / 代表作</span>
           <h2 id="works-title">旅の途中で、<br />必要なものをつくる。</h2>
-          <p>企画、設計、開発、公開まで、ひとりで手を動かしている三つのiOSアプリ。</p>
+          <p>旅の途中でつくり、企画から公開まで、ひとりで手を動かしているiOSアプリ。</p>
         </div>
 
         <div className={styles.productIndex}>
@@ -298,23 +332,23 @@ export default function CityExplorer() {
         </div>
       </section>
 
-      <section className={styles.cityDispatches} aria-label="最新の映像と文章">
-        <a className={styles.filmDispatch} href={`https://www.youtube.com/watch?v=${films[0].id}`} target="_blank" rel="noreferrer">
+      <section className={styles.cityDispatches} aria-label="代表映像と編集者選の記事">
+        <a className={styles.filmDispatch} href={`https://www.youtube.com/watch?v=${featuredFilm.id}`} target="_blank" rel="noreferrer">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`/media/cinema/${films[0].id}-preview.webp`}
-            data-lazy-src={`/media/cinema/${films[0].id}-home.webp`}
+            src={`/media/cinema/${featuredFilm.id}-640.webp`}
+            data-lazy-src={`/media/cinema/${featuredFilm.id}-1280.webp`}
             alt=""
-            width="480"
-            height="360"
+            width="1280"
+            height="720"
             loading="lazy"
             decoding="async"
           />
           <span className={styles.dispatchShade} />
-          <span className={styles.dispatchCopy}><small>VOYAGE CINEMA / 最新映像</small><strong>{films[0].title}</strong><span>再生する <PixelIcon name="play" /></span></span>
+          <span className={styles.dispatchCopy}><small><span>VOYAGE CINEMA /</span><wbr /> <span>代表映像</span></small><strong><SemanticText phrases={featuredFilm.displayTitleLines ?? [featuredFilm.title]} /></strong><span>再生する <PixelIcon name="play" /></span></span>
         </a>
         <a className={styles.articleDispatch} href={featuredArticle.href} target="_blank" rel="noreferrer">
-          <div><small>THE ARCHIVE / 編集者選</small><strong><FeaturedArticleTitle /></strong><p>{featuredArticle.excerpt}</p></div>
+          <div><small><span>THE ARCHIVE /</span><wbr /> <span>編集者選</span></small><strong><FeaturedArticleTitle /></strong><p>{featuredArticle.excerpt}</p></div>
           <span className={styles.dispatchExternal}>記事を読む <PixelIcon name="external" /></span>
         </a>
       </section>
@@ -328,7 +362,14 @@ export default function CityExplorer() {
 
       {directoryOpen && (
         <>
-          <button className={styles.directoryBackdrop} type="button" onClick={closeDirectory} aria-label="施設一覧を閉じる" />
+          <div
+            className={styles.directoryBackdrop}
+            aria-hidden="true"
+            onPointerDown={(event) => {
+              event.preventDefault();
+              closeDirectory();
+            }}
+          />
           <aside
             id="city-directory"
             className={styles.directory}

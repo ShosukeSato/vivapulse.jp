@@ -138,7 +138,7 @@ export const cityPlaces: CityPlace[] = [
     path: "/places/voyage-cinema",
     externalHref: "https://www.youtube.com/@shosuke_sato",
     action: "施設に入る",
-    summary: "世界一周の最新映像を上映する、海辺のシネマコンプレックス。",
+    summary: "世界一周の映像を上映する、海辺のシネマコンプレックス。",
   },
   {
     id: "strategy",

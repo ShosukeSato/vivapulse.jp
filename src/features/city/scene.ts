@@ -56,7 +56,10 @@ export type CitySceneLabel = {
 };
 
 export type CityScenePlacement = {
+  /** Visible focus frame around the landmark. */
   bounds: CitySceneBounds;
+  /** Dedicated interaction area; never inferred from overlapping artwork. */
+  hitBounds?: CitySceneBounds;
   label: CitySceneLabel;
 };
 
@@ -82,23 +85,27 @@ export const CITY_SCENE_PLACEMENTS = {
     label: { x: 48, y: 516, width: 264 },
   },
   station: {
-    bounds: { x: 480, y: 312, width: 384, height: 240 },
-    label: { x: 480, y: 516, width: 288 },
+    bounds: { x: 480, y: 312, width: 372, height: 240 },
+    hitBounds: { x: 480, y: 312, width: 348, height: 240 },
+    label: { x: 480, y: 516, width: 320 },
   },
   strategy: {
-    bounds: { x: 852, y: 384, width: 132, height: 168 },
-    label: { x: 780, y: 516, width: 180 },
+    bounds: { x: 864, y: 384, width: 120, height: 168 },
+    hitBounds: { x: 828, y: 354, width: 204, height: 198 },
+    label: { x: 828, y: 516, width: 212 },
   },
   library: {
-    bounds: { x: 936, y: 336, width: 336, height: 216 },
-    label: { x: 972, y: 516, width: 276 },
+    bounds: { x: 1032, y: 336, width: 336, height: 216 },
+    hitBounds: { x: 1032, y: 336, width: 336, height: 216 },
+    label: { x: 1068, y: 516, width: 276 },
   },
   cinema: {
     bounds: { x: 168, y: 588, width: 360, height: 132 },
+    hitBounds: { x: 168, y: 552, width: 360, height: 198 },
     label: { x: 144, y: 612, width: 300 },
   },
   harbor: {
     bounds: { x: 936, y: 576, width: 360, height: 264 },
-    label: { x: 984, y: 612, width: 288 },
+    label: { x: 984, y: 612, width: 324 },
   },
 } as const satisfies Record<CityScenePlaceId, CityScenePlacement>;

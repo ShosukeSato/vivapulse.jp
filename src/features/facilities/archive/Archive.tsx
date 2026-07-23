@@ -34,13 +34,13 @@ export default function Archive({ place }: { place: CityPlace }) {
             rel="noreferrer"
           >
             <Image
-              src="/media/archive/nc7487ff91841.webp"
+              src={featuredArticle.thumbnail}
               alt="世界一周の旅と、これまでに出会った人々を重ねた記事の見出し画像"
               width={1280}
               height={670}
               priority
             />
-            <span>ISSUE 2026.06</span>
+            <span>ISSUE {featuredArticle.issue}</span>
           </a>
         </article>
 
@@ -59,13 +59,22 @@ export default function Archive({ place }: { place: CityPlace }) {
         </section>
 
         <section className={styles.restricted} aria-labelledby="restricted-title">
-          <div aria-hidden="true"><span>RESTRICTED</span><i /></div>
-          <div>
-            <p>RESTRICTED STACK / PREPARING</p>
-            <h2 id="restricted-title">秘密の書庫</h2>
-            <span>準備中</span>
+          <div className={styles.archiveDoor} aria-hidden="true">
+            <div className={styles.doorRecess}>
+              <span className={styles.doorLeaf} />
+              <span className={styles.doorLeaf} />
+              <span className={styles.doorHandles}><i /><i /></span>
+            </div>
+            <span className={styles.threshold} />
           </div>
-          <p>メンバーだけが入れる書庫を、この奥に準備しています。開庫の日まで、扉は閉じたまま。</p>
+          <div className={styles.restrictedCopy}>
+            <div className={styles.restrictedMeta}>
+              <p>MEMBERS&apos; STACK</p>
+              <span>開庫準備中</span>
+            </div>
+            <h2 id="restricted-title">秘密の書庫</h2>
+            <p>noteメンバーシップの開始に向けて、この奥に書庫を準備しています。開庫までは入れません。</p>
+          </div>
         </section>
       </main>
 

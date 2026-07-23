@@ -91,7 +91,7 @@ Rules:
 - Text below `9px` is forbidden
 - Display type maximum: desktop `96px`, mobile `52px`
 - The maximum applies to semantic text. Architectural section signs such as the aria-hidden `01` and `B2` may exceed it.
-- Display phrases use `word-break: keep-all` with `overflow-wrap: anywhere`. Authored body copy may use `semanticUnit` only for short meaning units that fit at 320px and 200% text zoom; adjacent units are separated by `wbr` so wrapping happens at an intentional Japanese boundary.
+- Japanese copy uses `line-break: strict`. Body copy prefers `word-break: auto-phrase`, `overflow-wrap: normal` and `text-wrap: pretty`; headings may use `text-wrap: balance`. Authored `semanticUnit` spans are reserved for short meaning units that fit at 320px and 200% text zoom, with adjacent units separated by `wbr`. `overflow-wrap: anywhere` is limited to unavoidable long identifiers or URLs.
 
 ## Interface
 
@@ -115,7 +115,7 @@ Touch targets are at least `44 × 44` CSS px. A visible keyboard focus state is 
 ## Landmark architecture
 
 - Central: vaulted glass station roof, visible platforms and train
-- Cinema: low dark volume, coral canopy, one real illuminated poster
+- Cinema: low dark volume, coral canopy and one abstract illuminated poster box drawn in the city palette; real thumbnails appear only inside the facility
 - Archive: brick cultural building, vertical windows, rooftop reading terrace
 - Harbor: pier, glass canopy and white/yellow ferry
 - TripVlog: converted warehouse studio, blue light band and loading entrance

@@ -39,12 +39,17 @@ svg { max-width: 100%; }
 /* Keep Japanese display phrases intact when space permits, but allow an
    emergency wrap under text zoom instead of clipping essential copy. */
 .semanticPhrase {
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: bottom;
+  line-break: strict;
   word-break: auto-phrase;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
 }
 
-/* Short, authored Japanese units may wrap between units, never mid-word. */
-.semanticUnit { white-space: nowrap; }
+/* Inline-block sizing keeps short units together at normal sizes; under text
+   zoom, an oversized unit can still reflow instead of creating overflow. */
+.semanticUnit { white-space: normal; }
 
 a:focus-visible,
 button:focus-visible,

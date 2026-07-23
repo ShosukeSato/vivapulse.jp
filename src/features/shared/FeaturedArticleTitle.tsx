@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { featuredArticle } from "@/data/content";
 
 export default function FeaturedArticleTitle() {
@@ -7,12 +8,12 @@ export default function FeaturedArticleTitle() {
 
   return (
     <>
-      {displayTitle.lead}
+      <span className="semanticPhrase">{displayTitle.lead}</span>
       {displayTitle.phrases.map((phrase) => (
-        <span key={phrase}>
+        <Fragment key={phrase}>
           <wbr />
           <span className="semanticPhrase">{phrase}</span>
-        </span>
+        </Fragment>
       ))}
     </>
   );

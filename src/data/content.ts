@@ -5,10 +5,26 @@
 
 export const DEPARTURE_DATE = "2026-05-23"; // 世界一周出発日
 
+const profileBioPhrases = [
+  "東京大学",
+  "大学院を",
+  "休学し、",
+  "世界一周の",
+  "旅をしています。",
+  "アプリを",
+  "つくり、",
+  "文章を書き、",
+  "映像を",
+  "撮りながら、",
+  "世界のどこかで",
+  "暮らしています。",
+] as const;
+
 export const profile = {
   name: "さとうしょうすけ",
   nameEn: "Shosuke Sato",
-  bio: "東京大学大学院を休学し、世界一周の旅の途中。アプリをつくり、文章を書き、映像を撮りながら、世界のどこかで暮らしています。",
+  bio: profileBioPhrases.join(""),
+  bioPhrases: profileBioPhrases,
   departureNote: "二〇二六年五月二三日、東京を発つ。",
   currentLocation: {
     place: "スリランカ、ガラハ",
@@ -156,24 +172,26 @@ export type Article = {
   };
   href: string;
   date: string;
+  issue?: string;
   thumbnail?: string;
   excerpt?: string;
 };
 
 const featuredArticleDisplayTitle = {
-  lead: "東大を休学して",
-  phrases: ["貯金0円で", "世界一周してる", "けど、僕には", "「やりたいこと」が", "1つもなかった"],
+  lead: "東大を",
+  phrases: ["休学して", "貯金0円で", "世界一周", "してるけど、", "僕には", "「やりたい", "こと」", "が1つも", "なかった"],
 } as const;
 
-export const featuredArticle: Article = {
+export const featuredArticle = {
   title: `${featuredArticleDisplayTitle.lead}${featuredArticleDisplayTitle.phrases.join("")}`,
   displayTitle: featuredArticleDisplayTitle,
   href: "https://note.com/shosuke240557/n/nc7487ff91841",
   date: "二〇二六年六月 ・ 世界一周の途中にて",
+  issue: "2026.06",
   thumbnail: "/media/archive/nc7487ff91841.webp",
   excerpt:
     "「何者か」になりたかった二年前から、やりたいことのないまま世界一周へ出るまで。肩書きと行動力の奥にあった怖さをたどり直した文章。",
-};
+} satisfies Article;
 
 export const articles: Article[] = [
   {
@@ -438,6 +456,9 @@ export const films: Video[] = [
     duration: "6:43",
   },
 ];
+
+/** The editorially selected film used across the cinema, Central and home. */
+export const featuredFilm = films.find((film) => film.id === "WqQ4d-KwOZg")!;
 
 // ─── 旅程 ───
 

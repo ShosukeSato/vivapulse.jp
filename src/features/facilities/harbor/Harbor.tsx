@@ -163,7 +163,7 @@ export default function Harbor({ place }: { place: CityPlace }) {
                 <span><small>INDONESIA · FILM</small><strong>{indonesiaFilm.title}</strong></span>
               </a>
               <a href={featuredArticle.href} target="_blank" rel="noreferrer">
-                <Image src="/media/archive/nc7487ff91841.webp" alt="世界一周の旅と、これまでに出会った人々を重ねた記事の見出し画像" width={1280} height={670} />
+                <Image src={featuredArticle.thumbnail} alt="世界一周の旅と、これまでに出会った人々を重ねた記事の見出し画像" width={1280} height={670} />
                 <span><small>ON THE ROAD · NOTE</small><strong><FeaturedArticleTitle /></strong></span>
               </a>
             </div>
