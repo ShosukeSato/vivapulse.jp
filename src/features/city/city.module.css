@@ -379,7 +379,7 @@
 .directoryHead svg { width: 16px; }
 .directory nav { display: grid; }
 .directory nav a { min-height: 78px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 20px; gap: 12px; align-items: center; border-bottom: 1px solid #9aa39c; text-decoration: none; }
-.directory nav a > span:first-child { color: #8c4a3e; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.directory nav a > span:first-child { justify-self: start; padding: 3px 6px; background: #081923; color: #e3b851; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
 .directory nav a > span:nth-child(2) { min-width: 0; display: grid; gap: 4px; }
 .directory nav strong { font-size: 15px; }
 .directory nav small { overflow: hidden; color: #526567; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
@@ -453,6 +453,7 @@
   .mobilePlaceCard[data-dock="top"] { --card-arrival-y: -4px; top: 8px; }
   .mobilePlaceCard[data-dock="bottom"] { bottom: 8px; }
   .mobileCardHead { grid-column: 1 / -1; min-width: 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #a5afa8; color: #4a6670; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+  .mobileCardHead > span:first-child { padding: 3px 6px; background: #081923; color: #e3b851; }
   .mobileCardHead button { width: 44px; height: 44px; border: 0; border-left: 1px solid #a5afa8; background: transparent; color: var(--city-deep); cursor: pointer; font-size: 22px; }
   .mobileCardHead button:active { background: #f3c85e; }
   .mobileCardCopy { min-width: 0; display: flex; flex-direction: column; justify-content: center; }
@@ -477,7 +478,7 @@
   .mobileWayfinding nav { margin-top: 42px; border-top: 2px solid var(--city-deep); }
   .mobileWayfinding nav > p { margin: 0; padding: 16px 4px; border-bottom: 1px solid #9da9a5; font-size: 20px; font-weight: 700; }
   .mobileWayfinding nav > a { min-height: 64px; display: grid; grid-template-columns: 42px minmax(0, 1fr) 20px; align-items: center; gap: 10px; padding: 12px 4px; border-bottom: 1px solid #b5bcb6; color: inherit; text-decoration: none; }
-  .mobileWayfinding nav > a > span:first-child { color: #9e4638; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+  .mobileWayfinding nav > a > span:first-child { justify-self: start; padding: 3px 5px; background: #081923; color: #e3b851; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
   .mobileWayfinding nav > a > span:nth-child(2) { min-width: 0; display: grid; gap: 3px; }
   .mobileWayfinding nav strong { font-size: 14px; }
   .mobileWayfinding nav small { color: #405657; font-size: 13px; line-height: 1.45; overflow-wrap: normal; word-break: auto-phrase; }
