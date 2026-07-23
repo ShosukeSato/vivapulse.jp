@@ -19,7 +19,7 @@ import styles from "./city.module.css";
 
 const PRIMARY_PLACE_IDS = ["tripvlog", "haku", "stocka"];
 const GUIDE_ID = "city-guide";
-const LOWER_MAP_IDS = new Set(["cinema", "harbor"]);
+const LOWER_MAP_IDS = new Set(["cinema", "harbor", GUIDE_ID]);
 
 export default function CityExplorer() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -247,7 +247,13 @@ export default function CityExplorer() {
                 onSelect={setSelectedId}
                 guideSelected={guideSelected}
                 onGuideHover={() => setSelectedId(GUIDE_ID)}
-                onGuideSelect={() => openDirectory(mobileGuideButtonRef.current)}
+                onGuideSelect={() => {
+                  if (guideSelected) {
+                    openDirectory(mobileGuideButtonRef.current);
+                  } else {
+                    setSelectedId(GUIDE_ID);
+                  }
+                }}
                 preview
                 interactive
                 guideButtonRef={mobileGuideButtonRef}
@@ -262,7 +268,7 @@ export default function CityExplorer() {
                   : ""}
             </p>
 
-            {selectedPlace && (
+            {(selectedPlace || guideSelected) && (
               <article
                 className={styles.mobilePlaceCard}
                 id="mobile-place-card"
@@ -272,16 +278,22 @@ export default function CityExplorer() {
                 data-map-selection-ui
               >
                 <div className={styles.mobileCardHead}>
-                  <span>{selectedPlace.code}</span>
+                  <span>{guideSelected ? "CITY GUIDE" : selectedPlace?.code}</span>
                   <button type="button" onClick={() => setSelectedId(null)} aria-label="施設情報を閉じる">×</button>
                 </div>
                 <div className={styles.mobileCardCopy}>
-                  <p>{selectedPlace.destination}</p>
-                  <h2>{selectedPlace.shortName}</h2>
+                  <p>{guideSelected ? "街の施設を案内します" : selectedPlace?.destination}</p>
+                  <h2>{guideSelected ? "SHOSUKE" : selectedPlace?.shortName}</h2>
                 </div>
-                <Link href={selectedPlace.path} prefetch={false}>
-                  <span>この施設に入る</span><PixelIcon name="enter" />
-                </Link>
+                {guideSelected ? (
+                  <button type="button" onClick={() => openDirectory(mobileGuideButtonRef.current)}>
+                    <span>施設一覧を開く</span><PixelIcon name="directory" />
+                  </button>
+                ) : (
+                  <Link href={selectedPlace!.path} prefetch={false}>
+                    <span>この施設に入る</span><PixelIcon name="enter" />
+                  </Link>
+                )}
               </article>
             )}
           </div>

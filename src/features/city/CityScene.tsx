@@ -764,7 +764,7 @@ function CityGround({ pavingPatternId }: { pavingPatternId: string }) {
       {promenadeLamps.map((x) => <PromenadeLamp key={x} x={x} />)}
 
       <rect x="0" y="348" width="48" height="180" fill={P.foliage} stroke={P.outline} />
-      <rect x="1392" y="60" width="48" height="456" fill={P.foliage} stroke={P.outline} />
+      <rect x="1392" y="0" width="48" height="516" fill={P.foliage} stroke={P.outline} />
       {[12, 84, 156, 228, 300, 372, 444].map((y) => <Tree key={`east-${y}`} x={1404} y={y} />)}
       {[360, 432, 504].map((y) => <Tree key={`west-${y}`} x={12} y={y} />)}
     </g>

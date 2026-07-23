@@ -46,7 +46,7 @@ export default function Central({ place }: { place: CityPlace }) {
           <div className={styles.identity}>
             <p className={styles.kicker}>CITY 01 CENTRAL&nbsp;· PROFILE</p>
             <h1 id="central-title">
-              <span>さとう</span><wbr /><span>しょう</span><wbr /><span>すけ</span>
+              <span>さとう</span><wbr /><span>しょうすけ</span>
             </h1>
             <p className={styles.nameEn}>{profile.nameEn}</p>
             <p className={styles.bio}>
