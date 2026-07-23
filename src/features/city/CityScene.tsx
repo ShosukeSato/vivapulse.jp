@@ -9,6 +9,7 @@ import {
   CITY_SCENE_PLACEMENTS,
   CITY_SCENE_VIEW_BOX,
   CITY_SCENE_WIDTH,
+  cityFocusPath,
   type CitySceneBounds,
   type CityScenePlaceId,
 } from "./scene";
@@ -20,21 +21,17 @@ export type CitySceneProps = {
   interactive?: boolean;
   guideSelected?: boolean;
   onGuideSelect?: () => void;
+  onGuideHover?: () => void;
   guideButtonRef?: Ref<HTMLButtonElement>;
 };
 
 const PLACE_BY_ID = new Map(cityPlaces.map((place) => [place.id, place]));
-const MAP_LABELS: Record<CityScenePlaceId, string> = {
-  construction: "01 YARD",
-  tripvlog: "TRIPVLOG",
-  stocka: "STOCKA",
-  haku: "HAKU",
-  station: "CENTRAL",
-  strategy: "B2",
-  library: "ARCHIVE",
-  cinema: "CINEMA",
-  harbor: "TERMINAL",
-};
+
+/** Guide plate and avatar are one target on desktop; the phone preview keeps its own square. */
+const GUIDE_GEOMETRY = {
+  desktop: { hit: { x: 604, y: 588, width: 192, height: 148 }, focus: { x: 660, y: 588, size: 76 } },
+  preview: { hit: { x: 612, y: 552, width: 198, height: 198 }, focus: { x: 628, y: 552, size: 120 } },
+} as const;
 
 type SelectableElement = HTMLAnchorElement | HTMLButtonElement | SVGAElement;
 
@@ -462,10 +459,10 @@ function SceneLabel({ place, id }: { place: CityPlace; id: CityScenePlaceId }) {
 
   return (
     <g className={`city-scene__label city-scene__label--${id}`} transform={`translate(${x} ${y})`}>
-      <title>{place.code} {place.name}</title>
       <rect width={width} height="64" fill={P.blackDepth} stroke={P.outline} />
-      <rect width="4" height="64" fill={P.selection} />
-      <text x="14" y="32" dominantBaseline="middle" fill={P.lightStone} className="city-scene__name">{MAP_LABELS[id]}</text>
+      <rect width="6" height="64" fill={P.selection} />
+      <text x="20" y="26" fill={P.signAmber} className="city-scene__code">{place.code}</text>
+      <text x="20" y="54" fill={P.lightStone} className="city-scene__name">{place.name}</text>
     </g>
   );
 }
@@ -506,23 +503,16 @@ function SceneLandmark({
 }) {
   const placement = CITY_SCENE_PLACEMENTS[id];
   const bounds = placement.bounds;
-  const hitBounds = "hitBounds" in placement ? placement.hitBounds : bounds;
-  const focusPath = `M${bounds.x} ${bounds.y + 14}V${bounds.y}H${bounds.x + 14} M${bounds.x + bounds.width - 14} ${bounds.y}H${bounds.x + bounds.width}V${bounds.y + 14} M${bounds.x} ${bounds.y + bounds.height - 14}V${bounds.y + bounds.height}H${bounds.x + 14} M${bounds.x + bounds.width - 14} ${bounds.y + bounds.height}H${bounds.x + bounds.width}V${bounds.y + bounds.height - 14}`;
+  const desktopHitBounds =
+    !preview && "desktopHitBounds" in placement ? placement.desktopHitBounds : undefined;
+  const hitBounds =
+    desktopHitBounds ?? ("hitBounds" in placement ? placement.hitBounds : bounds);
 
   const artwork = (
     <g aria-hidden="true" pointerEvents="none">
       <g className="city-scene__artwork">
         <LandmarkArtwork id={id} brickPatternId={brickPatternId} />
       </g>
-      {interactive && (
-        <g
-          className={`city-scene__focus${selected ? " city-scene__focus--selected" : ""}`}
-          pointerEvents="none"
-        >
-          <path d={focusPath} fill="none" stroke={P.blackDepth} strokeWidth="7" vectorEffect="non-scaling-stroke" />
-          <path d={focusPath} fill="none" stroke="currentColor" strokeWidth="3" vectorEffect="non-scaling-stroke" />
-        </g>
-      )}
     </g>
   );
 
@@ -530,7 +520,7 @@ function SceneLandmark({
 
   return (
     <a
-      className="city-scene__landmark"
+      className={`city-scene__landmark city-scene__landmark--${id}`}
       data-map-target="place"
       href={place.path}
       aria-label={preview
@@ -631,63 +621,105 @@ function Player({
   interactive,
   selected,
   onSelect,
+  onHover,
   buttonRef,
 }: {
   preview: boolean;
   interactive: boolean;
   selected: boolean;
   onSelect: () => void;
+  onHover: () => void;
   buttonRef?: Ref<HTMLButtonElement>;
 }) {
   const artwork = <PlayerArtwork preview={preview} />;
   if (!interactive) return artwork;
 
-  const focusX = preview ? 628 : 660;
-  const focusY = preview ? 552 : 576;
-  const focusSize = preview ? 120 : 76;
-  const hitX = preview ? 612 : focusX;
-  const hitY = preview ? 552 : focusY;
-  const hitSize = preview ? 198 : focusSize;
-  const focusPath = `M${focusX + 8} ${focusY + 16}V${focusY + 8}H${focusX + 16} M${focusX + focusSize - 16} ${focusY + 8}H${focusX + focusSize - 8}V${focusY + 16} M${focusX + 8} ${focusY + focusSize - 16}V${focusY + focusSize - 8}H${focusX + 16} M${focusX + focusSize - 16} ${focusY + focusSize - 8}H${focusX + focusSize - 8}V${focusY + focusSize - 16}`;
+  const { hit } = GUIDE_GEOMETRY[preview ? "preview" : "desktop"];
 
   return (
     <g
       className="city-scene__player-action"
       data-selected={selected ? "true" : undefined}
     >
-      <foreignObject x={hitX} y={hitY} width={hitSize} height={hitSize}>
+      <foreignObject x={hit.x} y={hit.y} width={hit.width} height={hit.height}>
         <button
           className="city-scene__guide-button"
           data-map-target="guide"
           type="button"
           ref={buttonRef}
-          aria-label="街の案内人SHOSUKEに話しかける"
-          aria-pressed={selected}
+          aria-label="街の案内人SHOSUKEに話しかけて施設一覧を開く"
+          aria-haspopup="dialog"
+          aria-expanded={selected}
           onClick={(event) => {
             event.stopPropagation();
+            const touchSelection = preview ? event.currentTarget.dataset.touchSelection : undefined;
+            delete event.currentTarget.dataset.touchSelection;
+            if (touchSelection) return;
             onSelect();
+          }}
+          onPointerEnter={(event) => {
+            if (event.pointerType !== "touch") onHover();
           }}
           onTouchStart={preview ? beginTouchSelection : undefined}
           onTouchMove={preview ? trackTouchSelection : undefined}
-          onTouchEnd={preview ? (event) => clearTouchSelection(event.currentTarget) : undefined}
+          onTouchEnd={preview ? (event) => finishTouchSelection(event, onSelect, false) : undefined}
           onTouchCancel={preview ? (event) => clearTouchSelection(event.currentTarget) : undefined}
         />
       </foreignObject>
-      <g
-        className={`city-scene__guide-focus${selected ? " city-scene__guide-focus--selected" : ""}`}
-        pointerEvents="none"
-      >
-        <path d={focusPath} fill="none" stroke={P.blackDepth} strokeWidth="7" vectorEffect="non-scaling-stroke" />
-        <path d={focusPath} fill="none" stroke="currentColor" strokeWidth="3" vectorEffect="non-scaling-stroke" />
-      </g>
       {artwork}
       {!preview && (
-        <g className="city-scene__guide-label" transform="translate(570 660)" pointerEvents="none">
-          <rect width="300" height="64" fill={P.blackDepth} stroke={P.outline} />
-          <rect width="4" height="64" fill={P.selection} />
-          <text x="14" y="32" dominantBaseline="middle" fill={P.lightStone}>SHOSUKE</text>
+        <g
+          className="city-scene__guide-label"
+          transform="translate(616 660)"
+          pointerEvents="none"
+          aria-hidden="true"
+        >
+          <rect width="168" height="64" fill={P.blackDepth} stroke={P.outline} />
+          <rect width="6" height="64" fill={P.selection} />
+          <text x="20" y="26" fill={P.haze} className="city-scene__guide-role">案内人</text>
+          <text x="20" y="54" fill={P.lightStone} className="city-scene__name">SHOSUKE</text>
         </g>
       )}
+    </g>
+  );
+}
+
+function FocusBrackets({ d }: { d: string }) {
+  return (
+    <>
+      <path d={d} fill="none" stroke={P.blackDepth} strokeWidth="7" vectorEffect="non-scaling-stroke" />
+      <path d={d} fill="none" stroke="currentColor" strokeWidth="3" vectorEffect="non-scaling-stroke" />
+    </>
+  );
+}
+
+/** Selection frames live above the name plates, so no bracket is ever painted over. */
+function FocusLayer({ selectedId, guideSelected, preview }: {
+  selectedId: string | null;
+  guideSelected: boolean;
+  preview: boolean;
+}) {
+  const { focus } = GUIDE_GEOMETRY[preview ? "preview" : "desktop"];
+  const guidePath = cityFocusPath(
+    { x: focus.x + 8, y: focus.y + 8, width: focus.size - 16, height: focus.size - 16 },
+    8,
+  );
+
+  return (
+    <g className="city-scene__focus-layer" aria-hidden="true" pointerEvents="none">
+      {CITY_SCENE_ORDER.map((id) => (
+        <g
+          key={id}
+          className={`city-scene__focus city-scene__focus--${id}${
+            selectedId === id ? " city-scene__focus--selected" : ""
+          }`}
+        >
+          <FocusBrackets d={cityFocusPath(CITY_SCENE_PLACEMENTS[id].bounds)} />
+        </g>
+      ))}
+      <g className={`city-scene__guide-focus${guideSelected ? " city-scene__guide-focus--selected" : ""}`}>
+        <FocusBrackets d={guidePath} />
+      </g>
     </g>
   );
 }
@@ -746,6 +778,7 @@ export default function CityScene({
   interactive = !preview,
   guideSelected = false,
   onGuideSelect = () => undefined,
+  onGuideHover = () => undefined,
   guideButtonRef,
 }: CitySceneProps) {
   const instanceId = useId().replaceAll(":", "");
@@ -785,25 +818,27 @@ export default function CityScene({
         .city-scene__player-action { cursor: pointer; outline: none; }
         .city-scene__guide-button { width: 100%; height: 100%; display: block; padding: 0; border: 0; background: transparent; cursor: pointer; }
         .city-scene__artwork { opacity: 1; transition: opacity 80ms linear; }
-        .city-scene__focus { color: ${P.selection}; opacity: 0; transition: opacity 80ms linear; }
-        .city-scene__focus--selected { color: ${P.selection}; opacity: 1; }
-        .city-scene__landmark:hover .city-scene__focus,
-        .city-scene__landmark:focus-visible .city-scene__focus { opacity: 1; }
+        .city-scene__focus,
+        .city-scene__guide-focus { color: ${P.selection}; opacity: 0; transition: opacity 80ms linear; }
+        .city-scene__focus--selected,
+        .city-scene__guide-focus--selected { opacity: 1; }
         .city-scene__landmark[data-pressed="true"] .city-scene__artwork { opacity: .9; }
-        .city-scene__landmark[data-pressed="true"] .city-scene__focus {
+${CITY_SCENE_ORDER.map((id) => `
+        .city-scene:has(.city-scene__landmark--${id}:hover) .city-scene__focus--${id},
+        .city-scene:has(.city-scene__landmark--${id}:focus-visible) .city-scene__focus--${id} { opacity: 1; }
+        .city-scene:has(.city-scene__landmark--${id}[data-pressed="true"]) .city-scene__focus--${id} {
           color: ${P.warmLight};
           opacity: 1;
           transition: none;
-        }
+        }`).join("")}
         .city-scene__player { opacity: 1; transition: opacity 80ms linear; }
-        .city-scene__guide-focus { color: ${P.selection}; opacity: 0; transition: opacity 80ms linear; }
-        .city-scene__guide-focus--selected,
-        .city-scene__player-action:hover .city-scene__guide-focus,
-        .city-scene__player-action:focus-within .city-scene__guide-focus { opacity: 1; }
+        .city-scene__guide-button:focus-visible { outline: none; }
+        .city-scene:has(.city-scene__player-action:hover) .city-scene__guide-focus,
+        .city-scene:has(.city-scene__guide-button:focus-visible) .city-scene__guide-focus { opacity: 1; }
         .city-scene__player-action:has(.city-scene__guide-button:active) .city-scene__player,
         .city-scene__player-action:has(.city-scene__guide-button[data-pressed="true"]) .city-scene__player { opacity: .9; }
-        .city-scene__player-action:has(.city-scene__guide-button:active) .city-scene__guide-focus,
-        .city-scene__player-action:has(.city-scene__guide-button[data-pressed="true"]) .city-scene__guide-focus {
+        .city-scene:has(.city-scene__guide-button:active) .city-scene__guide-focus,
+        .city-scene:has(.city-scene__guide-button[data-pressed="true"]) .city-scene__guide-focus {
           color: ${P.warmLight};
           opacity: 1;
           transition: none;
@@ -814,11 +849,24 @@ export default function CityScene({
           font-weight: 700;
           letter-spacing: .02em;
         }
-        .city-scene__guide-label text {
-          font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
-          font-size: 24px;
-          font-weight: 700;
-          letter-spacing: .02em;
+        .city-scene__code {
+          font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+          font-size: 20px;
+          font-weight: 600;
+          letter-spacing: .08em;
+        }
+        .city-scene__guide-role {
+          font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+          font-size: 20px;
+          font-weight: 600;
+          letter-spacing: .04em;
+        }
+        /* Below 1440px the scene renders at 0.558–0.665, so source type must grow to
+           keep the rendered name above 13px and the rendered code above 12px. */
+        @media (max-width: 1439px) {
+          .city-scene__name { font-size: 26px; }
+          .city-scene__code,
+          .city-scene__guide-role { font-size: 22px; }
         }
         .city-scene__reserved-code,
         .city-scene__reserved-name {
@@ -889,8 +937,13 @@ export default function CityScene({
         interactive={interactive}
         selected={guideSelected}
         onSelect={onGuideSelect}
+        onHover={onGuideHover}
         buttonRef={guideButtonRef}
       />
+
+      {interactive && (
+        <FocusLayer selectedId={selectedId} guideSelected={guideSelected} preview={preview} />
+      )}
     </svg>
   );
 }
