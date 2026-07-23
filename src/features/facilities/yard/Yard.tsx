@@ -28,8 +28,7 @@ export default function Yard({ place }: { place: CityPlace }) {
             <span className="semanticPhrase semanticUnit">小さなアプリと</span><wbr />
             <span className="semanticPhrase semanticUnit">実験の</span><wbr />
             <span className="semanticPhrase semanticUnit">制作区画です。</span><wbr />
-            <span className="semanticPhrase semanticUnit">公開中の</span><wbr />
-            <span className="semanticPhrase semanticUnit">{otherApps.length}件を、</span><wbr />
+            <span className="semanticPhrase semanticUnit">公開中の制作物を、</span><wbr />
             <span className="semanticPhrase semanticUnit">制作台帳として</span><wbr />
             <span className="semanticPhrase semanticUnit">一覧できます。</span>
           </p>
@@ -38,7 +37,7 @@ export default function Yard({ place }: { place: CityPlace }) {
         <section className={styles.ledger} id="project-ledger" aria-labelledby="ledger-title">
           <div className={styles.ledgerHead}>
             <div><span>BUILT HERE</span><h2 id="ledger-title"><span>公開</span><span>プロジェクト</span></h2></div>
-            <strong>{String(otherApps.length).padStart(2, "0")} PROJECTS</strong>
+            <strong>PROJECT LEDGER</strong>
           </div>
 
           <ol>

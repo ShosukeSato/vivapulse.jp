@@ -1,7 +1,6 @@
 export const CITY_SCENE_WIDTH = 1440;
 export const CITY_SCENE_HEIGHT = 1100;
 export const CITY_SCENE_VIEW_BOX = `0 0 ${CITY_SCENE_WIDTH} ${CITY_SCENE_HEIGHT}`;
-export const CITY_SCENE_CAMERA_VIEW_BOX = "192 72 1056 804";
 
 export const CITY_SCENE_PALETTE = {
   blackDepth: "#081923",
@@ -68,38 +67,38 @@ export type CityScenePlacement = {
 export const CITY_SCENE_PLACEMENTS = {
   construction: {
     bounds: { x: 48, y: 48, width: 312, height: 216 },
-    label: { x: 72, y: 228, width: 216 },
+    label: { x: 48, y: 228, width: 264 },
   },
   tripvlog: {
     bounds: { x: 420, y: 48, width: 240, height: 216 },
-    label: { x: 432, y: 228, width: 216 },
+    label: { x: 408, y: 228, width: 264 },
   },
   stocka: {
     bounds: { x: 1032, y: 48, width: 336, height: 216 },
-    label: { x: 1104, y: 228, width: 216 },
+    label: { x: 1068, y: 228, width: 300 },
   },
   haku: {
     bounds: { x: 48, y: 336, width: 336, height: 216 },
-    label: { x: 72, y: 516, width: 216 },
+    label: { x: 48, y: 516, width: 264 },
   },
   station: {
     bounds: { x: 480, y: 312, width: 384, height: 240 },
-    label: { x: 516, y: 516, width: 240 },
+    label: { x: 480, y: 516, width: 288 },
   },
   strategy: {
     bounds: { x: 852, y: 384, width: 132, height: 168 },
-    label: { x: 816, y: 516, width: 168 },
+    label: { x: 780, y: 516, width: 180 },
   },
   library: {
     bounds: { x: 936, y: 336, width: 336, height: 216 },
-    label: { x: 1008, y: 516, width: 216 },
+    label: { x: 972, y: 516, width: 276 },
   },
   cinema: {
     bounds: { x: 168, y: 588, width: 360, height: 132 },
-    label: { x: 192, y: 612, width: 240 },
+    label: { x: 144, y: 612, width: 300 },
   },
   harbor: {
     bounds: { x: 936, y: 576, width: 360, height: 264 },
-    label: { x: 960, y: 612, width: 240 },
+    label: { x: 984, y: 612, width: 288 },
   },
 } as const satisfies Record<CityScenePlaceId, CityScenePlacement>;

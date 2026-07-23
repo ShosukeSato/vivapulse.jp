@@ -7,6 +7,7 @@ import CinemaProgrammeLoader from "./CinemaProgrammeLoader";
 import styles from "./cinema.module.css";
 
 const availableFilms = films.filter((film) => film.id !== "IR-GR-u0kMM");
+const featureFilmId = "WqQ4d-KwOZg";
 const native640FilmId = "ywBornpZvrE";
 const transparentPixel = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
@@ -25,7 +26,8 @@ function cinemaStillSrcSet(id: string) {
 }
 
 export default function Cinema({ place }: { place: CityPlace }) {
-  const [feature, ...programme] = availableFilms;
+  const feature = availableFilms.find((film) => film.id === featureFilmId)!;
+  const programme = availableFilms.filter((film) => film.id !== featureFilmId);
 
   return (
     <div className={styles.page}>
@@ -77,8 +79,8 @@ export default function Cinema({ place }: { place: CityPlace }) {
         <section className={styles.programme} id="programme" aria-labelledby="programme-title">
           <CinemaProgrammeLoader />
           <header className={styles.programmeHead}>
-            <div><span>SCREENS 02—{String(availableFilms.length).padStart(2, "0")}</span><h2 id="programme-title">上映プログラム</h2></div>
-            <p>{availableFilms.length} FILMS / 2026</p>
+            <div><span>CITY PROGRAMME</span><h2 id="programme-title">上映プログラム</h2></div>
+            <p>VOYAGE FILMS / 2026—</p>
           </header>
 
           <div className={styles.filmGrid}>

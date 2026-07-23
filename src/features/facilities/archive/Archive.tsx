@@ -6,14 +6,13 @@ import archiveNotes from "@/data/note-archive.json";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
 import FeaturedArticleTitle from "@/features/shared/FeaturedArticleTitle";
-import SemanticText from "@/features/shared/SemanticText";
 import ClientCatalogue from "./ClientCatalogue";
 import styles from "./archive.module.css";
 
 export default function Archive({ place }: { place: CityPlace }) {
   return (
     <div className={styles.page}>
-      <a className={styles.skip} href="#catalogue">229本の目録へ移動</a>
+      <a className={styles.skip} href="#catalogue">公開文章の目録へ移動</a>
       <FacilityBar place={place} />
 
       <main>
@@ -22,18 +21,7 @@ export default function Archive({ place }: { place: CityPlace }) {
             <p className={styles.issue}>THE ARCHIVE · FEATURED STORY</p>
             <p className={styles.date}>{featuredArticle.date}</p>
             <h1 id="archive-title"><FeaturedArticleTitle /></h1>
-            <p className={styles.excerpt}>
-              <SemanticText phrases={[
-                "スリランカの",
-                "山奥で、",
-                "ひとりで",
-                "書きはじめた。",
-                "旅が進むたびに",
-                "追記されて、",
-                "旅と一緒に",
-                "育っていく記事。",
-              ]} />
-            </p>
+            <p className={styles.excerpt}>{featuredArticle.excerpt}</p>
             <a className={styles.readFeature} href={featuredArticle.href} target="_blank" rel="noreferrer">
               <span>この文章をnoteで読む</span><PixelIcon name="external" />
             </a>
@@ -46,21 +34,21 @@ export default function Archive({ place }: { place: CityPlace }) {
             rel="noreferrer"
           >
             <Image
-              src="/media/archive/featured.webp"
-              alt="貯金0の世界一周で学んだ、一人経済圏の作り方という注目記事の見出し画像"
-              width={1200}
-              height={628}
+              src="/media/archive/nc7487ff91841.webp"
+              alt="世界一周の旅と、これまでに出会った人々を重ねた記事の見出し画像"
+              width={1280}
+              height={670}
               priority
             />
-            <span>ISSUE 2026.07</span>
+            <span>ISSUE 2026.06</span>
           </a>
         </article>
 
         <section className={styles.catalogue} id="catalogue" aria-labelledby="catalogue-title">
           <header className={styles.catalogueHeader}>
             <div>
-              <p>PUBLIC WRITING · 2019—2026</p>
-              <h2 id="catalogue-title">書いたもの、229本。</h2>
+              <p>PUBLIC WRITING · 2019—</p>
+              <h2 id="catalogue-title">書いたものの、公開目録。</h2>
             </div>
             <p>
               旅、個人開発、学び、暮らしと思考。背表紙ではなく、題名と年月から探せる横組みの公開目録です。
@@ -68,6 +56,16 @@ export default function Archive({ place }: { place: CityPlace }) {
           </header>
 
           <ClientCatalogue notes={archiveNotes} />
+        </section>
+
+        <section className={styles.restricted} aria-labelledby="restricted-title">
+          <div aria-hidden="true"><span>RESTRICTED</span><i /></div>
+          <div>
+            <p>RESTRICTED STACK / PREPARING</p>
+            <h2 id="restricted-title">秘密の書庫</h2>
+            <span>準備中</span>
+          </div>
+          <p>メンバーだけが入れる書庫を、この奥に準備しています。開庫の日まで、扉は閉じたまま。</p>
         </section>
       </main>
 

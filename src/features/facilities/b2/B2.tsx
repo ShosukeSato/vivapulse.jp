@@ -14,7 +14,7 @@ const [featuredEpisode, ...pastEpisodes] = niwakaPhilosophyEpisodes;
 
 const episodeTitlePhrases: Record<string, readonly string[]> = {
   "AFEKFEwe-tU": ["ゴルフ", "じゃないと", "ダメですか？"],
-  "o_9XUgJ7K_c": ["【言葉と", "コミニュ", "ケーション】", "通じ合うって", "なんだ...？", "【にわか哲学】"],
+  "o_9XUgJ7K_c": ["【言葉と", "コミニュケーション】", "通じ合うって", "なんだ...？", "【にわか哲学】"],
   vGR0XhCqbbk: ["自己紹介って", "なんだ？", "【にわか哲学】"],
 };
 
@@ -79,7 +79,7 @@ export default function B2({ place }: { place: CityPlace }) {
           <section className={styles.ledger} aria-labelledby="episode-ledger-title">
             <header>
               <div><span>EPISODE LEDGER</span><h2 id="episode-ledger-title">これまでの回</h2></div>
-              <strong>{String(pastEpisodes.length).padStart(2, "0")} ARCHIVE</strong>
+              <strong>CONVERSATION ARCHIVE</strong>
             </header>
             <ol>
               {pastEpisodes.map((episode) => (

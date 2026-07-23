@@ -11,28 +11,41 @@ import FeaturedArticleTitle from "@/features/shared/FeaturedArticleTitle";
 import styles from "./city.module.css";
 
 const PRIMARY_PLACE_IDS = ["tripvlog", "haku", "stocka"];
-const ignoreSelection = () => undefined;
-
-const placeStatusLabel = (status: (typeof cityPlaces)[number]["status"]) => {
-  if (status === "live") return "CURRENT";
-  if (status === "building") return "OPENING SOON";
-  return "OPEN";
-};
+const GUIDE_ID = "city-guide";
+const LOWER_MAP_IDS = new Set(["cinema", "harbor", GUIDE_ID]);
 
 export default function CityExplorer() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [directoryOpen, setDirectoryOpen] = useState(false);
   const directoryButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileCardRef = useRef<HTMLElement>(null);
 
   const selectedPlace = useMemo(
     () => cityPlaces.find((place) => place.id === selectedId) ?? null,
     [selectedId],
   );
+  const guideSelected = selectedId === GUIDE_ID;
 
   useEffect(() => {
     if (directoryOpen) closeButtonRef.current?.focus();
   }, [directoryOpen]);
+
+  useEffect(() => {
+    const clearSelection = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !directoryOpen) setSelectedId(null);
+    };
+    document.addEventListener("keydown", clearSelection);
+    return () => document.removeEventListener("keydown", clearSelection);
+  }, [directoryOpen]);
+
+  useEffect(() => {
+    if (!selectedId || !window.matchMedia("(max-width: 1220px)").matches) return;
+    const frame = window.requestAnimationFrame(() => {
+      mobileCardRef.current?.scrollIntoView({ block: "nearest" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [selectedId]);
 
   useEffect(() => {
     const deferredImages = Array.from(
@@ -148,37 +161,80 @@ export default function CityExplorer() {
 
             <div className={styles.primaryActions}>
               <a className={styles.primaryAction} href="#works">
-                <span>3つの代表作を見る</span><PixelIcon name="enter" />
+                <span>代表作を見る</span><PixelIcon name="enter" />
               </a>
               <Link className={styles.textAction} href="/places/city-01-central" prefetch={false}>本人について</Link>
             </div>
 
-            <dl className={styles.currentQuest}>
-              <div><dt><PixelIcon name="location" />現在地</dt><dd>{profile.currentLocation.place}</dd></div>
-              <div><dt>次の街</dt><dd>{profile.nextLocation}</dd></div>
-            </dl>
+            {selectedPlace || guideSelected ? (
+              <aside className={styles.placeInspector} aria-live="polite" data-map-selection-ui>
+                <div className={styles.inspectorMeta}>
+                  <span>{guideSelected ? "CITY GUIDE" : selectedPlace?.code}</span>
+                  <button type="button" onClick={() => setSelectedId(null)} aria-label="施設情報を閉じる">×</button>
+                </div>
+                <p>{guideSelected ? "この街の案内人" : selectedPlace?.destination}</p>
+                <h2>{guideSelected ? "SHOSUKE" : selectedPlace?.name}</h2>
+                <p className={styles.inspectorSummary}>
+                  {guideSelected
+                    ? `この街をつくっている、さとうしょうすけです。現在地は${profile.currentLocation.place}。`
+                    : selectedPlace?.summary}
+                </p>
+                <Link href={guideSelected ? "/places/city-01-central" : selectedPlace!.path} prefetch={false}>
+                  <span>{guideSelected ? "本人について" : "この施設に入る"}</span><PixelIcon name="enter" />
+                </Link>
+              </aside>
+            ) : (
+              <dl className={styles.currentQuest}>
+                <div><dt><PixelIcon name="location" />現在地</dt><dd>{profile.currentLocation.place}</dd></div>
+                <div><dt>次の街</dt><dd>{profile.nextLocation}</dd></div>
+              </dl>
+            )}
           </div>
 
-          <div className={styles.mapFrame}>
+          <div
+            className={styles.mapFrame}
+            onClick={(event) => {
+              const target = event.target as Element;
+              if (target.closest("[data-map-target], [data-map-selection-ui]")) return;
+              setSelectedId(null);
+            }}
+          >
             <div className={styles.desktopScene}>
-              <CityScene selectedId={selectedId} onSelect={setSelectedId} />
+              <CityScene
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+                guideSelected={guideSelected}
+                onGuideSelect={() => setSelectedId(GUIDE_ID)}
+              />
             </div>
             <div className={styles.mobileScene}>
-              <CityScene selectedId={null} onSelect={ignoreSelection} preview />
+              <CityScene
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+                guideSelected={guideSelected}
+                onGuideSelect={() => setSelectedId(GUIDE_ID)}
+                preview
+                interactive
+              />
             </div>
 
-            {selectedPlace && (
-              <article className={styles.placeCard}>
-                <div className={styles.placeMeta}>
-                  <span>{selectedPlace.code}</span>
-                  <span>{placeStatusLabel(selectedPlace.status)}</span>
+            {(selectedPlace || guideSelected) && (
+              <article
+                className={styles.mobilePlaceCard}
+                ref={mobileCardRef}
+                data-dock={LOWER_MAP_IDS.has(selectedId ?? "") ? "top" : "bottom"}
+                data-map-selection-ui
+              >
+                <div className={styles.mobileCardHead}>
+                  <span>{guideSelected ? "CITY GUIDE" : selectedPlace?.code}</span>
+                  <button type="button" onClick={() => setSelectedId(null)} aria-label="施設情報を閉じる">×</button>
                 </div>
-                <div className={styles.placeCopy}>
-                  <div><p>{selectedPlace.destination}</p><h2>{selectedPlace.name}</h2></div>
-                  <p>{selectedPlace.summary}</p>
+                <div className={styles.mobileCardCopy}>
+                  <p>{guideSelected ? "この街の案内人" : selectedPlace?.destination}</p>
+                  <h2>{guideSelected ? "SHOSUKE" : selectedPlace?.shortName}</h2>
                 </div>
-                <Link className={styles.enterLink} href={selectedPlace.path} prefetch={false}>
-                  <span>この施設に入る</span><PixelIcon name="enter" />
+                <Link href={guideSelected ? "/places/city-01-central" : selectedPlace!.path} prefetch={false}>
+                  <span>{guideSelected ? "本人について" : "この施設に入る"}</span><PixelIcon name="enter" />
                 </Link>
               </article>
             )}
@@ -266,7 +322,7 @@ export default function CityExplorer() {
         <footer className={styles.footer}>
           <div><strong>CITY 01</strong><span>つくったものが、街になっていく。</span></div>
           <a href="mailto:shosuke240557@gmail.com">CONTACT <PixelIcon name="external" /></a>
-          <span>© 2026 SHOSUKE SATO</span>
+          <span>© SHOSUKE SATO</span>
         </footer>
       </main>
 

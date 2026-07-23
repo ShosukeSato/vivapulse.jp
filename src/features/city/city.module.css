@@ -238,32 +238,22 @@
 .legendOpen { background: var(--city-light); border: 1px solid var(--city-deep); }
 .legendBuilding { background: var(--city-stone-mid); border: 1px solid var(--city-deep); }
 
-.placeCard {
-  position: absolute;
-  z-index: 6;
-  left: 20px;
-  right: 20px;
-  bottom: 18px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px 20px;
-  max-width: 760px;
-  padding: 16px 18px;
-  border: 2px solid var(--city-deep);
-  background: #f1ede1;
-  color: var(--city-deep);
-  box-shadow: 8px 8px 0 rgba(8, 25, 35, .26);
+.placeInspector {
+  margin: auto 0 0;
+  padding-top: 18px;
+  border-top: 1px solid #3c5965;
+  color: #f0eadd;
 }
-
-.placeMeta { grid-column: 1 / -1; display: flex; justify-content: space-between; padding-bottom: 9px; border-bottom: 1px solid #a5afa8; color: #4a6670; font-family: var(--font-mono); font-size: 13px; font-weight: 600; }
-.placeMeta span:last-child { color: #9e4638; }
-.placeCopy { display: grid; grid-template-columns: minmax(170px, .8fr) minmax(210px, 1.2fr); gap: 24px; align-items: end; }
-.placeCopy p { margin: 0; color: #53696d; font-size: 16px; line-height: 1.55; }
-.placeCopy h2 { margin: 3px 0 0; font-size: clamp(18px, 2vw, 27px); line-height: 1.05; letter-spacing: -.035em; }
-.placeCopy > p { padding-left: 22px; border-left: 1px solid #a5afa8; }
-.enterLink { align-self: stretch; min-width: 144px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 12px 0 14px; background: var(--city-deep); color: #fff !important; font-size: 14px; font-weight: 700; text-decoration: none; }
-.enterLink svg { width: 17px; color: var(--city-light); }
-.enterLink:hover { background: #183c4c; }
+.inspectorMeta { min-height: 44px; display: flex; align-items: center; justify-content: space-between; color: var(--city-light); font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.inspectorMeta button { width: 44px; height: 44px; border: 1px solid #58727a; background: transparent; color: #f0eadd; cursor: pointer; font-size: 22px; }
+.inspectorMeta button:hover { border-color: var(--city-light); color: var(--city-light-core); }
+.placeInspector > p { margin: 8px 0 0; color: #96afb5; font-size: 13px; line-height: 1.55; }
+.placeInspector h2 { margin: 3px 0 0; color: #f3efe4; font-size: clamp(20px, 2vw, 27px); line-height: 1.08; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.placeInspector .inspectorSummary { margin-top: 10px; color: #b8cccf; font-size: 14px; line-height: 1.6; }
+.placeInspector > a { min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 13px; padding: 0 13px; background: var(--city-light); color: var(--city-deep) !important; font-size: 13px; font-weight: 700; text-decoration: none; }
+.placeInspector > a:hover { background: var(--city-light-core); }
+.placeInspector > a svg { width: 16px; }
+.mobilePlaceCard { display: none; }
 
 .controlHint {
   position: relative;
@@ -388,8 +378,6 @@
   .primaryActions { align-items: stretch; flex-direction: column; gap: 6px; }
   .primaryAction { width: 100%; }
   .textAction { width: fit-content; }
-  .placeCopy { grid-template-columns: 1fr; gap: 8px; }
-  .placeCopy > p { padding: 8px 0 0; border-top: 1px solid #a5afa8; border-left: 0; }
   .works { grid-template-columns: 1fr; }
   .sectionLead { position: static; }
   .sectionLead p { max-width: 42em; }
@@ -413,16 +401,35 @@
   .primaryActions { margin-top: 24px; }
   .identity .textAction,
   .identity .currentQuest { display: none; }
-  .mapFrame { order: 2; min-height: 300px; }
+  .mapFrame { order: 2; min-height: 304px; }
   .desktopScene { display: none; }
-  .mobileScene { position: absolute; inset: 0; display: block; overflow: hidden; pointer-events: none; }
-  .mobileScene svg { width: 100%; height: 300px; display: block; }
-  .placeCard { left: 12px; right: 12px; bottom: 12px; max-width: none; grid-template-columns: 1fr; gap: 10px; padding: 14px; }
-  .placeMeta { font-size: 13px; }
-  .placeCopy { grid-template-columns: 1fr; gap: 8px; }
-  .placeCopy > p { display: none; }
-  .placeCopy h2 { font-size: 22px; }
-  .enterLink { min-height: 46px; }
+  .mobileScene { position: absolute; inset: 0; display: block; overflow: hidden; }
+  .mobileScene svg { width: 100%; height: 304px; display: block; }
+  .identity .placeInspector { display: none; }
+  .mobilePlaceCard {
+    position: absolute;
+    z-index: 8;
+    left: 8px;
+    right: 8px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(138px, auto);
+    grid-template-rows: 44px 44px;
+    gap: 0 8px;
+    padding: 7px 8px;
+    border: 2px solid var(--city-deep);
+    background: #f1ede1;
+    color: var(--city-deep);
+    box-shadow: 5px 5px 0 rgba(8, 25, 35, .28);
+  }
+  .mobilePlaceCard[data-dock="top"] { top: 8px; }
+  .mobilePlaceCard[data-dock="bottom"] { bottom: 8px; }
+  .mobileCardHead { grid-column: 1 / -1; min-width: 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #a5afa8; color: #4a6670; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+  .mobileCardHead button { width: 44px; height: 44px; border: 0; border-left: 1px solid #a5afa8; background: transparent; color: var(--city-deep); cursor: pointer; font-size: 22px; }
+  .mobileCardCopy { min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+  .mobileCardCopy p { overflow: hidden; margin: 0; color: #53696d; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+  .mobileCardCopy h2 { overflow: hidden; margin: 2px 0 0; font-size: 17px; line-height: 1.05; letter-spacing: -.025em; text-overflow: ellipsis; white-space: nowrap; }
+  .mobilePlaceCard > a { min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 10px; background: var(--city-deep); color: #fff !important; font-size: 13px; font-weight: 700; text-decoration: none; }
+  .mobilePlaceCard > a svg { width: 15px; color: var(--city-light); }
   .controlHint { display: none; }
   .mobileWayfinding { order: 3; display: block; padding: 28px 20px 50px; background: #e5e1d4; color: var(--city-deep); }
   .mobileStatus { display: grid; grid-template-columns: 1fr 1fr; border-top: 2px solid var(--city-deep); border-bottom: 1px solid #9da9a5; }
@@ -473,7 +480,7 @@
   .identity { padding-inline: 18px; }
   .identity h1 { font-size: 34px; }
   .primaryAction { font-size: 14px; }
-  .mapFrame, .mobileScene, .mobileScene svg { min-height: 276px; height: 276px; }
+  .mapFrame, .mobileScene, .mobileScene svg { min-height: 304px; height: 304px; }
   .works { padding-inline: 18px; }
   .sectionLead h2 { font-size: 38px; }
   .productRow { grid-template-columns: 24px 58px minmax(0, 1fr); gap: 9px; }

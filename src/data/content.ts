@@ -161,19 +161,18 @@ export type Article = {
 };
 
 const featuredArticleDisplayTitle = {
-  lead: "貯金0の世界一周で学んだ、自由に生きるための",
-  phrases: ["「一人経済圏の", "作り方」の全て"],
+  lead: "東大を休学して",
+  phrases: ["貯金0円で", "世界一周してる", "けど、僕には", "「やりたいこと」が", "1つもなかった"],
 } as const;
 
 export const featuredArticle: Article = {
   title: `${featuredArticleDisplayTitle.lead}${featuredArticleDisplayTitle.phrases.join("")}`,
   displayTitle: featuredArticleDisplayTitle,
-  href: "https://note.com/shosuke240557/n/n502cf63fbb41",
-  date: "二〇二六年七月 ・ スリランカ、ガラハにて",
-  thumbnail:
-    "https://assets.st-note.com/production/uploads/images/292263882/rectangle_large_type_2_84fb0ec887b1693287f3d78fbddf9741.png?width=800",
+  href: "https://note.com/shosuke240557/n/nc7487ff91841",
+  date: "二〇二六年六月 ・ 世界一周の途中にて",
+  thumbnail: "/media/archive/nc7487ff91841.webp",
   excerpt:
-    "スリランカの山奥で、ひとりで書きはじめた。旅が進むたびに追記されて、旅と一緒に育っていく記事。",
+    "「何者か」になりたかった二年前から、やりたいことのないまま世界一周へ出るまで。肩書きと行動力の奥にあった怖さをたどり直した文章。",
 };
 
 export const articles: Article[] = [
@@ -433,6 +432,7 @@ export const films: Video[] = [
   {
     id: "WqQ4d-KwOZg",
     title: "東大を休学して、貯金ほぼ0で世界一周を始めました。",
+    displayTitleLines: ["東大を休学して、", "貯金ほぼ0で", "世界一周を", "始めました。"],
     date: "2026.05",
     place: "東京",
     duration: "6:43",

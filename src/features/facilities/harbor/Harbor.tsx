@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CityPlace } from "@/data/city";
-import { featuredArticle, films, journey } from "@/data/content";
+import { featuredArticle, films, journey, profile } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
 import CurrentLocationName from "@/features/shared/CurrentLocationName";
@@ -10,6 +10,8 @@ import styles from "./harbor.module.css";
 
 const departureFilm = films.find((film) => film.id === "exr5-6Sb9h0")!;
 const indonesiaFilm = films.find((film) => film.id === "Vkf4wQSLD04")!;
+const currentStop = journey.find((stop) => stop.status === "now")!;
+const nextStop = journey.find((stop) => stop.status === "next")!;
 
 const routePoints = [
   { x: 888, y: 139, name: "東京", state: "done" },
@@ -99,10 +101,10 @@ export default function Harbor({ place }: { place: CityPlace }) {
             </h1>
           </div>
           <div className={styles.nowBoard}>
-            <span>現在地 · 2026.07</span>
-            <strong><CurrentLocationName place="スリランカ、ガラハ" /></strong>
-            <p>山あいのプレスクールに滞在中</p>
-            <span className={styles.nextPort}>次の目的地　インド</span>
+            <span>現在地 · {currentStop.period}</span>
+            <strong><CurrentLocationName place={profile.currentLocation.place} /></strong>
+            <p>{profile.currentLocation.detail}</p>
+            <span className={styles.nextPort}>次の目的地　{nextStop.place}</span>
           </div>
         </header>
 
@@ -161,8 +163,8 @@ export default function Harbor({ place }: { place: CityPlace }) {
                 <span><small>INDONESIA · FILM</small><strong>{indonesiaFilm.title}</strong></span>
               </a>
               <a href={featuredArticle.href} target="_blank" rel="noreferrer">
-                <Image src="/media/archive/featured.webp" alt="スリランカ滞在中に書いた一人経済圏についての記事見出し画像" width={1200} height={628} />
-                <span><small>SRI LANKA · NOTE</small><strong><FeaturedArticleTitle /></strong></span>
+                <Image src="/media/archive/nc7487ff91841.webp" alt="世界一周の旅と、これまでに出会った人々を重ねた記事の見出し画像" width={1280} height={670} />
+                <span><small>ON THE ROAD · NOTE</small><strong><FeaturedArticleTitle /></strong></span>
               </a>
             </div>
           </div>
