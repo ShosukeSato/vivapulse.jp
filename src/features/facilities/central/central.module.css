@@ -411,6 +411,12 @@
     grid-template-areas: "kicker" "title" "lead";
     gap: 20px;
   }
+  /*
+   * Stacked under the heading there is nothing to align a right edge to, and
+   * every other block on the page reads from the left. The flush-right
+   * setting and the baseline nudge only belong to the side-by-side layout.
+   */
+  .departuresLead { justify-self: start; margin-bottom: 0; }
     .boardHead { display: none; }
   .departureBoard { border-top: 3px solid #f3c85e; }
   .departureBoard li a {
