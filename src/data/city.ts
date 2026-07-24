@@ -33,6 +33,19 @@ export type CityPlace = {
   summary: string;
 };
 
+/**
+ * SHOSUKE is a person, not a facility. The profile page lives outside
+ * cityPlaces so directories can present him as "この街の旅人", never as a
+ * tenth building. His map presence is the walking avatar itself.
+ */
+export const traveler = {
+  name: "SHOSUKE",
+  fullName: "さとうしょうすけ",
+  role: "旅人",
+  path: "/shosuke",
+  destination: "プロフィール / 経歴と連絡先",
+} as const;
+
 export const cityPlaces: CityPlace[] = [
   {
     id: "construction",
@@ -111,16 +124,16 @@ export const cityPlaces: CityPlace[] = [
     name: "CITY 01 CENTRAL",
     shortName: "CITY 01 CENTRAL",
     district: "CENTRAL",
-    destination: "SHOSUKE SATO / 現在地とプロフィール",
+    destination: "全施設への出発案内",
     kind: "station",
     x: 5.9,
     y: 4.4,
     labelDx: 26,
     labelDy: -140,
-    status: "live",
+    status: "open",
     path: "/places/city-01-central",
     action: "施設に入る",
-    summary: "さとうしょうすけの現在地と、ここまでの旅路。",
+    summary: "すべての施設へ線路がつながる、CITY 01の中央駅。",
   },
   {
     id: "cinema",

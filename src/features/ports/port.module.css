@@ -1,0 +1,425 @@
+/*
+ * PORT OF CALL — one shared harbor-ledger structure, three unmistakable places.
+ *
+ * A port must be recognisable in a tenth of a second with every word removed,
+ * so each one carries a full palette and one large pixel landscape of a place
+ * actually stayed in — never a flag, never a borrowed ornament.
+ *
+ *   --port-bg / --port-ink / --port-muted / --port-line   page surface and text
+ *   --port-accent-1   dark surface: arrival wipe, stay board, quay
+ *   --port-accent-2   light signal: chips, bollards, play button
+ *
+ * Every pairing below is contrast-checked; the weakest is muted/bg at 5.8:1.
+ */
+
+.page {
+  --port-bg: #cee8e5;
+  --port-ink: #0e4054;
+  --port-muted: #17596c;
+  --port-line: #2a7c91;
+  --port-accent-1: #0e4054;
+  --port-accent-2: #f0c85a;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--port-bg);
+  color: var(--port-ink);
+  line-break: strict;
+}
+
+/*
+ * Tokyo — the night bay city he left from: cool steel daylight above, deep
+ * harbour night in the landscape, lamp gold as the only warm signal.
+ */
+.page[data-port="tokyo"] {
+  --port-bg: #dee4ee;
+  --port-ink: #0b1a2b;
+  --port-muted: #3b4c66;
+  --port-line: #98a7bd;
+  --port-accent-1: #0b1a2b;
+  --port-accent-2: #f3c85e;
+}
+
+/*
+ * Indonesia — sampled from the 17 real thumbnails shot there. Warm earth is
+ * ~40% of every saturated pixel in that footage: the volcanic ground of Bromo,
+ * the batik workshop, the sacrifice festival. Measured, not imagined.
+ */
+.page[data-port="indonesia"] {
+  --port-bg: #f2e3c8;
+  --port-ink: #3a2416;
+  --port-muted: #6b4a2e;
+  --port-line: #c3a67c;
+  --port-accent-1: #46301f;
+  --port-accent-2: #e8b44a;
+}
+
+/*
+ * Sri Lanka — the hill country he is moving through: terraced tea green under
+ * a pale monsoon sky. No footage exists to sample yet, so the colour comes
+ * from the landscape of the stay itself rather than from a frame.
+ */
+.page[data-port="sri-lanka"] {
+  --port-bg: #dcebdd;
+  --port-ink: #12362a;
+  --port-muted: #33604b;
+  --port-line: #8fb6a1;
+  --port-accent-1: #14382a;
+  --port-accent-2: #5fc0a0;
+}
+
+/*
+ * Arrival wipe: the sea recedes and the port is revealed. Pure CSS overlay
+ * over content that is already rendered — never a navigation delay.
+ * 520ms, within the 480–650ms entry rule; skipped under reduced motion.
+ */
+.arrival {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  background: var(--port-accent-1);
+  animation: port-arrival 520ms ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes port-arrival {
+  from { transform: translateY(0); }
+  to { transform: translateY(101%); visibility: hidden; }
+}
+
+.skip {
+  position: fixed;
+  z-index: 100;
+  top: 8px;
+  left: 8px;
+  padding: 12px 16px;
+  background: var(--port-ink);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-150%);
+}
+
+.skip:focus { transform: none; }
+
+/* ─── Port head ─── */
+
+.portHead {
+  position: relative;
+  min-height: 480px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(360px, .65fr);
+  align-items: stretch;
+  padding-bottom: 82px;
+  border-bottom: 1px solid var(--port-line);
+}
+
+.portIntro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(54px, 8vw, 118px) clamp(26px, 6vw, 90px);
+}
+
+.kicker,
+.records header p {
+  margin: 0 0 20px;
+  color: var(--port-muted);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.portHead h1 {
+  margin: 0;
+  font-size: clamp(52px, 6.8vw, 92px);
+  line-height: 1.08;
+  letter-spacing: -.06em;
+}
+.portHead h1 span { white-space: nowrap; word-break: keep-all; overflow-wrap: normal; }
+
+.portNameEn { margin: 13px 0 0; color: var(--port-muted); font-family: var(--font-mono); font-size: 15px; font-weight: 700; letter-spacing: .06em; }
+
+.stayNote {
+  max-width: 34em;
+  margin: 30px 0 0;
+  color: var(--port-muted);
+  font-size: 16px;
+  line-height: 1.85;
+  overflow-wrap: normal;
+  text-wrap: pretty;
+  word-break: auto-phrase;
+}
+
+.stayBoard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(34px, 4.5vw, 64px);
+  border-left: 1px solid var(--port-line);
+  background: var(--port-accent-1);
+  color: var(--port-bg);
+}
+
+.stayBoard > p {
+  margin: 0 0 20px;
+  color: var(--port-accent-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.stayBoard dl { margin: 0; border-top: 1px solid rgba(206, 232, 229, .34); }
+.stayBoard dl div {
+  min-height: 64px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  border-bottom: 1px solid rgba(206, 232, 229, .34);
+}
+.stayBoard dt { font-size: 13px; opacity: .82; }
+.stayBoard dd { margin: 0; font-family: var(--font-mono); font-size: 15px; font-weight: 700; }
+.stateChip { padding: 5px 9px; background: var(--port-accent-2); color: #081923; font-family: var(--font-sans); font-size: 13px; font-style: normal; }
+
+.liveBoard dd { font-size: 17px; }
+
+.quayEdge {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 82px;
+  overflow: hidden;
+  border-top: 8px solid #e7e0cf;
+  background:
+    linear-gradient(var(--port-line) 0 2px, transparent 2px 17px, rgba(206, 232, 229, .26) 17px 19px, transparent 19px 34px, rgba(206, 232, 229, .15) 34px 36px, transparent 36px),
+    var(--port-accent-1);
+}
+
+.quayEdge::before {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  left: 0;
+  height: 8px;
+  border-top: 1px solid var(--port-ink);
+  background: repeating-linear-gradient(90deg, #d5cebd 0 72px, #b9b6aa 72px 73px);
+  content: "";
+}
+
+.quayEdge span {
+  position: absolute;
+  top: -4px;
+  width: 26px;
+  height: 13px;
+  border: 2px solid #081923;
+  background: var(--port-accent-2);
+  box-shadow: 0 4px 0 rgba(8, 25, 35, .34);
+}
+
+.quayEdge span:nth-child(1) { left: 8%; }
+.quayEdge span:nth-child(2) { left: 48%; }
+.quayEdge span:nth-child(3) { right: 8%; }
+
+.quayEdge b {
+  position: absolute;
+  right: clamp(18px, 5vw, 72px);
+  bottom: 12px;
+  color: var(--port-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+/* ─── Records ─── */
+
+.records { padding: clamp(64px, 8vw, 120px) clamp(18px, 5vw, 76px); }
+.records > header { max-width: 900px; margin-bottom: 44px; }
+.records h2 { margin: 0; font-size: clamp(34px, 4.6vw, 60px); letter-spacing: -.05em; overflow-wrap: normal; text-wrap: balance; word-break: auto-phrase; }
+.records h2 :global(.semanticPhrase) { white-space: nowrap; }
+
+.featured { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(20px, 3vw, 44px); align-items: center; margin-bottom: 44px; color: inherit; text-decoration: none; }
+.featuredImage { position: relative; display: block; overflow: hidden; background: var(--port-ink); aspect-ratio: 16 / 9; }
+.featuredImage img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.featuredImage i { position: absolute; right: 16px; bottom: 16px; width: 52px; height: 52px; display: grid; place-items: center; background: var(--port-accent-2); color: #081923; }
+.featuredImage i svg { width: 18px; }
+.featuredCopy { min-width: 0; }
+.featuredCopy small { display: block; color: var(--port-muted); font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.featuredCopy strong { display: block; margin-top: 12px; font-size: clamp(24px, 3vw, 38px); line-height: 1.4; letter-spacing: -.03em; }
+.featuredCopy strong :global(.semanticPhrase) { white-space: nowrap; }
+.featured:hover .featuredCopy strong { text-decoration: underline; text-underline-offset: 4px; }
+
+.filmGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 26px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.filmGrid li { min-width: 0; }
+.filmGrid a { display: block; color: inherit; text-decoration: none; }
+.filmThumb { display: block; overflow: hidden; background: var(--port-ink); aspect-ratio: 16 / 9; }
+.filmThumb img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.filmGrid small { display: block; margin-top: 10px; color: var(--port-muted); font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.filmGrid strong {
+  display: -webkit-box;
+  margin-top: 5px;
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.filmGrid a:hover strong { text-decoration: underline; text-underline-offset: 3px; }
+
+.articleList { max-width: 860px; margin: 44px 0 0; padding: 0; border-top: 3px solid var(--port-ink); list-style: none; }
+.articleList li { border-bottom: 1px solid #78aaae; }
+.articleList a {
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) 16px;
+  gap: 18px;
+  align-items: center;
+  padding: 14px 2px;
+  color: inherit;
+  text-decoration: none;
+}
+.articleList small { color: var(--port-muted); font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.articleList strong { min-width: 0; font-size: 16px; line-height: 1.6; overflow-wrap: normal; word-break: auto-phrase; }
+.articleList svg { width: 16px; color: var(--port-muted); }
+.articleList a:hover strong { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Live port with no records yet: the log is open, not empty. */
+.openLog { max-width: 640px; padding: 26px 28px; border: 1px solid var(--port-line); border-left: 6px solid var(--port-accent-2); background: #fff; }
+.openLog p { margin: 0; font-size: 16px; line-height: 1.9; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
+.openLog a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; border-bottom: 1px solid currentColor; color: var(--port-muted); font-size: 13px; font-weight: 700; text-decoration: none; }
+.openLog a:hover { color: var(--port-ink); }
+.openLog a svg { width: 15px; }
+
+/* ─── Route nav ─── */
+
+.routeNav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 3px solid var(--port-ink);
+  border-bottom: 1px solid #78aaae;
+  margin: 0 clamp(18px, 5vw, 76px) clamp(64px, 8vw, 110px);
+}
+.routeNav > * { min-height: 92px; display: grid; align-content: center; gap: 6px; padding: 16px 18px; color: inherit; text-decoration: none; }
+.routeNav > * + * { border-left: 1px solid #78aaae; }
+.routeNav small { color: var(--port-muted); font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+.routeNav strong { font-size: clamp(17px, 2vw, 22px); letter-spacing: -.02em; }
+.routeNav a:hover { background: #fff; }
+.routeNav a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.navTerminal { text-align: center; }
+.navNext { text-align: right; }
+.navClosed { color: #385f67; }
+.navClosed strong b { margin-left: 10px; padding: 3px 7px; border: 1px solid currentColor; font-size: 13px; font-weight: 700; vertical-align: 3px; }
+
+.footer { min-height: 116px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 28px clamp(18px, 5vw, 76px); background: var(--port-accent-1); color: var(--port-bg); }
+.footer > span { font-family: var(--font-mono); font-size: 13px; }
+.footer p { margin: 0; font-size: 14px; }
+.footer a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; border-bottom: 1px solid currentColor; color: inherit; font-size: 13px; font-weight: 700; text-decoration: none; }
+.footer a:hover { color: var(--port-accent-2); }
+.footer a svg { width: 15px; }
+
+@media (max-width: 900px) {
+  .portHead { grid-template-columns: 1fr; }
+  .stayBoard { border-top: 1px solid var(--port-line); border-left: 0; }
+  .featured { grid-template-columns: 1fr; }
+  .routeNav { grid-template-columns: 1fr; }
+  .routeNav > * + * { border-top: 1px solid #78aaae; border-left: 0; }
+  .navTerminal,
+  .navNext { text-align: left; }
+}
+
+@media (max-width: 680px) {
+  .portHead { padding-bottom: 70px; }
+  .portIntro { padding: 54px 20px 48px; }
+  .portHead h1 { font-size: clamp(40px, 11vw, 56px); }
+  .stayBoard { padding: 34px 20px 38px; }
+  .quayEdge { height: 70px; }
+  .footer { align-items: flex-start; flex-direction: column; }
+  .footer a { width: 100%; justify-content: space-between; }
+}
+
+@media (max-width: 390px) {
+  .records { padding-inline: 14px; }
+  .records h2 { font-size: clamp(27px, 8vw, 34px); }
+  .filmGrid { grid-template-columns: 1fr; }
+  .articleList a { grid-template-columns: minmax(0, 1fr) 16px; }
+  .articleList small { grid-column: 1 / -1; }
+  .routeNav { margin-inline: 14px; }
+  .openLog { padding: 20px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip { transition: none; }
+  .arrival { display: none; }
+}
+
+/* ─── Port vignette ───
+ * The pixel landscape band under the top bar. Colours are per-port so the
+ * page reads as its own place before a single word is processed.
+ */
+
+.vignette {
+  border-bottom: 1px solid var(--port-line);
+  background: var(--port-accent-1);
+  line-height: 0;
+}
+
+.vignette svg {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  display: block;
+  aspect-ratio: 1200 / 320;
+}
+
+/* On a phone the band goes taller and crops to the centre of the scene,
+   where every port keeps its subject, rather than shrinking to a stripe. */
+@media (max-width: 700px) {
+  .vignette svg { aspect-ratio: 1200 / 520; }
+}
+
+/* Tokyo — harbour night: silhouette towers, lamp windows, vermilion tower. */
+.page[data-port="tokyo"] .vSky { fill: #12304f; }
+.page[data-port="tokyo"] .vSkyBand { fill: #1e4a70; }
+.page[data-port="tokyo"] .vFar { fill: #0d2740; }
+.page[data-port="tokyo"] .vBlock { fill: #06121f; }
+.page[data-port="tokyo"] .vTower polygon,
+.page[data-port="tokyo"] .vTower rect { fill: #a75543; }
+.page[data-port="tokyo"] .vTowerDeck { fill: #f3c85e; }
+.page[data-port="tokyo"] .vRail { fill: #2c5c7d; }
+.page[data-port="tokyo"] .vTrain { fill: #e7eef7; }
+.page[data-port="tokyo"] .vLit { fill: #f3c85e; }
+.page[data-port="tokyo"] .vWater { fill: #0a1e33; }
+.page[data-port="tokyo"] .vWave { fill: #1d4260; }
+
+/* Indonesia — Bromo at dawn. */
+.page[data-port="indonesia"] .vSky { fill: #f0bf55; }
+.page[data-port="indonesia"] .vSkyBand { fill: #d4823e; }
+.page[data-port="indonesia"] .vSkyLow { fill: #a04f30; }
+.page[data-port="indonesia"] .vFar { fill: #6b4326; }
+.page[data-port="indonesia"] .vBlock { fill: #241408; }
+.page[data-port="indonesia"] .vCrater { fill: #8c4b2c; }
+.page[data-port="indonesia"] .vPlume rect { fill: #efe6d5; }
+.page[data-port="indonesia"] .vGround { fill: #46301f; }
+.page[data-port="indonesia"] .vFurrow { fill: #5f4429; }
+.page[data-port="indonesia"] .vCrop { fill: #86603a; }
+
+/* Sri Lanka — hill country. */
+.page[data-port="sri-lanka"] .vSky { fill: #d7e9d9; }
+.page[data-port="sri-lanka"] .vSkyBand { fill: #bfd8c6; }
+.page[data-port="sri-lanka"] .vFar { fill: #6fa384; }
+.page[data-port="sri-lanka"] .vMid { fill: #3f7a5d; }
+.page[data-port="sri-lanka"] .vTerrace { fill: #58947a; }
+.page[data-port="sri-lanka"] .vRail rect { fill: #123024; }
+.page[data-port="sri-lanka"] .vTrain { fill: #f2f7f0; }
+.page[data-port="sri-lanka"] .vLit { fill: #5fc0a0; }
+.page[data-port="sri-lanka"] .vGround { fill: #1c4534; }
+.page[data-port="sri-lanka"] .vCrop { fill: #3d7659; }

@@ -385,6 +385,8 @@
 .directory nav small { overflow: hidden; color: #526567; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .directory nav svg { width: 16px; }
 .directory nav a:hover { padding-inline: 8px; background: #d2d2c6; }
+.directoryGroup { margin: 0; padding: 22px 0 8px; border-bottom: 1px solid #9aa39c; color: #526567; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .06em; }
+.directory nav .directoryTraveler > span:first-child { background: #ed6a55; color: #fff; }
 
 @media (min-width: 1221px) and (max-width: 1360px) {
   .gameBody { grid-template-columns: 360px minmax(0, 1fr); }

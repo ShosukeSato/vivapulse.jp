@@ -1,0 +1,377 @@
+/*
+ * TRAVELER — the person page.
+ * Differentiation contract with the harbor (ROUTE TERMINAL):
+ * the harbor answers "where" with a cold sea diagram (#0e4054 family);
+ * this page answers "who" with a warm vertical rail diagram in the
+ * station palette (stone, night navy, warm light, selection coral).
+ */
+
+.page {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #e5e1d4;
+  color: #102b3b;
+  line-break: strict;
+}
+
+.skip {
+  position: fixed;
+  z-index: 100;
+  top: 8px;
+  left: 8px;
+  padding: 12px 16px;
+  background: #102b3b;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-150%);
+}
+
+.skip:focus { transform: none; }
+
+.kicker,
+.lifeLine header p,
+.origin header p {
+  margin: 0 0 22px;
+  color: #8e4233;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.work header p,
+.why > p:first-child {
+  margin: 0 0 22px;
+  color: #f3c85e;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.opening {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: clamp(64px, 8vw, 118px) clamp(28px, 6vw, 90px);
+  border-bottom: 1px solid #b8bcb2;
+}
+
+/*
+ * The name itself is set on a station name sign — the grand version of the
+ * LIFE LINE `.sign` plates, so the whole page speaks one rail language.
+ */
+.nameSign {
+  --signPadX: clamp(22px, 3.5vw, 48px);
+  --signPadB: clamp(24px, 3vw, 40px);
+  position: relative;
+  margin-top: 8px;
+  padding: clamp(30px, 4vw, 52px) var(--signPadX) var(--signPadB);
+  border: 3px solid #102b3b;
+  background: #fff;
+  text-align: center;
+}
+
+/* Warm line band along the plate; the coral end segment is "now". */
+.nameSign::after {
+  content: "";
+  height: 10px;
+  display: block;
+  margin: clamp(22px, 3vw, 36px) calc(-1 * var(--signPadX)) calc(-1 * var(--signPadB));
+  background: linear-gradient(90deg, #f3c85e 0 calc(100% - 64px), #ed6a55 calc(100% - 64px));
+}
+
+.opening h1 {
+  margin: 0;
+  font-size: clamp(44px, 5.2vw, 78px);
+  font-weight: 750;
+  line-height: 1.12;
+  letter-spacing: -.06em;
+}
+.opening h1 span { white-space: nowrap; word-break: keep-all; overflow-wrap: normal; }
+
+.nameEn { margin: 14px 0 0; font-family: var(--font-mono); font-size: 15px; font-weight: 700; letter-spacing: .06em; }
+
+/* Desktop: the name sign leads on the left, where the eye lands first. */
+@media (min-width: 900px) {
+  .opening { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); column-gap: clamp(48px, 6vw, 100px); }
+  .opening > * { grid-column: 2; }
+  .opening .nameSign { grid-column: 1; grid-row: 1 / 4; align-self: center; margin-top: 0; }
+}
+.bio { max-width: 35em; margin: 34px 0 0; font-size: 17px; line-height: 1.9; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
+.bio span { white-space: normal; overflow-wrap: normal; }
+
+.primaryRoutes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.primaryRoutes a {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 18px;
+  border: 1px solid #102b3b;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.primaryRoutes a:first-child { background: #102b3b; color: #fff; }
+.primaryRoutes a:hover { border-color: #ed6a55; background: #ed6a55; color: #102b3b; }
+
+/* ─── LIFE LINE: vertical rail diagram with station name signs ─── */
+
+.lifeLine { padding: clamp(70px, 9vw, 132px) clamp(18px, 5vw, 76px); background: #f4f0e5; }
+.lifeLine > header { max-width: 900px; margin-bottom: 48px; }
+.lifeLine h2,
+.origin h2,
+.work h2,
+.why h2 {
+  margin: 0;
+  font-size: clamp(32px, 4.4vw, 58px);
+  letter-spacing: -.05em;
+  overflow-wrap: normal;
+  text-wrap: balance;
+  word-break: auto-phrase;
+}
+.lifeLine h2 :global(.semanticPhrase),
+.origin h2 :global(.semanticPhrase),
+.work h2 :global(.semanticPhrase),
+.why h2 :global(.semanticPhrase) { white-space: nowrap; }
+
+.line { position: relative; max-width: 720px; margin: 0; padding: 6px 0 0 56px; list-style: none; }
+.line::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 6px;
+  left: 17px;
+  border-left: 4px solid #102b3b;
+}
+
+.line li { position: relative; padding-bottom: 26px; }
+.line li::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 16px;
+  left: -47px;
+  width: 14px;
+  height: 14px;
+  border: 3px solid #102b3b;
+  background: #f3c85e;
+}
+.line li.now::before { background: #ed6a55; }
+
+/* Station name sign: rectilinear plate, warm line band along the bottom. */
+.sign { max-width: 560px; padding: 16px 18px 14px; border: 2px solid #102b3b; background: #fff; }
+.sign::after { content: ""; height: 6px; display: block; margin: 14px -18px -14px; background: #f3c85e; }
+.now .sign::after { background: #ed6a55; }
+
+.signTop { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 8px; }
+.signPeriod { color: #526567; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.nowChip { padding: 4px 8px; background: #ed6a55; color: #fff; font-size: 13px; font-weight: 700; }
+.signName { display: block; font-size: clamp(18px, 2vw, 22px); line-height: 1.5; letter-spacing: -.02em; overflow-wrap: normal; word-break: auto-phrase; }
+.signNote { max-width: 34em; margin: 8px 0 0; color: #3f4a4c; font-size: 14px; line-height: 1.75; }
+
+.signRoute {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 0 12px;
+  border: 1px solid #102b3b;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.signRoute:hover { border-color: #ed6a55; background: #ed6a55; color: #fff; }
+.signRoute svg { width: 15px; }
+
+.continuation {
+  position: relative;
+  max-width: 720px;
+  margin: 0;
+  padding: 44px 0 0 56px;
+  color: #4a5b5c;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.continuation::before {
+  content: "";
+  position: absolute;
+  top: -16px;
+  left: 17px;
+  height: 58px;
+  border-left: 4px dashed #7b8887;
+}
+
+.careerArticle {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 34px 0 0 56px;
+  border-bottom: 1px solid currentColor;
+  color: #8e4233;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.careerArticle:hover { color: #ed6a55; }
+.careerArticle svg { width: 15px; }
+
+/* ─── WORK: the full work ledger ─── */
+
+.work { padding: clamp(70px, 9vw, 120px) clamp(18px, 5vw, 76px); background: #102b3b; color: #e5e1d4; }
+.workLead { max-width: 38em; margin: 26px 0 0; color: #c5d9d8; font-size: 16px; line-height: 1.9; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
+
+.workLedger { max-width: 860px; margin: 42px 0 0; padding: 0; border-top: 1px solid #366b78; list-style: none; }
+.workLedger li {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr) auto;
+  gap: 10px 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid #366b78;
+}
+
+.workWhen { display: grid; gap: 5px; align-content: start; padding-top: 4px; }
+.workWhen time { color: #abd1d2; font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.workWhen small { color: #c5d9d8; font-size: 13px; }
+
+.workBody { display: grid; gap: 8px; }
+.workKind { width: fit-content; padding: 3px 7px; border: 1px solid #366b78; color: #abd1d2; font-size: 13px; font-weight: 700; }
+.workTitle { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.workTitle strong { font-size: clamp(19px, 2vw, 24px); letter-spacing: -.02em; overflow-wrap: normal; word-break: auto-phrase; }
+.workTitle em { color: #f3c85e; font-size: 13px; font-style: normal; font-weight: 700; }
+.workBody p { max-width: 44em; margin: 0; color: #abd1d2; font-size: 15px; line-height: 1.8; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
+
+.workState { justify-self: end; align-self: start; padding: 5px 9px; background: #f3c85e; color: #102b3b; font-size: 13px; font-weight: 700; }
+
+.workCreed { max-width: 44em; margin: 44px 0 0; padding: 20px 22px; border-left: 4px solid #f3c85e; background: #081923; }
+.workCreed p { margin: 0; font-size: 16px; line-height: 1.9; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
+.workCreed cite { display: block; margin-top: 10px; color: #abd1d2; font-size: 13px; font-style: normal; }
+
+.workArticle {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  border-bottom: 1px solid currentColor;
+  color: #f3c85e;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.workArticle:hover { color: #ffe5a3; }
+.workArticle svg { width: 15px; }
+
+/* ─── FAVORITE PLACE ─── */
+
+.origin { padding: clamp(70px, 9vw, 120px) clamp(18px, 5vw, 76px); background: #e5e1d4; }
+.originCopy { max-width: 38em; margin: 26px 0 0; font-size: 16px; line-height: 1.9; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
+
+.personal { max-width: 760px; margin: 42px 0 0; border-top: 2px solid #102b3b; }
+.personal > div { min-height: 60px; display: grid; grid-template-columns: 140px minmax(0, 1fr); align-items: center; gap: 10px 18px; padding: 12px 0; border-bottom: 1px solid #a9aaa1; }
+.personal dt { color: #526567; font-size: 13px; font-weight: 700; }
+.personal dd { margin: 0; font-size: 15px; font-weight: 700; }
+
+.activityLinks { display: flex; flex-wrap: wrap; gap: 8px; }
+.activityLinks a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid #102b3b;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.activityLinks a:hover { background: #102b3b; color: #fff; }
+
+/* ─── WHY THIS CITY EXISTS ─── */
+
+.why { padding: clamp(70px, 9vw, 120px) clamp(18px, 5vw, 76px); background: #102b3b; color: #e5e1d4; }
+.why > p:last-child { max-width: 38em; margin: 30px 0 0; color: #c5d9d8; font-size: 16px; line-height: 1.9; overflow-wrap: normal; text-wrap: pretty; word-break: auto-phrase; }
+
+/*
+ * ─── DESKTOP RAIL LAYOUT ───
+ * Two paired rows so neither column ever runs empty. Row 2: the LIFE LINE
+ * (light, left) runs beside the WORK ledger (navy, right) — the two tall
+ * histories. Row 3: FAVORITE PLACE (light, left) beside WHY (navy, right).
+ * Each column keeps one background family: warm light left, navy right.
+ */
+@media (min-width: 1100px) {
+  .page main { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); }
+  .opening { grid-column: 1 / -1; }
+  .lifeLine { grid-column: 1; grid-row: 2; padding-inline: clamp(28px, 5vw, 76px) clamp(36px, 4vw, 64px); }
+  .origin { grid-column: 1; grid-row: 3; border-top: 1px solid #b8bcb2; padding: clamp(56px, 5vw, 88px) clamp(36px, 4vw, 64px) clamp(56px, 5vw, 88px) clamp(28px, 5vw, 76px); }
+  .work,
+  .why { grid-column: 2; border-left: 1px solid #102b3b; padding: clamp(56px, 5vw, 88px) clamp(36px, 3.5vw, 64px); }
+  .work { grid-row: 2; }
+  .why { grid-row: 3; border-top: 1px solid #366b78; }
+  .work h2,
+  .origin h2,
+  .why h2 { font-size: clamp(27px, 2.1vw, 38px); }
+  .workLedger,
+  .personal { margin-top: 32px; }
+
+  /* The ledger stacks inside its narrow rail column. */
+  .workLedger li { grid-template-columns: minmax(0, 1fr) auto; gap: 12px 14px; }
+  .workWhen { grid-column: 1; grid-row: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding-top: 0; }
+  .workState { grid-column: 2; grid-row: 1; }
+  .workBody { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* ─── CONTACT ─── */
+
+.footer { min-height: 184px; display: grid; grid-template-columns: .7fr 1.3fr; gap: 40px; align-items: center; padding: 34px clamp(18px, 5vw, 76px); border-top: 3px solid #102b3b; background: #e5e1d4; }
+.footer > div span { display: block; margin-bottom: 9px; color: #8e4233; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .06em; }
+.footer > div p { margin: 0; font-size: 14px; line-height: 1.7; }
+.footer nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.footer nav a { min-height: 44px; display: inline-flex; align-items: center; gap: 9px; padding: 0 12px; border: 1px solid #7b8887; color: inherit; font-size: 13px; font-weight: 700; text-decoration: none; }
+.footer nav a:hover { border-color: #ed6a55; background: #ed6a55; color: #102b3b; }
+.footer nav svg { width: 14px; }
+
+@media (max-width: 820px) {
+  .opening { padding: 64px 24px; }
+  .lifeLine,
+  .work,
+  .origin,
+  .why { padding-inline: 24px; }
+  .workLedger li { grid-template-columns: minmax(0, 1fr) auto; gap: 12px 14px; }
+  .workWhen { grid-column: 1; grid-row: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding-top: 0; }
+  .workState { grid-column: 2; grid-row: 1; }
+  .workBody { grid-column: 1 / -1; grid-row: 2; }
+  .personal > div { grid-template-columns: minmax(0, 1fr); align-content: center; gap: 6px; }
+  .footer { grid-template-columns: 1fr; }
+  .footer nav { justify-content: flex-start; }
+}
+
+@media (max-width: 390px) {
+  .opening { padding-inline: 18px; }
+  .opening h1 { font-size: clamp(34px, 10.5vw, 44px); }
+  .nameSign { --signPadX: 16px; --signPadB: 20px; }
+  .primaryRoutes a { width: 100%; justify-content: center; }
+  .lifeLine,
+  .work,
+  .origin,
+  .why { padding-inline: 14px; }
+  .lifeLine h2,
+  .origin h2,
+  .work h2,
+  .why h2 { font-size: clamp(26px, 8vw, 34px); }
+  .line { padding-left: 42px; }
+  .line::before { left: 10px; }
+  .line li::before { left: -40px; }
+  .sign { padding: 13px 14px 12px; }
+  .sign::after { margin: 12px -14px -12px; }
+  .continuation { padding-left: 42px; }
+  .continuation::before { left: 10px; }
+  .careerArticle { margin-left: 42px; }
+  .footer { padding-inline: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip { transition: none; }
+}

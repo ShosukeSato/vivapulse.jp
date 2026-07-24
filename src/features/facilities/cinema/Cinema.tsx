@@ -1,22 +1,21 @@
 import Link from "next/link";
 import type { CityPlace } from "@/data/city";
-import { channelUrl, featuredFilm, films } from "@/data/content";
+import { channelUrl, featuredFilm, films, filmStill, smallStillFilmIds } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import ProtectedText from "@/features/shared/ProtectedText";
 import FacilityBar from "../FacilityBar";
 import CinemaProgrammeLoader from "./CinemaProgrammeLoader";
 import styles from "./cinema.module.css";
 
-const availableFilms = films.filter((film) => film.id !== "IR-GR-u0kMM");
-const native640FilmId = "ywBornpZvrE";
+const availableFilms = films;
 const transparentPixel = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
 function cinemaStillSrc(id: string) {
-  return `/media/cinema/${id}-${id === native640FilmId ? "640" : "1280"}.webp`;
+  return filmStill(id, 1280);
 }
 
 function cinemaStillSrcSet(id: string) {
-  if (id === native640FilmId) return `/media/cinema/${id}-640.webp 640w`;
+  if (smallStillFilmIds.has(id)) return `/media/cinema/${id}-640.webp 640w`;
 
   const widths = id === "Vkf4wQSLD04" ? [640, 832, 960, 1280] : [640, 960, 1280];
 

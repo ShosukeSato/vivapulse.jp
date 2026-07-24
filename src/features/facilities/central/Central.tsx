@@ -1,16 +1,8 @@
-import Image from "next/image";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import type { CityPlace } from "@/data/city";
-import { cityPlaces } from "@/data/city";
-import {
-  currentJourneyStop,
-  DEPARTURE_DATE,
-  featuredFilm,
-  journey,
-  nextJourneyStop,
-  profile,
-  socials,
-} from "@/data/content";
+import { cityPlaces, traveler } from "@/data/city";
+import { currentJourneyStop } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
 import CurrentLocationName from "@/features/shared/CurrentLocationName";
@@ -19,8 +11,9 @@ import styles from "./central.module.css";
 
 const departureOrder = ["tripvlog", "haku", "stocka", "cinema", "library", "harbor", "construction", "strategy"];
 const departures = departureOrder.map((id) => cityPlaces.find((place) => place.id === id)!);
+const harbor = cityPlaces.find((place) => place.id === "harbor")!;
 const facilityType: Record<CityPlace["kind"], string> = {
-  station: "案内所",
+  station: "中央駅",
   tripvlog: "iOSアプリ",
   haku: "iOSアプリ",
   stocka: "iOSアプリ",
@@ -31,6 +24,111 @@ const facilityType: Record<CityPlace["kind"], string> = {
   construction: "制作一覧",
 };
 
+/**
+ * Wayfinding line colors, one per real district of the city, all drawn
+ * from the global palette. They band each row of the departure board the
+ * way transfer-guide signs band lines by color.
+ */
+const districtColor: Record<string, string> = {
+  "NORTH YARD": "#a75543",
+  "MAKERS QUAY": "#6fa1ad",
+  CENTRAL: "#f3c85e",
+  "CULTURE PROMENADE": "#ed6a55",
+  "HARBOR EDGE": "#5cb3bf",
+};
+
+/*
+ * Platform-edge crowd: the "everyone uses this hub" layer. Deterministic
+ * rect-built pixel figures only — no invented names, times or announcements.
+ * One environmental motion on the whole page: a single pedestrian crossing
+ * (two leg frames at the canonical 8fps walk, linear traverse), stopped
+ * under prefers-reduced-motion. Feet stand on the y=56 line of the scene.
+ */
+type FigureProps = { x: number; coat: string };
+
+function Adult({ x, coat }: FigureProps) {
+  return (
+    <g transform={`translate(${x} 0)`}>
+      <rect x="3" y="16" width="8" height="8" fill="#102b3b" />
+      <rect x="0" y="24" width="14" height="16" fill={coat} />
+      <rect x="1" y="40" width="5" height="16" fill="#334a52" />
+      <rect x="8" y="40" width="5" height="16" fill="#334a52" />
+    </g>
+  );
+}
+
+function Kid({ x, coat }: FigureProps) {
+  return (
+    <g transform={`translate(${x} 0)`}>
+      <rect x="2" y="28" width="6" height="6" fill="#102b3b" />
+      <rect x="0" y="34" width="10" height="10" fill={coat} />
+      <rect x="1" y="44" width="3" height="12" fill="#334a52" />
+      <rect x="6" y="44" width="3" height="12" fill="#334a52" />
+    </g>
+  );
+}
+
+function Suitcase({ x, tone }: { x: number; tone: string }) {
+  return (
+    <g transform={`translate(${x} 0)`}>
+      <rect x="3" y="37" width="6" height="3" fill="#102b3b" />
+      <rect x="0" y="40" width="12" height="16" fill={tone} />
+    </g>
+  );
+}
+
+function Bench({ x }: { x: number }) {
+  return (
+    <g transform={`translate(${x} 0)`}>
+      <rect x="0" y="42" width="40" height="5" fill="#334a52" />
+      <rect x="3" y="47" width="4" height="9" fill="#334a52" />
+      <rect x="33" y="47" width="4" height="9" fill="#334a52" />
+    </g>
+  );
+}
+
+function Walker() {
+  return (
+    <g className={styles.walker}>
+      <rect x="3" y="16" width="8" height="8" fill="#102b3b" />
+      <rect x="0" y="24" width="14" height="16" fill="#6fa1ad" />
+      <g className={styles.strideA}>
+        <rect x="0" y="40" width="5" height="16" fill="#334a52" />
+        <rect x="9" y="40" width="5" height="16" fill="#334a52" />
+      </g>
+      <g className={styles.strideB}>
+        <rect x="3" y="40" width="5" height="16" fill="#334a52" />
+        <rect x="6" y="40" width="5" height="16" fill="#334a52" />
+      </g>
+    </g>
+  );
+}
+
+function PlatformScene() {
+  return (
+    <svg className={styles.crowd} viewBox="0 0 1176 76" preserveAspectRatio="xMidYMax slice">
+      <g fill="#f3c85e">
+        {Array.from({ length: 28 }, (_, i) => (
+          <rect key={i} x={i * 42} y="64" width="34" height="8" />
+        ))}
+      </g>
+      <rect x="0" y="73" width="1176" height="3" fill="#b8bcb2" />
+      <Adult x={96} coat="#6fa1ad" />
+      <Adult x={118} coat="#a75543" />
+      <Bench x={276} />
+      <Adult x={336} coat="#3f705a" />
+      <Suitcase x={356} tone="#a75543" />
+      <Adult x={560} coat="#366b78" />
+      <Suitcase x={580} tone="#102b3b" />
+      <Adult x={744} coat="#f3c85e" />
+      <Kid x={764} coat="#6fa1ad" />
+      <Adult x={1010} coat="#a75543" />
+      <Suitcase x={1030} tone="#3f705a" />
+      <Walker />
+    </svg>
+  );
+}
+
 export default function Central({ place }: { place: CityPlace }) {
   return (
     <div className={styles.page}>
@@ -39,64 +137,99 @@ export default function Central({ place }: { place: CityPlace }) {
 
       <main>
         <section className={styles.concourse} aria-labelledby="central-title">
+          <div className={styles.canopy} aria-hidden="true" />
           <div className={styles.platformMark} aria-hidden="true">
             <span>C</span><strong>01</strong><i />
           </div>
 
           <div className={styles.identity}>
-            <p className={styles.kicker}>CITY 01 CENTRAL&nbsp;· PROFILE</p>
+            <p className={styles.kicker}>CITY 01 CENTRAL&nbsp;· STATION</p>
             <h1 id="central-title">
-              <span>さとう</span><wbr /><span>しょうすけ</span>
+              <span>この街の、</span><wbr /><span>中央駅。</span>
             </h1>
-            <p className={styles.nameEn}>{profile.nameEn}</p>
             <p className={styles.bio}>
-              <SemanticText phrases={profile.bioPhrases} />
+              <SemanticText phrases={[
+                "さとう",
+                "しょうすけの",
+                "ポートフォリオ都市、",
+                "CITY 01。",
+                "作品と活動の",
+                "すべての施設へ、",
+                "この駅から",
+                "発てます。",
+              ]} />
             </p>
             <div className={styles.primaryRoutes}>
-              <a href="#departures">作品と活動を見る</a>
-              <a href="#current-location">現在地を見る</a>
+              <a href="#departures">出発案内を見る</a>
+              <a href="#station-note">旅人の伝言板</a>
             </div>
           </div>
 
-          <aside className={styles.currentBoard} id="current-location" aria-labelledby="current-title">
+          <aside className={styles.noteBoard} id="station-note" aria-labelledby="note-title">
             <div className={styles.boardTop}>
-              <span>現在地</span><span>WORLD JOURNEY</span>
+              <span>旅人の伝言板</span><span>STATION NOTE</span>
             </div>
-            <div className={styles.locationPin}><PixelIcon name="location" /></div>
-            <h2 id="current-title"><CurrentLocationName place={currentJourneyStop.place} /></h2>
-            <p>世界一周の旅の途中</p>
+            <h2 id="note-title">
+              <span className={styles.noteSentence}>
+                <SemanticText phrases={["「世界の", "どこかに", "います。"]} />
+              </span>
+              <span className={styles.noteSentence}>
+                <SemanticText phrases={["連絡は", "いつでも。」"]} />
+              </span>
+            </h2>
+            <p className={styles.noteSign}>— SHOSUKE</p>
             <dl>
-              <div><dt>旅の出発</dt><dd>東京&nbsp;· {DEPARTURE_DATE.replaceAll("-", ".")}</dd></div>
-              <div><dt>次の目的地</dt><dd>{nextJourneyStop.place}</dd></div>
+              <div>
+                <dt>いまの現在地</dt>
+                <dd><CurrentLocationName place={currentJourneyStop.place} /></dd>
+              </div>
             </dl>
+            <div className={styles.noteLinks}>
+              <Link href={traveler.path}>
+                <span>旅人SHOSUKEのプロフィール</span><PixelIcon name="enter" />
+              </Link>
+              <Link href={harbor.path}>
+                <span>旅の航路 / ROUTE TERMINAL</span><PixelIcon name="enter" />
+              </Link>
+            </div>
           </aside>
+          <div className={styles.platformEdge} aria-hidden="true">
+            <PlatformScene />
+          </div>
         </section>
 
         <section className={styles.departures} id="departures" aria-labelledby="departures-title">
           <header>
             <div>
-              <p>DEPARTURES&nbsp;· PORTFOLIO DIRECTORY</p>
+              <p className={styles.departuresKicker}>DEPARTURES&nbsp;· PORTFOLIO DIRECTORY</p>
               <h2 id="departures-title">
                 <SemanticText phrases={["作品と", "活動の", "出発", "案内。"]} />
               </h2>
             </div>
-            <p>代表作や映像、文章、旅程を施設ごとに案内します。地図を使わず、ここから直接移動できます。</p>
+            <p className={styles.departuresLead}>
+              <span>代表作や映像、文章、旅程を施設ごとに案内します。</span>
+              <span>地図を使わず、ここから直接移動できます。</span>
+            </p>
           </header>
 
           <nav className={styles.departureBoard} aria-label="CITY 01施設への出発案内">
             <div className={styles.boardHead} aria-hidden="true">
-              <span>施設</span><span>見られるもの</span><span>種類</span><span>状態</span><span>入口</span>
+              <span>コード</span><span>行き先</span><span>地区</span><span>種類</span><span>入口</span>
             </div>
             <ol>
               {departures.map((destination) => (
                 <li key={destination.id}>
-                  <Link href={destination.path}>
-                    <span className={styles.facilityName}><b>{destination.shortName}</b><small>{destination.code}</small></span>
-                    <span className={styles.facilitySummary}>{destination.summary}</span>
-                    <span className={styles.facilityType}>{facilityType[destination.kind]}</span>
-                    <span className={`${styles.facilityStatus} ${styles[destination.status]}`}>
-                      {destination.status === "building" ? "準備中" : destination.status === "live" ? "現在地" : "公開中"}
+                  <Link
+                    href={destination.path}
+                    style={{ "--line-color": districtColor[destination.district] } as CSSProperties}
+                  >
+                    <span className={styles.facilityCode}>{destination.code}</span>
+                    <span className={styles.facilityName}>
+                      <b>{destination.shortName}</b>
+                      <span className={styles.facilitySummary}>{destination.summary}</span>
                     </span>
+                    <span className={styles.facilityDistrict}><i aria-hidden="true" />{destination.district}</span>
+                    <span className={styles.facilityType}>{facilityType[destination.kind]}</span>
                     <span className={styles.enter}><span>入る</span><PixelIcon name="enter" /></span>
                   </Link>
                 </li>
@@ -104,73 +237,12 @@ export default function Central({ place }: { place: CityPlace }) {
             </ol>
           </nav>
         </section>
-
-        <section className={styles.travelRecord} aria-labelledby="record-title">
-          <div className={styles.recordCopy}>
-            <p>WHY THIS CITY EXISTS</p>
-            <h2 id="record-title">
-              <SemanticText phrases={["つくる", "ことと", "旅する", "ことを、", "ひとつの", "街に。"]} />
-            </h2>
-            <p>
-              <SemanticText phrases={[
-                "旅の途中で",
-                "必要になった",
-                "ものを",
-                "アプリにする。",
-                "出会った景色を",
-                "映像にして、",
-                "考えたことを",
-                "文章にする。",
-                "CITY 01は、",
-                "それらを",
-                "別々の実績",
-                "ではなく、",
-                "いまも続く",
-                "一つの活動として",
-                "案内する街です。",
-              ]} />
-            </p>
-            <dl className={styles.shortJourney}>
-              {journey.slice(0, 4).map((stop) => (
-                <div key={stop.place}>
-                  <dt>{stop.period}</dt><dd>{stop.place}{stop.status === "now" && <b>現在地</b>}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
-          <a
-            className={styles.recordStill}
-            href={`https://www.youtube.com/watch?v=${featuredFilm.id}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Image
-              src={`/media/cinema/${featuredFilm.id}.jpg`}
-              alt=""
-              width={480}
-              height={360}
-            />
-            <span className={styles.play}><PixelIcon name="play" /></span>
-            <span className={styles.stillCaption}>
-              <small>旅先の記録&nbsp;· YouTubeサムネイル</small>
-              <strong><SemanticText phrases={featuredFilm.displayTitleLines ?? [featuredFilm.title]} /></strong>
-            </span>
-          </a>
-        </section>
       </main>
 
       <footer className={styles.footer}>
-        <div><span>CONTACT &amp; LINKS</span><p>制作、旅、文章の続きを、それぞれの場所で公開しています。</p></div>
-        <nav aria-label="連絡先とリンク">
-          <a href="mailto:shosuke240557@gmail.com">メールを送る</a>
-          {socials.map((social) => (
-            <a href={social.href} target="_blank" rel="noreferrer" key={social.label}>
-              {social.label}<PixelIcon name="external" />
-            </a>
-          ))}
-          <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
-        </nav>
+        <span>CITY 01 CENTRAL / CITY 01</span>
+        <p>すべての施設へ、この駅から。</p>
+        <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>
   );

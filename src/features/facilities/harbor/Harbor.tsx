@@ -1,99 +1,254 @@
-import Image from "next/image";
 import Link from "next/link";
+import DayCounter from "@/components/DayCounter";
 import type { CityPlace } from "@/data/city";
+import { traveler } from "@/data/city";
 import {
   currentJourneyStop,
   DEPARTURE_DATE,
-  featuredArticle,
-  films,
   journey,
   nextJourneyStop,
+  portByPlace,
+  type Stop,
 } from "@/data/content";
 import PixelIcon from "@/features/city/PixelIcon";
 import FacilityBar from "../FacilityBar";
-import FeaturedArticleTitle from "@/features/shared/FeaturedArticleTitle";
 import SemanticText from "@/features/shared/SemanticText";
 import styles from "./harbor.module.css";
 
-const departureFilm = films.find((film) => film.id === "exr5-6Sb9h0")!;
-const indonesiaFilm = films.find((film) => film.id === "Vkf4wQSLD04")!;
+/**
+ * ROUTE LINE DIAGRAM — Beck-style harbor-sign route diagram.
+ * All geometry is computed deterministically from the journey index on a
+ * 12-unit grid (half of the 24px base tile). Horizontal, vertical and
+ * 45-degree segments only. Adding a stop in content.ts is the only edit
+ * ever required; rows and heights derive from journey.length.
+ */
+const STOPS_PER_ROW = 5;
+const WIDE = { colStart: 108, colEnd: 1068, colGap: 240, rowStart: 96, rowGap: 192 } as const;
+const TALL = { lineX: 60, rowStart: 72, rowGap: 120 } as const;
 
-const routeCoordinates = [
-  { x: 888, y: 139, labelX: 900, labelY: 122, anchor: "start" },
-  { x: 797, y: 246, labelX: 815, labelY: 271, anchor: "start" },
-  { x: 724, y: 211, labelX: 744, labelY: 235, anchor: "start" },
-  { x: 697, y: 184, labelX: 680, labelY: 171, anchor: "end" },
-  { x: 623, y: 126, labelX: 607, labelY: 112, anchor: "end" },
-] as const;
+type DiagramStop = { stop: Stop; x: number; y: number };
 
-const routePoints = journey.map((stop, index) => ({
-  ...routeCoordinates[index],
+const wideStops: DiagramStop[] = journey.map((stop, index) => {
+  const row = Math.floor(index / STOPS_PER_ROW);
+  const col = index % STOPS_PER_ROW;
+
+  return {
+    stop,
+    x: row % 2 === 0 ? WIDE.colStart + col * WIDE.colGap : WIDE.colEnd - col * WIDE.colGap,
+    y: WIDE.rowStart + row * WIDE.rowGap,
+  };
+});
+
+const wideHeight = WIDE.rowStart + (Math.ceil(journey.length / STOPS_PER_ROW) - 1) * WIDE.rowGap + 108;
+
+const tallStops: DiagramStop[] = journey.map((stop, index) => ({
   stop,
+  x: TALL.lineX,
+  y: TALL.rowStart + index * TALL.rowGap,
 }));
 
-function WorldLand() {
+const tallHeight = TALL.rowStart * 2 + (journey.length - 1) * TALL.rowGap;
+
+/** A segment takes the style of its destination stop. */
+const segmentStyle = { done: "routeDone", now: "routeDone", next: "routeNext", planned: "routePlanned" } as const;
+
+const doneStops = journey.filter((stop) => stop.status === "done");
+const upcomingStops = journey.filter((stop) => stop.status === "next" || stop.status === "planned");
+const diagramLabel = `${doneStops.map((stop) => stop.place).join("、")}を経て、現在${currentJourneyStop.place}に滞在し、この先${upcomingStops.map((stop) => stop.place).join("、")}へ向かう世界一周航路の系統図`;
+
+function wideSegmentPoints(from: DiagramStop, to: DiagramStop, fromIndex: number) {
+  if (from.y === to.y) return `${from.x},${from.y} ${to.x},${to.y}`;
+
+  /* End-of-row turnaround: horizontal → 45° → vertical → 45° → horizontal. */
+  const rightward = Math.floor(fromIndex / STOPS_PER_ROW) % 2 === 0;
+
+  return rightward
+    ? `${from.x},${from.y} 1104,${from.y} 1140,${from.y + 36} 1140,${from.y + 156} 1104,${to.y} ${to.x},${to.y}`
+    : `${from.x},${from.y} 72,${from.y} 36,${from.y + 36} 36,${from.y + 156} 72,${to.y} ${to.x},${to.y}`;
+}
+
+/** White/yellow pixel ferry, rects only. Origin: bottom-center of the hull. */
+function Ferry({ x, y }: { x: number; y: number }) {
   return (
-    <g className={styles.land} aria-hidden="true">
-      <path d="M62 106 93 76 150 61 203 72 249 65 307 91 337 124 322 151 282 159 260 185 225 177 194 151 152 158 117 142 84 139Z" />
-      <path d="M253 189 289 204 313 240 304 281 283 322 264 374 243 350 232 304 213 272 218 229Z" />
-      <path d="M356 67 384 48 414 54 425 82 403 102 371 95Z" />
-      <path d="M475 112 514 86 558 84 591 67 636 75 667 61 711 69 747 84 792 73 837 84 884 105 921 128 904 153 867 151 837 174 796 172 766 191 730 181 699 203 659 191 625 169 590 172 556 151 520 150 491 137Z" />
-      <path d="M515 153 560 151 603 166 628 192 619 226 603 269 576 320 550 301 532 266 520 224 492 195Z" />
-      <path d="M784 274 817 255 861 266 892 292 876 326 840 338 801 323 777 299Z" />
-      <path d="M760 218 779 213 790 226 775 234 756 228Z" />
-      <path d="M791 235 806 231 820 239 807 247 788 244Z" />
-      <path d="M872 137 879 129 885 138 880 151 875 153Z" />
-      <path d="M718 211 724 206 728 214 725 224 720 221Z" />
-      <path d="M406 167 422 158 434 168 425 183 410 181Z" />
+    <g transform={`translate(${x} ${y})`}>
+      <rect className={styles.ferryHull} x="-18" y="-13" width="36" height="10" />
+      <rect className={styles.ferryCabin} x="-10" y="-21" width="20" height="8" />
+      <rect className={styles.ferryBand} x="-8" y="-19" width="16" height="4" />
+      <rect className={styles.ferryWaterline} x="-18" y="-3" width="36" height="3" />
     </g>
   );
 }
 
-function Routes() {
+function Station({ x, y, status }: { x: number; y: number; status: Stop["status"] }) {
+  const size = status === "now" ? 22 : status === "planned" ? 12 : 16;
+
   return (
-    <g>
-      <polyline className={styles.routeDone} points="888,139 797,246 724,211" />
-      <polyline className={styles.routeNext} points="724,211 697,184 623,126" />
-      {routePoints.map(({ stop, ...point }, index) => (
-        <g className={`${styles.mapStop} ${styles[stop.status]}`} data-stop-index={index} key={stop.place}>
-          <rect x={point.x - 7} y={point.y - 7} width="14" height="14" />
-          <circle cx={point.x} cy={point.y} r="3" />
-          <text x={point.labelX} y={point.labelY} textAnchor={point.anchor}>{stop.place}</text>
-        </g>
-      ))}
+    <g className={`${styles.station} ${styles[status]}`}>
+      {status === "now" && <rect className={styles.nowHalo} x={x - 17} y={y - 17} width="34" height="34" />}
+      <rect x={x - size / 2} y={y - size / 2} width={size} height={size} />
+      <circle cx={x} cy={y} r="3" />
     </g>
   );
 }
 
-function RouteMap() {
+/** The one 16×16 enter glyph from the city icon family, placed inside the diagram. */
+function EnterGlyph({ x, y, size }: { x: number; y: number; size: number }) {
+  return (
+    <svg className={styles.enterGlyph} x={x} y={y} width={size} height={size} viewBox="0 0 16 16">
+      <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter">
+        <path d="M2 8h10M8 4l4 4-4 4" />
+        <path d="M14 2v12" />
+      </g>
+    </svg>
+  );
+}
+
+/** Accessible name for one diagram port link. */
+function stopLinkLabel(stop: Stop) {
+  return `${stop.place}の寄港地記録(${stop.period} ${stop.status === "now" ? "滞在中" : "滞在"})をひらく`;
+}
+
+function RouteDiagram() {
   return (
     <div className={styles.maps}>
-      <svg className={styles.worldMap} viewBox="0 0 1000 430" role="img" aria-label="東京からインドネシア、スリランカを経て、インド、ジョージアへ向かう世界一周ルート">
-        <title>世界一周ルートの世界地図</title>
-        <g className={styles.graticule} aria-hidden="true">
-          <path d="M0 107.5H1000M0 215H1000M0 322.5H1000M250 0V430M500 0V430M750 0V430" />
+      <svg className={styles.diagramWide} viewBox={`0 0 1176 ${wideHeight}`} role="group" aria-label={diagramLabel}>
+        <title>世界一周航路の系統図</title>
+        <g aria-hidden="true">
+          {wideStops.slice(0, -1).map((from, index) => {
+            const to = wideStops[index + 1];
+
+            return (
+              <polyline
+                className={styles[segmentStyle[to.stop.status]]}
+                key={`${from.stop.place}-${to.stop.place}`}
+                points={wideSegmentPoints(from, to, index)}
+              />
+            );
+          })}
+          {wideStops.map(({ stop, x, y }) => (
+            <Station key={stop.place} status={stop.status} x={x} y={y} />
+          ))}
+          {wideStops.map(({ stop, x, y }) => {
+            const isNow = stop.status === "now";
+            const isPort = portByPlace.has(stop.place);
+
+            return (
+              <g key={stop.place}>
+                <text className={styles.periodLabel} textAnchor="middle" x={x} y={isNow ? y - 72 : y - 24}>{stop.period}</text>
+                <text
+                  className={`${styles.nameLabel}${isPort ? ` ${styles.nameLinked}` : ""}`}
+                  textAnchor="middle"
+                  x={x}
+                  y={y + 44}
+                >
+                  {stop.place}
+                </text>
+                {isPort && <EnterGlyph size={18} x={x + (stop.place.length * 20) / 2 + 8} y={y + 29} />}
+                {isNow && (
+                  <g className={styles.nowChip}>
+                    <rect x={x - 44} y={y + 58} width="88" height="30" />
+                    <text textAnchor="middle" x={x} y={y + 79}>現在地</text>
+                  </g>
+                )}
+                {isNow && <Ferry x={x} y={y - 40} />}
+              </g>
+            );
+          })}
         </g>
-        <WorldLand />
-        <Routes />
+        <g>
+          {wideStops.map(({ stop, x, y }) => {
+            const port = portByPlace.get(stop.place);
+            if (!port) return null;
+
+            return (
+              <a
+                className={styles.stopLink}
+                key={stop.place}
+                href={`/ports/${port.slug}`}
+                aria-label={stopLinkLabel(stop)}
+              >
+                <rect className={styles.stopHit} x={x - 44} y={y - 48} width="88" height="120" />
+                <rect className={styles.stopFocus} x={x - 30} y={y - 30} width="60" height="60" />
+              </a>
+            );
+          })}
+        </g>
       </svg>
-      <svg className={styles.regionMap} viewBox="480 55 455 250" role="img" aria-label="世界地図のアジア区間を拡大。東京、インドネシア、スリランカ、インド、ジョージアの順に進む">
-        <title>世界一周ルート、アジア区間の拡大図</title>
-        <g className={styles.graticule} aria-hidden="true">
-          <path d="M500 107.5H950M500 215H950M500 322.5H950M625 55V305M750 55V305M875 55V305" />
+      <svg className={styles.diagramTall} viewBox={`0 0 360 ${tallHeight}`} role="group" aria-label={diagramLabel}>
+        <title>世界一周航路の系統図</title>
+        <g aria-hidden="true">
+          {tallStops.slice(0, -1).map((from, index) => {
+            const to = tallStops[index + 1];
+
+            return (
+              <polyline
+                className={styles[segmentStyle[to.stop.status]]}
+                key={`${from.stop.place}-${to.stop.place}`}
+                points={`${TALL.lineX},${from.y} ${TALL.lineX},${to.y}`}
+              />
+            );
+          })}
+          {tallStops.map(({ stop, x, y }) => (
+            <Station key={stop.place} status={stop.status} x={x} y={y} />
+          ))}
+          {tallStops.map(({ stop, y }) => {
+            const isNow = stop.status === "now";
+            const isPort = portByPlace.has(stop.place);
+
+            return (
+              <g key={stop.place}>
+                <text className={styles.periodLabel} textAnchor="start" x="96" y={y - 14}>{stop.period}</text>
+                <text
+                  className={`${styles.nameLabel}${isPort ? ` ${styles.nameLinked}` : ""}`}
+                  textAnchor="start"
+                  x="96"
+                  y={y + 8}
+                >
+                  {stop.place}
+                </text>
+                {isPort && <EnterGlyph size={16} x={96 + stop.place.length * 17 + 8} y={y - 5} />}
+                {isNow && (
+                  <g className={styles.nowChip}>
+                    <rect x="96" y={y + 20} width="72" height="26" />
+                    <text textAnchor="middle" x="132" y={y + 38}>現在地</text>
+                  </g>
+                )}
+                {isNow && <Ferry x={22} y={y + 11} />}
+              </g>
+            );
+          })}
         </g>
-        <WorldLand />
-        <Routes />
+        <g>
+          {tallStops.map(({ stop, x, y }) => {
+            const port = portByPlace.get(stop.place);
+            if (!port) return null;
+
+            return (
+              <a
+                className={styles.stopLink}
+                key={stop.place}
+                href={`/ports/${port.slug}`}
+                aria-label={stopLinkLabel(stop)}
+              >
+                <rect className={styles.stopHit} x="8" y={y - 30} width="312" height="76" />
+                <rect className={styles.stopFocus} x={x - 26} y={y - 26} width="52" height="52" />
+              </a>
+            );
+          })}
+        </g>
       </svg>
     </div>
   );
 }
 
-const stateCopy = {
-  done: "滞在済み",
-  now: "現在地",
-  next: "次の目的地",
-  planned: "旅程",
-} as const;
+/** 寄港索引の状態語。最初の停泊地だけは出発地として読む。 */
+function indexState(stop: Stop, index: number) {
+  if (index === 0) return "出発地";
+  if (stop.status === "now") return "現在停泊中";
+  if (stop.status === "done") return "滞在済み";
+  if (stop.status === "next") return "次の目的地";
+  return "旅程";
+}
 
 export default function Harbor({ place }: { place: CityPlace }) {
   return (
@@ -118,7 +273,7 @@ export default function Harbor({ place }: { place: CityPlace }) {
             </p>
           </div>
           <div className={styles.routeBoard}>
-            <p>ROUTE SIGNAL · LIVE</p>
+            <p>ROUTE SIGNAL · LIVE · JOURNEY DAY <DayCounter /></p>
             <ol aria-label="旅の出発地、現在地、次の目的地">
               <li>
                 <span>DEPARTURE</span>
@@ -152,84 +307,49 @@ export default function Harbor({ place }: { place: CityPlace }) {
               </h2>
             </div>
             <ul className={styles.legend} aria-label="航路の凡例">
+              <li><i className={styles.portMark} />寄港済み(開ける)</li>
               <li><i className={styles.doneMark} />移動済み</li>
               <li><i className={styles.nowMark} />現在地</li>
+              <li><i className={styles.nextMark} />次の目的地</li>
               <li><i className={styles.planMark} />この先の予定</li>
             </ul>
           </header>
-          <RouteMap />
-          <p className={styles.mapNote}>
-            <SemanticText phrases={[
-              "等距円筒図法の",
-              "概略図。",
-              "位置は",
-              "国・地域単位で",
-              "示し、",
-              "確定していない",
-              "都市や座標は",
-              "記載していません。",
-            ]} />
-          </p>
+          <RouteDiagram />
         </section>
 
-        <section className={styles.logbook} aria-labelledby="logbook-title">
+        <section className={styles.portIndex} aria-labelledby="port-index-title">
           <header>
-            <p>PORT LOG</p>
-            <h2 id="logbook-title">旅程記録</h2>
+            <p>PORTS OF CALL</p>
+            <h2 id="port-index-title">寄港索引</h2>
           </header>
           <ol>
-            {journey.map((stop, index) => (
-              <li className={styles[stop.status]} key={`${stop.place}-${stop.period}`}>
-                <span className={styles.stopNumber}>{String(index + 1).padStart(2, "0")}</span>
-                <time>{stop.period}</time>
-                <div>
+            {journey.map((stop, index) => {
+              const port = portByPlace.get(stop.place);
+
+              return (
+                <li className={styles[stop.status]} key={`${stop.place}-${stop.period}`}>
+                  <span className={styles.stopNumber}>{String(index + 1).padStart(2, "0")}</span>
+                  <time>{stop.period}</time>
                   <strong>{stop.place}</strong>
-                  {stop.note && <p><SemanticText phrases={stop.notePhrases ?? [stop.note]} /></p>}
-                </div>
-                <span className={styles.state}>{stateCopy[stop.status]}</span>
-              </li>
-            ))}
+                  <span className={styles.state}>{indexState(stop, index)}</span>
+                  {port ? (
+                    <Link className={styles.indexEnter} href={`/ports/${port.slug}`}>
+                      寄港記録 <PixelIcon name="enter" />
+                    </Link>
+                  ) : (
+                    <span className={styles.notYet}>未寄港</span>
+                  )}
+                </li>
+              );
+            })}
           </ol>
-        </section>
-
-        <section className={styles.dispatches} aria-labelledby="dispatch-title">
-          <header>
-            <p>DISPATCHES FROM THE ROUTE</p>
-            <h2 id="dispatch-title">
-              <SemanticText phrases={["航路から", "届いた記録"]} />
-            </h2>
-          </header>
-
-          <div className={styles.dispatchLayout}>
-            <a className={styles.departureDispatch} href={`https://www.youtube.com/watch?v=${departureFilm.id}`} target="_blank" rel="noreferrer">
-              <span className={styles.dispatchImage}>
-                <Image src={`/media/cinema/${departureFilm.id}.jpg`} alt="東京から世界一周へ出発した日のYouTube映像サムネイル" width={480} height={360} />
-                <i><PixelIcon name="play" /></i>
-              </span>
-              <span className={styles.dispatchMeta}>TOKYO · {departureFilm.date} · FILM</span>
-              <strong><SemanticText phrases={departureFilm.displayTitleLines ?? [departureFilm.title]} /></strong>
-            </a>
-
-            <div className={styles.routeDispatches}>
-              <a href={`https://www.youtube.com/watch?v=${indonesiaFilm.id}`} target="_blank" rel="noreferrer">
-                <Image src={`/media/cinema/${indonesiaFilm.id}.jpg`} alt="インドネシアの年越しを記録したYouTube映像サムネイル" width={1280} height={720} />
-                <span>
-                  <small>INDONESIA · FILM</small>
-                  <strong><SemanticText phrases={indonesiaFilm.displayTitleLines ?? [indonesiaFilm.title]} /></strong>
-                </span>
-              </a>
-              <a href={featuredArticle.href} target="_blank" rel="noreferrer">
-                <Image src={featuredArticle.thumbnail} alt="世界一周の旅と、これまでに出会った人々を重ねた記事の見出し画像" width={1280} height={670} />
-                <span><small>ON THE ROAD · NOTE</small><strong><FeaturedArticleTitle /></strong></span>
-              </a>
-            </div>
-          </div>
         </section>
       </main>
 
       <footer className={styles.footer}>
         <span>ROUTE TERMINAL / CITY 01</span>
         <p>東京から始まった、旅の航路と記録。</p>
+        <Link href={traveler.path}>この旅をしている人 — 旅人SHOSUKEのプロフィール <PixelIcon name="enter" /></Link>
         <Link href="/">街へ戻る <PixelIcon name="map" /></Link>
       </footer>
     </div>

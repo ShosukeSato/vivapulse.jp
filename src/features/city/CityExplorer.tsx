@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import DayCounter from "@/components/DayCounter";
-import { cityPlaces } from "@/data/city";
+import { cityPlaces, traveler } from "@/data/city";
 import {
   currentJourneyStop,
   featuredArticle,
@@ -22,13 +23,12 @@ const GUIDE_ID = "city-guide";
 const LOWER_MAP_IDS = new Set(["cinema", "harbor", GUIDE_ID]);
 
 export default function CityExplorer() {
+  const router = useRouter();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [directoryOpen, setDirectoryOpen] = useState(false);
   const directoryButtonRef = useRef<HTMLButtonElement>(null);
   const directoryReturnFocusRef = useRef<HTMLElement | null>(null);
   const pendingReturnFocusRef = useRef<HTMLElement | null>(null);
-  const desktopGuideButtonRef = useRef<HTMLButtonElement>(null);
-  const mobileGuideButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const mobileCardRef = useRef<HTMLElement>(null);
 
@@ -189,26 +189,26 @@ export default function CityExplorer() {
               <a className={styles.primaryAction} href="#works">
                 <span>代表作を見る</span><PixelIcon name="enter" />
               </a>
-              <Link className={styles.textAction} href="/places/city-01-central" prefetch={false}>プロフィールと現在地</Link>
+              <Link className={styles.textAction} href={traveler.path} prefetch={false}>旅人SHOSUKEのプロフィール</Link>
             </div>
 
             {selectedPlace || guideSelected ? (
               <aside className={styles.placeInspector} aria-live="polite" data-map-selection-ui>
                 <div className={styles.inspectorMeta}>
-                  <span>{guideSelected ? "CITY GUIDE" : selectedPlace?.code}</span>
+                  <span>{guideSelected ? "TRAVELER" : selectedPlace?.code}</span>
                   <button type="button" onClick={() => setSelectedId(null)} aria-label="施設情報を閉じる">×</button>
                 </div>
-                <p>{guideSelected ? "この街の案内人" : selectedPlace?.destination}</p>
+                <p>{guideSelected ? "この街をつくった旅人" : selectedPlace?.destination}</p>
                 <h2>{guideSelected ? "SHOSUKE" : selectedPlace?.name}</h2>
                 <p className={styles.inspectorSummary}>
                   {guideSelected
-                    ? "この街をつくり、旅を続けている本人です。建物を選ぶか、施設一覧から行き先を探せます。"
+                    ? "この街をつくり、いまも世界を旅している本人。話しかけると、プロフィールがひらきます。"
                     : selectedPlace?.summary}
                 </p>
                 {guideSelected ? (
-                  <button type="button" onClick={() => openDirectory(desktopGuideButtonRef.current)}>
-                    <span>施設一覧を開く</span><PixelIcon name="directory" />
-                  </button>
+                  <Link href={traveler.path} prefetch={false}>
+                    <span>プロフィールを見る</span><PixelIcon name="enter" />
+                  </Link>
                 ) : (
                   <Link href={selectedPlace!.path} prefetch={false}>
                     <span>この施設に入る</span><PixelIcon name="enter" />
@@ -237,8 +237,7 @@ export default function CityExplorer() {
                 onSelect={setSelectedId}
                 guideSelected={guideSelected}
                 onGuideHover={() => setSelectedId(GUIDE_ID)}
-                onGuideSelect={() => openDirectory(desktopGuideButtonRef.current)}
-                guideButtonRef={desktopGuideButtonRef}
+                onGuideSelect={() => router.push(traveler.path)}
               />
             </div>
             <div className={styles.mobileScene}>
@@ -249,20 +248,19 @@ export default function CityExplorer() {
                 onGuideHover={() => setSelectedId(GUIDE_ID)}
                 onGuideSelect={() => {
                   if (guideSelected) {
-                    openDirectory(mobileGuideButtonRef.current);
+                    router.push(traveler.path);
                   } else {
                     setSelectedId(GUIDE_ID);
                   }
                 }}
                 preview
                 interactive
-                guideButtonRef={mobileGuideButtonRef}
               />
             </div>
 
             <p className={styles.mapStatus} role="status" aria-live="polite" aria-atomic="true">
               {guideSelected
-                ? "街の案内人SHOSUKEを選択しました。詳細を表示しています。"
+                ? "旅人SHOSUKEを選択しました。詳細を表示しています。"
                 : selectedPlace
                   ? `${selectedPlace.shortName}を選択しました。詳細を表示しています。`
                   : ""}
@@ -278,17 +276,17 @@ export default function CityExplorer() {
                 data-map-selection-ui
               >
                 <div className={styles.mobileCardHead}>
-                  <span>{guideSelected ? "CITY GUIDE" : selectedPlace?.code}</span>
+                  <span>{guideSelected ? "TRAVELER" : selectedPlace?.code}</span>
                   <button type="button" onClick={() => setSelectedId(null)} aria-label="施設情報を閉じる">×</button>
                 </div>
                 <div className={styles.mobileCardCopy}>
-                  <p>{guideSelected ? "街の施設を案内します" : selectedPlace?.destination}</p>
+                  <p>{guideSelected ? "この街をつくった旅人" : selectedPlace?.destination}</p>
                   <h2>{guideSelected ? "SHOSUKE" : selectedPlace?.shortName}</h2>
                 </div>
                 {guideSelected ? (
-                  <button type="button" onClick={() => openDirectory(mobileGuideButtonRef.current)}>
-                    <span>施設一覧を開く</span><PixelIcon name="directory" />
-                  </button>
+                  <Link href={traveler.path} prefetch={false}>
+                    <span>プロフィールを見る</span><PixelIcon name="enter" />
+                  </Link>
                 ) : (
                   <Link href={selectedPlace!.path} prefetch={false}>
                     <span>この施設に入る</span><PixelIcon name="enter" />
@@ -302,7 +300,7 @@ export default function CityExplorer() {
             <div className={styles.mobileStatus}>
               <span><small><PixelIcon name="location" />現在地</small><strong>{currentJourneyStop.place}</strong></span>
               <span><small>次の街</small><strong>{nextJourneyStop.place}</strong></span>
-              <Link href="/places/city-01-central" prefetch={false}>プロフィールと現在地 <PixelIcon name="enter" /></Link>
+              <Link href={traveler.path} prefetch={false}>旅人SHOSUKEのプロフィール <PixelIcon name="enter" /></Link>
             </div>
             <nav aria-label="施設から作品を選ぶ">
               <p>街の施設</p>
@@ -423,6 +421,13 @@ export default function CityExplorer() {
               <button type="button" ref={closeButtonRef} onClick={closeDirectory} aria-label="施設一覧を閉じる"><PixelIcon name="close" /></button>
             </div>
             <nav>
+              <p className={styles.directoryGroup}>この街の旅人</p>
+              <Link className={styles.directoryTraveler} href={traveler.path} prefetch={false}>
+                <span>{traveler.role}</span>
+                <span><strong>{traveler.name}</strong><small>{traveler.destination}</small></span>
+                <PixelIcon name="enter" />
+              </Link>
+              <p className={styles.directoryGroup}>施設</p>
               {cityPlaces.map((place) => (
                 <Link href={place.path} key={place.id} prefetch={false}>
                   <span>{place.code}</span>

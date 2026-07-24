@@ -38,8 +38,7 @@
 
 .departureIntro > p:first-child,
 .chartRoom header p,
-.logbook header p,
-.dispatches header p {
+.portIndex header p {
   margin: 0 0 20px;
   color: #17596c;
   font-family: var(--font-mono);
@@ -233,84 +232,103 @@
 .chartRoom > header { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 42px; }
 .chartRoom header p { color: #f0c85a; }
 .chartRoom h2,
-.logbook h2,
-.dispatches h2 { margin: 0; font-size: clamp(36px, 5vw, 68px); letter-spacing: -.045em; }
+.portIndex h2 { margin: 0; font-size: clamp(36px, 5vw, 68px); letter-spacing: -.045em; }
 
 .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 0; padding: 0; list-style: none; }
 .legend li { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.legend i { width: 12px; height: 12px; display: block; border: 2px solid #cee8e5; }
-.legend .doneMark { background: #2a7c91; }
-.legend .nowMark { border-color: #f0c85a; background: #f0c85a; }
-.legend .planMark { border-style: dashed; }
+.legend i { display: block; }
+.legend .doneMark,
+.legend .nextMark,
+.legend .planMark { width: 26px; height: 0; border-top: 4px solid #f0c85a; }
+.legend .nextMark { border-top-color: #cee8e5; border-top-style: dashed; }
+.legend .planMark { border-top-color: #cee8e5; border-top-style: dotted; }
+.legend .nowMark { width: 12px; height: 12px; border: 2px solid #f0c85a; background: #f0c85a; }
+.legend .portMark { width: 12px; height: 12px; margin-bottom: 4px; border: 2px solid #cee8e5; background: #0e4054; box-shadow: 0 5px 0 -1px #f0c85a; }
 
 .maps { border: 1px solid #2a7c91; background: #0b3545; }
-.worldMap { width: 100%; height: auto; display: block; }
-.regionMap { width: 100%; height: auto; display: none; }
-.graticule path { fill: none; stroke: #2a7c91; stroke-width: 1; opacity: .42; }
-.land path { fill: #2a7c91; stroke: #cee8e5; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.diagramWide { width: 100%; height: auto; display: block; }
+.diagramTall { width: 100%; max-width: 430px; height: auto; display: none; margin-inline: auto; }
+
 .routeDone,
-.routeNext { fill: none; stroke-width: 4; vector-effect: non-scaling-stroke; }
+.routeNext,
+.routePlanned { fill: none; stroke-width: 6; }
 .routeDone { stroke: #f0c85a; }
-.routeNext { stroke: #cee8e5; stroke-dasharray: 8 8; }
-.mapStop rect { fill: #0e4054; stroke: #cee8e5; stroke-width: 2; vector-effect: non-scaling-stroke; }
-.mapStop circle { fill: #cee8e5; }
-.mapStop text { fill: #cee8e5; font-family: var(--font-sans); font-size: 14px; font-weight: 700; paint-order: stroke; stroke: #0e4054; stroke-width: 5px; stroke-linejoin: round; }
-.mapStop.now rect { fill: #f0c85a; stroke: #f0c85a; }
-.mapStop.now circle { fill: #0e4054; }
-.mapStop.next rect,
-.mapStop.planned rect { stroke-dasharray: 3 2; }
+.routeNext { stroke: #cee8e5; stroke-dasharray: 12 8; }
+.routePlanned { stroke: #cee8e5; stroke-dasharray: 2 10; }
 
-.mapNote { margin: 14px 0 0; color: #a8cdce; font-size: 16px; line-height: 1.7; }
-.mapNote :global(.semanticPhrase) { max-width: none; }
+.station rect { fill: #0e4054; stroke: #cee8e5; stroke-width: 3; }
+.station circle { fill: #cee8e5; }
+.station.done circle { fill: #cee8e5; }
+.station.next rect,
+.station.planned rect { stroke-dasharray: 3 2; }
+.station.now rect { fill: #f0c85a; stroke: #f0c85a; }
+.station.now circle { fill: #0e4054; }
+.station.now .nowHalo { fill: none; stroke: #f0c85a; stroke-width: 3; }
 
-.logbook { padding: clamp(70px, 9vw, 132px) clamp(18px, 8vw, 128px); }
-.logbook > header { display: grid; grid-template-columns: 160px 1fr; align-items: end; margin-bottom: 40px; }
-.logbook header p { margin: 0 0 8px; }
-.logbook ol { margin: 0; padding: 0; border-top: 3px solid #0e4054; list-style: none; }
-.logbook li {
-  min-height: 116px;
+.periodLabel { fill: #a8cdce; font-family: var(--font-mono); font-weight: 600; }
+.nameLabel { fill: #cee8e5; font-family: var(--font-sans); font-weight: 700; }
+.diagramWide .periodLabel { font-size: 18px; }
+.diagramWide .nameLabel { font-size: 20px; }
+.diagramTall .periodLabel { font-size: 15px; }
+.diagramTall .nameLabel { font-size: 17px; }
+
+.nowChip rect { fill: #f0c85a; }
+.nowChip text { fill: #0e4054; font-family: var(--font-sans); font-weight: 700; }
+.diagramWide .nowChip text { font-size: 19px; }
+.diagramTall .nowChip text { font-size: 17px; }
+
+.ferryHull,
+.ferryCabin { fill: #cee8e5; stroke: #081923; stroke-width: 2; }
+.ferryBand { fill: #f0c85a; }
+.ferryWaterline { fill: #102b3b; }
+
+/*
+ * Opened ports are real links inside the diagram. The transparent hit rect
+ * keeps the target at 44×44 CSS px or larger at every rendered size; focus
+ * and hover show the static three-pixel warm bracket — no pulse.
+ */
+.stopLink { cursor: pointer; }
+.stopLink:focus-visible { outline: none; }
+.stopHit { fill: transparent; }
+.stopFocus { fill: none; stroke: #f0c85a; stroke-width: 3; opacity: 0; }
+.stopLink:hover .stopFocus,
+.stopLink:focus-visible .stopFocus { opacity: 1; }
+.nameLinked { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.enterGlyph { color: #f0c85a; }
+
+
+/*
+ * PORTS OF CALL — a thin timetable index, one line per stop. This ol is the
+ * accessible canonical route data; the diagram links above are enhancement.
+ * Opened ports get an enter link; everything else reads 未寄港.
+ */
+.portIndex { padding: clamp(70px, 9vw, 132px) clamp(18px, 8vw, 128px); }
+.portIndex > header { display: grid; grid-template-columns: 160px 1fr; align-items: end; margin-bottom: 34px; }
+.portIndex header p { margin: 0 0 8px; }
+.portIndex ol { margin: 0; padding: 0; border-top: 3px solid #0e4054; list-style: none; }
+.portIndex li {
+  min-height: 58px;
   display: grid;
-  grid-template-columns: 70px 130px minmax(0, 1fr) 130px;
-  gap: 25px;
+  grid-template-columns: 52px 104px minmax(0, 1fr) 130px 132px;
+  gap: 18px;
   align-items: center;
-  padding: 20px 0;
+  padding: 8px 0;
   border-bottom: 1px solid #78aaae;
 }
 
 .stopNumber { font-family: var(--font-mono); font-size: 13px; }
-.logbook time { color: #17596c; font-family: var(--font-mono); font-size: 14px; font-weight: 700; }
-.logbook li > div strong { font-size: 24px; }
-.logbook li > div p { max-width: 48em; margin: 6px 0 0; font-size: 16px; line-height: 1.7; }
-.state { justify-self: end; min-height: 38px; display: grid; place-items: center; padding: 0 12px; border: 1px solid currentColor; font-size: 13px; font-weight: 700; }
-.logbook li.now { background: #f0c85a; }
-.logbook li.now > *:first-child { margin-left: 20px; }
-.logbook li.now > *:last-child { margin-right: 20px; }
-.logbook li.next,
-.logbook li.planned { color: #385f67; }
-
-.dispatches { padding: clamp(70px, 8vw, 120px) clamp(18px, 5vw, 76px); background: #f4eeee; }
-.dispatches > header { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 46px; }
-.dispatchLayout { display: grid; grid-template-columns: 1.35fr .65fr; gap: clamp(20px, 3vw, 46px); }
-.dispatchLayout a { color: inherit; text-decoration: none; }
-.dispatchImage { position: relative; display: block; overflow: hidden; background: #0e4054; aspect-ratio: 16 / 9; }
-.dispatchImage img { width: 100%; height: 100%; object-fit: cover; }
-.dispatchImage i { position: absolute; right: 18px; bottom: 18px; width: 54px; height: 54px; display: grid; place-items: center; background: #f0c85a; color: #0e4054; }
-.dispatchImage i svg { width: 18px; }
-.dispatchMeta,
-.routeDispatches small { display: block; margin-top: 15px; color: #17596c; font-family: var(--font-mono); font-size: 13px; font-style: normal; font-weight: 700; }
-.departureDispatch > strong { max-width: 31em; display: block; margin-top: 8px; font-size: clamp(23px, 3vw, 38px); line-height: 1.45; }
-.departureDispatch,
-.dispatchLayout,
-.routeDispatches,
-.routeDispatches a,
-.routeDispatches a > span { min-width: 0; max-width: 100%; }
-.departureDispatch > strong :global(.semanticPhrase),
-.routeDispatches strong :global(.semanticPhrase) { white-space: nowrap; }
-.routeDispatches { display: grid; align-content: start; gap: 28px; }
-.routeDispatches a { display: grid; grid-template-columns: 43% 1fr; gap: 18px; padding-bottom: 26px; border-bottom: 1px solid #78aaae; }
-.routeDispatches img { width: 100%; height: 100%; min-height: 130px; object-fit: cover; }
-.routeDispatches small { margin-top: 0; }
-.routeDispatches strong { display: block; margin-top: 8px; font-size: 16px; line-height: 1.6; }
+.portIndex time { color: #17596c; font-family: var(--font-mono); font-size: 14px; font-weight: 700; }
+.portIndex li > strong { min-width: 0; font-size: 18px; letter-spacing: -.02em; overflow-wrap: normal; word-break: keep-all; }
+.state { justify-self: end; min-height: 34px; display: grid; place-items: center; padding: 0 10px; border: 1px solid currentColor; font-size: 13px; font-weight: 700; }
+.indexEnter { justify-self: end; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; border-bottom: 1px solid currentColor; color: inherit; font-size: 13px; font-weight: 700; text-decoration: none; }
+.indexEnter:hover { color: #17596c; }
+.indexEnter svg { width: 15px; }
+.notYet { justify-self: end; color: #385f67; font-size: 13px; font-weight: 700; }
+.portIndex li.now { background: #f0c85a; }
+.portIndex li.now > *:first-child { margin-left: 16px; }
+.portIndex li.now > *:last-child { margin-right: 16px; }
+.portIndex li.next,
+.portIndex li.planned { color: #385f67; }
 
 .footer { min-height: 116px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 28px clamp(18px, 5vw, 76px); background: #0e4054; color: #cee8e5; }
 .footer span { font-family: var(--font-mono); font-size: 13px; }
@@ -322,29 +340,20 @@
 @media (max-width: 900px) {
   .harborHead { grid-template-columns: 1fr; }
   .routeBoard { border-top: 1px solid #2a7c91; border-left: 0; }
-  .dispatchLayout { grid-template-columns: 1fr; }
-  .routeDispatches { grid-template-columns: 1fr; }
-  .logbook > header { grid-template-columns: 1fr; gap: 8px; }
-  .chartRoom > header,
-  .dispatches > header { align-items: flex-start; flex-direction: column; }
-  .worldMap { display: none; }
-  .regionMap { display: block; }
-  .mapStop[data-stop-index="0"] text {
-    text-anchor: end;
-    transform: translateX(-30px);
-  }
-  .mapStop[data-stop-index="1"] text {
-    text-anchor: end;
-    transform: translateX(-30px);
-  }
-  .logbook { padding-inline: 18px; }
-  .logbook li { grid-template-columns: 38px minmax(0, 1fr) auto; gap: 10px 12px; padding: 18px 0; }
-  .logbook time { grid-column: 2; grid-row: 1; }
-  .logbook li > div { grid-column: 2 / 4; grid-row: 2; }
-  .stopNumber { grid-column: 1; grid-row: 1 / 3; align-self: start; padding-top: 3px; }
-  .state { grid-column: 3; grid-row: 1; min-height: 34px; }
-  .logbook li.now > *:first-child { margin-left: 10px; }
-  .logbook li.now > *:last-child { margin-right: 10px; }
+  .portIndex > header { grid-template-columns: 1fr; gap: 8px; }
+  .chartRoom > header { align-items: flex-start; flex-direction: column; }
+  .diagramWide { display: none; }
+  .diagramTall { display: block; }
+  .portIndex { padding-inline: 18px; }
+  .portIndex li { grid-template-columns: 32px auto minmax(0, 1fr) auto; gap: 4px 14px; padding: 12px 0; }
+  .stopNumber { grid-column: 1; grid-row: 1 / 3; align-self: start; padding-top: 4px; }
+  .portIndex li > strong { grid-column: 2 / 4; grid-row: 1; font-size: 17px; }
+  .portIndex time { grid-column: 2; grid-row: 2; align-self: center; }
+  .state { grid-column: 3; grid-row: 2; justify-self: start; min-height: 0; padding: 2px 8px; }
+  .indexEnter,
+  .notYet { grid-column: 4; grid-row: 1 / 3; align-self: center; }
+  .portIndex li.now > *:first-child { margin-left: 10px; }
+  .portIndex li.now > *:last-child { margin-right: 10px; }
 }
 
 @media (max-width: 680px) {
@@ -362,52 +371,19 @@
   .routeBoard li > span { grid-row: auto; }
   .routeBoard li strong { font-size: 24px; }
   .quayEdge { height: 70px; }
-  .mapStop text { font-size: 13px; }
   .footer { align-items: flex-start; flex-direction: column; }
   .footer a { width: 100%; justify-content: space-between; }
 }
 
 @media (max-width: 390px) {
   .chartRoom,
-  .dispatches { padding-inline: 14px; }
+  .portIndex { padding-inline: 14px; }
   .chartRoom h2,
-  .logbook h2,
-  .dispatches h2 { font-size: clamp(26px, 8vw, 38px); }
-  .routeDispatches a { grid-template-columns: 1fr; }
-  .routeDispatches img { aspect-ratio: 16 / 9; min-height: 0; }
-  .departureDispatch > strong { font-size: 20px; }
-  .dispatchMeta,
-  .routeDispatches small {
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-  .logbook li {
-    grid-template-columns: 32px minmax(0, 1fr);
-    gap: 10px 12px;
-  }
-  .logbook time {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .state {
-    grid-column: 2;
-    grid-row: 2;
-    justify-self: start;
-  }
-  .logbook li > div {
-    grid-column: 2;
-    grid-row: 3;
-  }
-  .logbook li > div strong {
-    font-size: clamp(20px, 5.5vw, 22px);
-    white-space: nowrap;
-  }
-  .stopNumber {
-    grid-column: 1;
-    grid-row: 1 / 4;
-  }
-  .logbook li.now > *:first-child { margin-left: 8px; }
-  .logbook li.now > *:last-child { margin-right: 8px; }
+  .portIndex h2 { font-size: clamp(26px, 8vw, 38px); }
+  .portIndex li { grid-template-columns: 26px auto minmax(0, 1fr) auto; gap: 4px 10px; }
+  .portIndex li > strong { white-space: nowrap; }
+  .portIndex li.now > *:first-child { margin-left: 8px; }
+  .portIndex li.now > *:last-child { margin-right: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

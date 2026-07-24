@@ -105,7 +105,7 @@ Touch targets are at least `44 × 44` CSS px. A visible keyboard focus state is 
 - Train: one arrival every `16s`, lasting `4s`
 - Ship or flag: choose one, never both at once
 - Character walk: `8fps`
-- Selection: static two-pixel warm outline; no pulse
+- Selection: static three-pixel warm outline; no pulse
 - Entry: optional door, two steps and facility-color wipe, total `480–650ms`, never a navigation delay
 - Maximum three environmental motions at once
 - No universal fade/reveal, floating, pulse or rotation
@@ -132,7 +132,7 @@ Only the 56px City Bar, map return, typography accessibility and focus language 
 
 ### Central
 
-Open with the real person, name and a single clear biography. The departure board is navigation to real facilities, not decoration. Current location and next destination include update dates.
+An open, urban station concourse: white ground, cool glass-canopy band, hanging concourse signage and a horizontal platform edge. The departure board is the protagonist and is navigation to real facilities, not decoration. The traveler's note board links to the profile page and Route Terminal as a message left by the person, never as a facility row. The person's biography lives on the profile page (`/shosuke`), not here; warm stone, coral and station-sign plates belong to the profile page and distinguish it from Central's cool concourse.
 
 ### Voyage Cinema
 
@@ -144,7 +144,25 @@ Open on a real featured story. Default to a horizontal, searchable catalogue wit
 
 ### Route Terminal
 
-Use geographically honest land shapes, the real itinerary and real travel content. No invented coordinates, boarding passes or arbitrary Bézier route. Palette: `#0E4054`, `#2A7C91`, `#CEE8E5`, `#F0C85A`.
+Visualize the real itinerary as a schematic route-line diagram in harbor-sign language: horizontal, vertical and 45-degree segments on an integer grid only, square berth markers, and one rect-built pixel ferry at the current stop. Encode state by line style — solid traveled, dashed next, dotted planned — never by invented geography. The current stop carries the static three-pixel warm outline. No world-map land shapes, invented coordinates, port codes, boarding passes or arbitrary Bézier route. Real itinerary and real travel content only. Cool sea palette and berth-marker language distinguish it from the warm vertical railway timeline on the profile page. Palette: `#0E4054`, `#2A7C91`, `#CEE8E5`, `#F0C85A`.
+
+The terminal is the only door to the ports of call. Opened stops on the diagram are links; the ports index below it is the keyboard and screen-reader path to the same pages.
+
+## Ports of call
+
+Ports (`/ports/[slug]`) are not facilities. They sit outside the city, carry no facility code, never appear on the map or in the directory, and are reached only from the Route Terminal diagram and index. A port opens only where a real stay was recorded; unvisited stops get no page and stay unlinked, and the diagram's existing dashed and dotted markers are the whole "not yet" statement.
+
+Every port uses one shared harbor-ledger format: arrival header (order, real period, state, stay note), the real films and articles made there, and route links to the neighbouring ports and back to the terminal. Country character comes from the record, never from decoration:
+
+- Real content carries the page. The films shot in a country are the strongest possible statement of that country.
+- At most two local colors per port, **sampled from that port's own real thumbnails** and contrast-checked before use. Never taken from a flag.
+- At most one pixel vignette, and only of a place actually visited.
+- The home port (Tokyo) adds no local color; it wears the city's own stone and lamp, because the city was built from the place it departed from.
+- A port with no footage yet keeps the base sea palette. Absence is shown, not decorated.
+
+Forbidden: flag color fields, clip-art traditional patterns or costume, motifs from places that were not visited, and layouts that fill space with a giant country name.
+
+Arrival uses the entry wipe rule — a single accent-colored overlay clearing in 480–650ms over already-rendered content, never a navigation delay, dropped entirely under reduced motion. The return trip is silent.
 
 ### TripVlog Studio
 

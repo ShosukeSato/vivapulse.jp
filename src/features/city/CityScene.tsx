@@ -647,8 +647,7 @@ function Player({
           data-map-target="guide"
           type="button"
           ref={buttonRef}
-          aria-label="街の案内人SHOSUKEに話しかけて施設一覧を開く"
-          aria-haspopup="dialog"
+          aria-label="旅人SHOSUKEに話しかけてプロフィールをひらく"
           aria-expanded={selected}
           onClick={(event) => {
             event.stopPropagation();
@@ -676,7 +675,7 @@ function Player({
         >
           <rect width="168" height="64" fill={P.blackDepth} stroke={P.outline} />
           <rect width="6" height="64" fill={P.selection} />
-          <text x="20" y="26" fill={P.haze} className="city-scene__guide-role">案内人</text>
+          <text x="20" y="26" fill={P.haze} className="city-scene__guide-role">旅人</text>
           <text x="20" y="54" fill={P.lightStone} className="city-scene__name">SHOSUKE</text>
         </g>
       )}
@@ -797,7 +796,7 @@ export default function CityScene({
       <title id={`${instanceId}-title`}>CITY 01 都市探索マップ</title>
       <desc id={`${instanceId}-description`}>
         {interactive
-          ? "18時42分の海辺の街。街の施設と案内人は、キーボードやタップでも選択できます。"
+          ? "18時42分の海辺の街。街の施設と旅人は、キーボードやタップでも選択できます。"
           : "18時42分の海辺の街を見渡す全景。各施設へのリンクは、この画像の下に一覧で並んでいます。"}
       </desc>
 

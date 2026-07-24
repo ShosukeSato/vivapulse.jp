@@ -37,6 +37,206 @@ export const socials = [
   { label: "GitHub", href: "https://github.com/shosukesato" },
 ] as const;
 
+// ─── 旅人プロフィール(/shosuke) ───
+
+/** 経歴の詳しい話を書いた実在のnote記事。 */
+export const careerArticleUrl = "https://note.com/shosuke240557/n/nc7e1b6afe9f3";
+
+export type LifeStation = {
+  /** 空文字は年月の記録を掲示しない駅。 */
+  period: string;
+  name: string;
+  note?: string;
+  notePhrases?: readonly string[];
+  status: "done" | "now";
+};
+
+/** 人生路線図(LIFE LINE)の各駅。実在の経歴のみを記載する。 */
+export const lifeStations: LifeStation[] = [
+  {
+    period: "2004.04",
+    name: "神奈川県に生まれる",
+    note: "以来ずっと、神奈川育ち。",
+    notePhrases: ["以来ずっと、", "神奈川育ち。"],
+    status: "done",
+  },
+  { period: "", name: "地元の小学校", status: "done" },
+  { period: "", name: "相模原中等教育学校", status: "done" },
+  { period: "2022.04", name: "東京大学 理科一類 入学", status: "done" },
+  { period: "2024.04", name: "東京大学 工学部 進学", status: "done" },
+  { period: "2026.03", name: "東京大学 工学部 卒業", status: "done" },
+  {
+    period: "2026.04",
+    name: "東京大学大学院 工学系研究科 入学",
+    note: "入学と同時に、一年間の休学へ(〜二〇二七年三月)。",
+    notePhrases: ["入学と同時に、", "一年間の", "休学へ", "(〜二〇二七年", "三月)。"],
+    status: "done",
+  },
+  {
+    period: "2026.05",
+    name: "世界一周へ出発",
+    note: "五月二三日、東京を発つ。いまはこの区間。",
+    notePhrases: ["五月二三日、", "東京を発つ。", "いまは", "この区間。"],
+    status: "now",
+  },
+];
+
+/** 路線の続き。確定している事実(休学期間)だけを示す。 */
+export const lifeLineContinuation = "休学は二〇二七年三月まで。線路は、その先へ続く。";
+export const lifeLineContinuationPhrases = [
+  "休学は",
+  "二〇二七年",
+  "三月まで。",
+  "線路は、",
+  "その先へ続く。",
+] as const;
+
+export type WorkRecord = {
+  name: string;
+  /** アルバイト・スタートアップ・インターンなどの区分。 */
+  kind: string;
+  /** 西暦(2022.04入学からの単純換算)または記事準拠の学年表記。 */
+  period: string;
+  periodNote?: string;
+  role?: string;
+  note: string;
+  notePhrases?: readonly string[];
+  status: "done" | "now";
+};
+
+/**
+ * 職歴。出典は本人のnote記事「東大理系の4年間」(careerArticleUrl)。
+ * 実在の記録のみを、記事の記述に忠実に載せる。
+ * LINKは羽石産業知能研究所へ社名変更した同一企業。
+ */
+export const workHistory: WorkRecord[] = [
+  {
+    name: "塾講師",
+    kind: "アルバイト",
+    period: "2022.09 — 2023.03",
+    periodNote: "大学1年 · 7ヶ月",
+    note: "授業の実績は、二回だけ。全く合っていなかった。",
+    notePhrases: ["授業の実績は、", "二回だけ。", "全く", "合っていなかった。"],
+    status: "done",
+  },
+  {
+    name: "居酒屋",
+    kind: "アルバイト",
+    period: "大学1〜2年",
+    periodNote: "約10ヶ月",
+    note: "客単価高めの店。飲食店の運営と接客、効率的な動きを学んだ。",
+    notePhrases: ["客単価高めの店。", "飲食店の運営と", "接客、", "効率的な動きを", "学んだ。"],
+    status: "done",
+  },
+  {
+    name: "イベントスタッフ",
+    kind: "アルバイト",
+    period: "大学2年",
+    note: "ライブ会場の設営と運営。バイトの中で、圧倒的に楽しかった。",
+    notePhrases: ["ライブ会場の", "設営と運営。", "バイトの中で、", "圧倒的に", "楽しかった。"],
+    status: "done",
+  },
+  {
+    name: "Airion",
+    kind: "スタートアップ",
+    period: "2024.02 — 2025.02",
+    periodNote: "大学2年〜3年 · 1年1ヶ月",
+    role: "創業初期メンバー",
+    note: "CEO直下で働き、オフィスに泊まり込むことも。社会での仕事獲得の仕組みと案件の流れ、自分で仕事を見つけて完結させる力を得た。やりたい仕事との乖離とストレスから退職。",
+    notePhrases: [
+      "CEO直下で働き、",
+      "オフィスに",
+      "泊まり込むことも。",
+      "社会での",
+      "仕事獲得の仕組みと",
+      "案件の流れ、",
+      "自分で仕事を",
+      "見つけて",
+      "完結させる力を",
+      "得た。",
+      "やりたい仕事との",
+      "乖離とストレスから",
+      "退職。",
+    ],
+    status: "done",
+  },
+  {
+    name: "家庭教師",
+    kind: "個人契約",
+    period: "大学3年",
+    periodNote: "月1回程度",
+    note: "友人の弟を、個人契約で教える。",
+    notePhrases: ["友人の弟を、", "個人契約で", "教える。"],
+    status: "done",
+  },
+  {
+    name: "株式会社羽石産業知能研究所",
+    kind: "スタートアップ",
+    period: "2025.05 —",
+    periodNote: "大学4年〜",
+    role: "CPO",
+    note: "旧社名 LINK。肩書きはCPO。ただし実際の業務は広報やマーケティング、そしてCEOの相談役として「次にどうするか」を一緒に話し合うことがメイン。肩書きと実際の仕事は、全く別物。きっかけは、キャリアイベントで出会った一学年下のCEO、羽石君。",
+    notePhrases: [
+      "旧社名 LINK。",
+      "肩書きはCPO。",
+      "ただし",
+      "実際の業務は",
+      "広報や",
+      "マーケティング、",
+      "そして",
+      "CEOの相談役として",
+      "「次にどうするか」を",
+      "一緒に話し合うことが",
+      "メイン。",
+      "肩書きと",
+      "実際の仕事は、",
+      "全く別物。",
+      "きっかけは、",
+      "キャリアイベントで",
+      "出会った",
+      "一学年下のCEO、",
+      "羽石君。",
+    ],
+    status: "now",
+  },
+  {
+    name: "GROWTH VERSE",
+    kind: "インターン",
+    period: "2025.10 —",
+    periodNote: "大学4年〜",
+    role: "マーケティング",
+    note: "フルリモートで、マーケティングを担当。きっかけは、学科の飲み会で誘ってくれた役員の南野さん。",
+    notePhrases: [
+      "フルリモートで、",
+      "マーケティングを",
+      "担当。",
+      "きっかけは、",
+      "学科の飲み会で",
+      "誘ってくれた",
+      "役員の南野さん。",
+    ],
+    status: "now",
+  },
+];
+
+/**
+ * 仕事をめぐる姿勢。本人記事「東大理系の4年間」より。
+ * ここまでの職歴の多く(羽石産業知能研究所・GROWTH VERSE)が、
+ * この姿勢そのものから生まれている。
+ */
+export const workCreed = {
+  quote: "恐れずに、いろいろな人に会いに行くこと。",
+  quotePhrases: ["恐れずに、", "いろいろな人に", "会いに行くこと。"],
+  source: "本人のnote「東大理系の4年間」より",
+} as const;
+
+/** 好きな場所・趣味・特技。みなとみらいはCITY 01の原風景でもある。 */
+export const personal = {
+  favoritePlace: "みなとみらい",
+  hobbies: ["夜景", "サウナ", "カラオケ"],
+  skills: ["タイピングが速い"],
+} as const;
+
 // ─── 作品(アプリ) ───
 
 export type Product = {
@@ -253,6 +453,18 @@ export type Video = {
 };
 
 export const channelUrl = "https://www.youtube.com/@shosuke_sato";
+
+/**
+ * Films whose YouTube still never existed above 640px wide, so only
+ * `-640.webp` is on disk. Anything asking for a larger still must fall back,
+ * or the thumbnail 404s.
+ */
+export const smallStillFilmIds: ReadonlySet<string> = new Set(["ywBornpZvrE"]);
+
+/** The widest still that actually exists for a film, at or below `want`. */
+export function filmStill(id: string, want: 640 | 960 | 1280) {
+  return `/media/cinema/${id}-${smallStillFilmIds.has(id) ? 640 : want}.webp`;
+}
 
 export type PodcastEpisode = {
   id: string;
@@ -512,6 +724,48 @@ export const journey: Stop[] = [
   {
     place: "ジョージア",
     period: "予定",
+    note: "",
+    status: "planned",
+  },
+  {
+    place: "アルバニア",
+    period: "予定",
+    note: "",
+    status: "planned",
+  },
+  {
+    place: "ハンガリー",
+    period: "予定",
+    note: "",
+    status: "planned",
+  },
+  {
+    place: "ポルトガル",
+    period: "予定",
+    note: "",
+    status: "planned",
+  },
+  {
+    place: "モロッコ",
+    period: "予定",
+    note: "",
+    status: "planned",
+  },
+  {
+    place: "ニューヨーク",
+    period: "予定",
+    note: "",
+    status: "planned",
+  },
+  {
+    place: "コロンビア",
+    period: "予定",
+    note: "",
+    status: "planned",
+  },
+  {
+    place: "日本",
+    period: "予定",
     note: "旅は九ヶ月、続く。",
     notePhrases: ["旅は九ヶ月、", "続く。"],
     status: "planned",
@@ -521,3 +775,62 @@ export const journey: Stop[] = [
 /** The live route state has one canonical source for the map, Central and terminal. */
 export const currentJourneyStop = journey.find((stop) => stop.status === "now")!;
 export const nextJourneyStop = journey.find((stop) => stop.status === "next")!;
+
+// ─── 寄港地(/ports) ───
+
+export type Port = {
+  slug: string;
+  /** journey.place と一致するキー。 */
+  place: string;
+  nameEn: string;
+  /** home = 母港(東京)。call = 寄港地。 */
+  role: "home" | "call";
+  /**
+   * films.place がここに含まれる実映像を自動収集する。
+   * filmsに正しいplaceで映像を1本足せば、寄港地ページへ自動掲載される。
+   */
+  placeAliases: readonly string[];
+  featuredFilmId?: string;
+  /** articles.href の明示参照。執筆地・時期の帰属が明確な記事だけを載せる。 */
+  articleHrefs: readonly string[];
+};
+
+/**
+ * 開港済みの寄港地。実在の滞在記録がある地だけが開港する。
+ * 新しい国を開くときは、journey のstatus更新に加えて、ここに
+ * 1エントリ足すだけでページ生成・系統図リンク・索引・sitemapまで反映される。
+ */
+export const ports: Port[] = [
+  {
+    slug: "tokyo",
+    place: "東京",
+    nameEn: "TOKYO",
+    role: "home",
+    placeAliases: ["東京", "東京から世界へ"],
+    featuredFilmId: "WqQ4d-KwOZg",
+    articleHrefs: [
+      "https://note.com/shosuke240557/n/ncc7d979d6bc0",
+      "https://note.com/shosuke240557/n/n262a2e2273d1",
+      "https://note.com/shosuke240557/n/n69698ce0db85",
+    ],
+  },
+  {
+    slug: "indonesia",
+    place: "インドネシア",
+    nameEn: "INDONESIA",
+    role: "call",
+    placeAliases: ["インドネシア", "ジョグジャカルタ", "バトゥ", "ブローモ山", "ジャワ島", "ジャカルタ"],
+    featuredFilmId: "Vkf4wQSLD04",
+    articleHrefs: [],
+  },
+  {
+    slug: "sri-lanka",
+    place: "スリランカ",
+    nameEn: "SRI LANKA",
+    role: "call",
+    placeAliases: ["スリランカ"],
+    articleHrefs: [],
+  },
+];
+
+export const portByPlace = new Map(ports.map((port) => [port.place, port]));
