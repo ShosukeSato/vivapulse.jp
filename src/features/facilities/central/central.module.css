@@ -289,6 +289,20 @@
 .departuresLead span { display: block; }
 
 /*
+ * Only where the whole lead measurably fits on one line (1300px and up):
+ * width and the lead is handed everything that is left, so the sentences
+ * run on one line through the middle instead of leaving a gap there.
+ * Each sentence still travels as one unbroken unit, so when the line does
+ * run out the break falls between sentences and never inside one.
+ */
+@media (min-width: 1300px) {
+  .departures > header { grid-template-columns: max-content minmax(0, 1fr); }
+  .departuresLead { max-width: none; }
+  .departuresLead span { display: inline-block; white-space: nowrap; }
+  .departuresLead span:first-child { margin-right: .75em; }
+}
+
+/*
  * Departure board as a dark station wayfinding sign: navy body, warm-lit
  * head bar, one line-color band per real district, station-numbering code
  * plates. All data is real (code / destination / district / kind / state);
