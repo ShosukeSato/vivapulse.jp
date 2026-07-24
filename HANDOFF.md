@@ -1,102 +1,240 @@
 # CITY 01 — 引き継ぎメモ
 
-最終更新: 2026-07-23 (JST)
+最終更新: 2026-07-24 (JST)
 
 ## まず読むこと
 
-- 作業ブランチは `main`。
-- 作業ツリーは、引き継ぎメモを追加する前は clean だった。
-- 最新コミットは `c00ab69 Refine CITY 01 interaction, typography, and worldbuilding`。
-- このコミットは GitHub Pages へデプロイ済み。公開URL: <https://vivapulse.jp>
-- Deploy workflow は成功済み。ただし PC地図の未コミット修正（下記）がまだ公開されていない。
+- 作業ブランチは `main`。作業ツリーは clean。
+- 最新コミットは `046206f Left-align the departures lead once it stacks`。
+- GitHub Pages へデプロイ済み。公開URL: <https://vivapulse.jp>
+- **デプロイ = `main` への push**。`.github/workflows/deploy.yml` が自動で走る。手動操作は不要。
 - `git reset --hard`、`git clean`、force push、課金操作、秘密情報の取り扱いは禁止。
+- 設計の正は [DESIGN_PHILOSOPHY.md](./DESIGN_PHILOSOPHY.md)、造形の正は [docs/ART_DIRECTION.md](./docs/ART_DIRECTION.md)。迷ったらこの2つに従う。
 
-## 完了済み
+---
 
-- 映画館のfeatured filmを「東大を休学して、貯金ほぼ0で世界一周を始めました。」へ変更。
-- 図書館のfeatured articleを「東大を休学して貯金0円で世界一周してるけど、僕には『やりたいこと』が1つもなかった」へ変更。
-- ホーム下部の動画紹介もfeatured filmと同じデータを参照するよう整理。
-- note / YouTube / podcast の更新負債になる固定本数表示を撤去。JOURNEY DAYは自動計算、CITY TIMEは世界観上の固定値。
-- PC地図の施設ラベルを整理し、HAKU・STOCKAを含めて表示。施設同士の視認性を改善。
-- スマホ地図は1回目のタップで詳細カード、2回目のタップで施設ページ。タッチ開始時の選択色・押下反応、スワイプキャンセル、カードの表示を実装。
-- SHOSUKEアバターは施設一覧を開く案内人、CITY 01 CENTRALはプロフィール／現在地として役割を分離。
-- Route Terminalを港・出航・航路の表現へ再設計。現在地は「スリランカ」、次の目的地は「インド」。Galaha / Ellaのような頻繁に変わる都市名は表示しない。
-- 秘密の書庫、準備中の将来施設、みなとみらい／港の世界観表現を実装。
-- `ProtectedText`（`src/features/shared/ProtectedText.tsx`）で、短い語・括弧・句読点を最小単位で保護する組版処理を導入。
+# 1. サイトの構造（三層）
 
-## PC地図の改修（2026-07-23、未コミット）
+| 層 | 意味 | 入口 | URL |
+| --- | --- | --- | --- |
+| 施設 | **つくったもの** | 地図・施設一覧 | `/places/[slug]` |
+| 旅人 | **つくった人** | 地図のアバター・CENTRALの伝言板・施設一覧の先頭 | `/shosuke` |
+| 寄港地 | **生きた場所** | ROUTE TERMINAL の系統図と寄港索引のみ | `/ports/[slug]` |
 
-サイトオーナーの指摘3点に対応した。対象は `src/features/city/CityScene.tsx` と `src/features/city/scene.ts` のみ。
+- 寄港地は施設ではない。**地図にも施設一覧にも出さない**。施設コードも持たない。
+- 施設は9つのまま。増やすと QA と世界観の前提が崩れる。
 
-### 1. ホバー時の赤い4隅フレームが施設によって見えない
+---
 
-原因は塗り順。ラベル帯が landmark より後に不透明な黒 rect として描かれ、ブラケットを塗り潰していた。40隅中13隅が欠損していた（`construction` BL、`tripvlog` BL・BR、`stocka` BR、`haku` BL、`station` BL・BR、`strategy` BL・BR、`library` BL、`harbor` TL・TR）。`tripvlog` BR は帯に加えて `TerminalRail` の西プラットフォームにも重ねられており、帯を動かすだけでは直らなかった。
+# 2. 更新の手順書（ここが本体）
 
-対応: focus を `FocusLayer` として SVG 最前面の単一レイヤーへ分離した（`cityFocusPath()` を `scene.ts` に新設）。ホバー配線は `:has()` に変更。`:has()` 非対応環境でも `onPointerEnter → onSelect` により `--selected` 経由で点灯するフォールバックがある。欠損は 0/40 になった。
+コンテンツはすべて `src/data/content.ts` に集約されている。**基本はこのファイルだけを編集する**。
 
-### 2. アバターの当たり判定が狭い / SHOSUKE の帯が反応しない
+## 2-1. 新しい映像（YouTube）を足す
 
-PC のヒットエリアは `76×76` の1枚のみで、ビューポート高が約733pxを下回ると 44 CSS px を割っていた（1280×720 で 42×42）。さらにアバターと帯の間の 8px の隙間は舗装 rect に当たり、踏むと選択が解除されていた。
+1. `films` 配列の**先頭**に追加（新しい順）。
 
-対応: アバターとSHOSUKE帯を囲む単一の `192×148`（最悪スケール 0.558 でも 107×83 CSS px）に統合。`foreignObject` は1枚のまま＝タブストップは10で不変、`SHOSUKE` の二重読み上げも起きない。帯ホバー時はアバターのブラケットと帯の3pxアウトラインが同時に点灯する。帯には `aria-hidden` を追加（従来は `<text>SHOSUKE</text>` がボタンの `aria-label` と二重に読まれていた）。
+```ts
+{
+  id: "YOUTUBE_ID",
+  title: "動画タイトル",
+  date: "2026.08",
+  place: "インド",        // ← 寄港地との紐付けキー。後述
+  duration: "9:01",
+},
+```
 
-### 3. 帯に施設コードがなく、施設名が短縮形だった
+2. **サムネイルを必ず用意する**（これを忘れると画像が壊れる。過去に事故った）。
 
-対応: `MAP_LABELS` の短縮名テーブルを削除し、`place.code` と `place.name` を直接描画する2行構成にした。これで `src/data/city.ts` と地図表記が構造的に乖離しなくなる。コードは IBM Plex Mono / `P.haze`、施設名は Hiragino Sans / `P.lightStone`。新色なし。帯の高さは64のまま、幅は全施設で従来より細くなった。
+```bash
+cd public/media/cinema
+curl -sS -o YOUTUBE_ID.jpg "https://i.ytimg.com/vi/YOUTUBE_ID/maxresdefault.jpg"
+python3 - <<'PY'
+from PIL import Image
+i = "YOUTUBE_ID"
+im = Image.open(f"{i}.jpg").convert("RGB")
+for w in (640, 960, 1280):
+    im.resize((w, round(im.height * w / im.width)), Image.LANCZOS).save(
+        f"{i}-{w}.webp", "WEBP", quality=82, method=6)
+PY
+```
 
-`.desktopScene svg` は `width: min(1056px, 100%)` のため実効スケールが 0.558〜0.733 しかない。ART_DIRECTION の「施設名13px以上 / コード12px以上」はレンダリング後のCSS pxで判定する必要があるため、`@media (max-width: 1439px)` でソース値を 24/20 → 26/22 に上げている。**帯のフォントサイズを下げる修正は下限を割るので禁止。**
+- `maxresdefault.jpg` が 404 の動画がある（高解像度版が存在しない）。その場合は `hqdefault.jpg` を使い、**`content.ts` の `smallStillFilmIds` にその id を追加**する。これを入れておけば `filmStill()` が自動で 640 にフォールバックし、404 が起きない。
+- 全参照の実在チェック（ビルド後に実行）:
 
-`cinema` と `harbor` の帯は建物を47%／27%潰していたため、フレーム下辺の直下（海側）へ移設した。`harbor` の bounds も `{948,600,348,240}` に変更。
+```bash
+python3 - <<'PY'
+import re, os, glob
+have = set(os.listdir("public/media/cinema"))
+miss = {m for f in glob.glob("out/**/*.html", recursive=True)
+        for m in re.findall(r'/media/cinema/([\w\-]+\.(?:webp|jpg))',
+                            open(f, encoding="utf-8", errors="ignore").read())
+        if m not in have}
+print("欠損:", sorted(miss) or "なし")
+PY
+```
 
-### 4. アバターのクリックで施設一覧を開く
+3. `place` が既存の寄港地の `placeAliases` に含まれていれば、**その寄港地ページに自動で載る**。VOYAGE CINEMA にも自動で載る。
 
-アバターは選択カードを出すだけで行き先に繋がっていなかった。クリック／タップで施設一覧ダイアログを直接開くように変更。ボタンは `aria-haspopup="dialog"` + `aria-expanded` に変更し、`aria-label` を「街の案内人SHOSUKEに話しかけて施設一覧を開く」に更新。スマホではスワイプで誤って開かないよう `finishTouchSelection` で移動を判定する。
+## 2-2. 新しい記事（note）を足す
 
-**左下の `placeInspector`（CITY GUIDE / SHOSUKE）は出したままにすること。** 変わったのはクリックの行き先だけで、ホバー時の情報表示は施設と同じく維持する。一度これを消して差し戻した経緯がある。
+`articles` 配列の先頭に `{ title, href, date }` を追加するだけ。寄港地ページに載せたい場合のみ、その寄港地の `articleHrefs` に href を書く（記事は執筆地が曖昧なので自動収集しない）。
 
-### 5. 施設とアバターの枠を同格に
+## 2-3. 次の国へ移動したとき（最重要）
 
-施設は `selectedId` で点灯を保持し、アバターは hover のみで点灯していたため、施設に乗せた後アバターへ移すと**両方の枠が同時に出ていた**。アバターの `onPointerEnter` で `selectedId` を `GUIDE_ID` にするようにし、施設とアバターが同じ選択機構を共有するようにした。これで常にどちらか一方だけが点灯し、左下のパネルも同じ仕組みで切り替わる。SHOSUKE帯を囲むアウトライン（`city-scene__guide-plate`）は、施設側に相当するものがなく扱いが非対称になるため撤去した。帯は当たり判定には含まれたままで、乗せるとアバターの枠が点灯する。
+### ステップ1: 旅程の状態を進める（必須）
 
-### コードの色
+`journey` 配列を編集する。ここが**現在地・系統図・JOURNEY DAY・CENTRALの表示すべての単一の情報源**。
 
-`P.signAmber #E3B851` を新設し、施設コードに適用（従来は `P.haze`）。`P.warmLight #F3C85E` をそのまま使わないのは、`PromenadeLamp` の灯体が同じ hex の 15×10px 矩形で、コード文字と同サイズ・同色になり「9個の街灯」に見えるため。地 `#081923` に対し 9.58:1（AAA）。施設名 `#E5E1D4` との輝度差 1.43倍で主従は保たれる。`#FFE5A3` は名称と 1.06倍で同格になるため使用不可。アクセントバーは `P.selection` のまま（focusブラケットと同色で帯を結ぶ接続点のため）。「案内人」は `P.haze` のまま（琥珀は施設コードの意味色であり、コードを持たないSHOSUKEに与えると存在しないコードを示唆するため）。パレットは23色でART_DIRECTIONの上限24以内。
+```ts
+{ place: "スリランカ", period: "2026.07", note: "…", status: "done" },  // now → done
+{ place: "インド",     period: "2026.08", note: "…", status: "now"  },  // next → now
+{ place: "アルバニア", period: "予定",    note: "",  status: "next" },  // planned → next
+```
 
-### 追補（同日）
+- `status` は `done` / `now` / `next` / `planned` の4つ。**`now` は必ず1つだけ**（`currentJourneyStop` が最初の1件を取る）。
+- 日付が未確定の国は `period: "予定"` のままでよい。**架空の日付を書かない**。
 
-- Central の氏名 h1 は `さとう`／`しょうすけ` の2分割（改行点は1箇所のみ）。3分割に戻すと `しょう` の後で折れるので戻さないこと。
-- スマホのアバターは施設と同じ2段階: 1タップ目でカード（CITY GUIDE / SHOSUKE）、2タップ目またはカードの「施設一覧を開く」で一覧が開く。PCはホバーでパネル、クリックで一覧のまま。
-- 地図右上の緑地帯は `y=0..516` に拡張（最上段の木が水色の上に生えていたため）。
+### ステップ2: 寄港地ページを開港する（任意・実コンテンツがある場合のみ）
 
-### 検証済み
+**実際に撮った映像や書いた記事が存在する国だけ**ページを作る。何もない国はページを作らない（憲法「中身のない施設を営業させない」）。系統図では自動的に非リンクのままになる。
 
-`npx tsc --noEmit` / `npm run lint` / `npm run build`（16ページ）すべて成功。ビルド成果物 `out/index.html` に対する幾何・構造検証で、塗り順（focus層が全帯・アバターより後）、PC10領域の総当たり45ペアで重なり0、帯同士の重なり0、各ヒット領域が自分のフレームと帯を内包、最悪スケールでの44 CSS px 下限、9施設の帯текстの収まりを確認した。スマホ側の `hitBounds`（198×198）と1タップ選択→2タップ遷移は未変更。
+**(a) `content.ts` の `ports` に1件追加**
 
-### 残課題
+```ts
+{
+  slug: "india",                 // URL: /ports/india
+  place: "インド",                // journey の place と完全一致させる（照合キー）
+  nameEn: "INDIA",
+  role: "call",                  // 東京だけ "home"
+  placeAliases: ["インド", "デリー", "バラナシ"],  // films.place がこれに一致する映像を自動収集
+  featuredFilmId: "XXXX",        // 代表映像（任意）
+  articleHrefs: [],              // 載せる記事の href（任意）
+},
+```
 
-> オーナー判断（2026-07-24）: 下記のうち B2帯・ブラウザ確認・station影は、オーナーが実機で使用して確認し「改善不要」と決定した。focusストロークの2px/3px乖離のみ判断保留。
+これだけで**ページ生成・系統図のリンク化・寄港索引・sitemap** がすべて自動で反映される。
 
-- ~~**B2 の帯の左24pxが CENTRAL の判定に入る。**~~ **【改善不要 / オーナー確定 2026-07-24】** 実効約13 CSS px（うち文字にかかるのは約2 CSS px）でありオーナーは気にしていない。修正は `station`/`library` の間隔168pxの制約で難度が高いため、現状維持とする。（記録: `strategy` の帯は `B2 STUDIO` を収めるのに204px必要だが `station` 右端864と `library` 左端1032の間は168pxしかなく、CENTRAL 東塔828〜852を優先して帯左端24pxを譲っている。）
-- ~~**ブラウザでの目視確認が未実施。**~~ **【完了 / オーナー確認済み 2026-07-24】** オーナーが実機で実際に使用し、見た目・ホバー挙動ともに問題なしと確認した。
-- ~~**focus のストロークは3pxだが ART_DIRECTION Motion は「two-pixel」と規定。**~~ **【解決 / オーナー確定 2026-07-24】** オーナーが実機で確認し「3pxのままでよい」と決定。実装（focus枠・帯アウトラインとも3px）は据え置き、乖離していた `docs/ART_DIRECTION.md` の Motion 記述を `two-pixel` → `three-pixel` に改訂して整合を取った。
-- ~~`station` の `CastShadow` が x=876 まで伸び、`bounds` 右端852を24pxはみ出している。~~ **【改善不要 / オーナー確定 2026-07-24】** オーナーの目視で問題なし。現状維持とする。
+**(b) 見た目を国のものにする（これを忘れるとページが無色になる）**
 
-## 再開手順
+寄港地は「文字が読めなくても0.1秒でどこか分かる」ことが要件。2ファイルに手を入れる。
 
-1. `git status --short` と `git diff --check` を確認し、既存変更を保持する。
-2. `ProtectedText.tsx` と Cinema / Archive の実際のタイトル描画箇所を確認する。
-3. 320px / 390px / 1440px の通常表示・文字200%で、上記語中改行と句読点孤立を再監査する。全体をnowrapにせず、短い意味単位だけを保護する。
-4. `npx tsc --noEmit`、`npm run lint`、`npm run build` を実行する。
-5. Pages互換の確認では、Next exportの同名RSCディレクトリを誤って読む単純なPython server (port 3100)を使わない。拡張子なしURLを対応する `.html`へ解決するサーバーを使い、各施設の `document.title` と固有見出しをassertする。
-6. スマホ地図で、各施設を1回目に選択、2回目に正しい施設URLへ遷移することを確認する。スワイプは選択・遷移しないことも確認する。
-7. 修正が必要ならコミットし、GitHub Pages workflowの成功を確認してから公開URLを再確認する。
+1. `src/features/ports/port.module.css` — パレットを追加
 
-## 主要な検証済み事実
+```css
+.page[data-port="india"] {
+  --port-bg: …;      /* ページ背景（淡色） */
+  --port-ink: …;     /* 本文・見出し */
+  --port-muted: …;   /* 補助テキスト（背景比 4.5:1 以上） */
+  --port-line: …;    /* 罫線 */
+  --port-accent-1: …; /* 入港ワイプ・滞在ボードの地色（明色文字が乗る） */
+  --port-accent-2: …; /* チップ・再生ボタン（暗色文字が乗る） */
+}
+```
 
-- TypeScript / ESLint / production build は `c00ab69` 時点で成功。
-- 本番Pagesで全9施設のHTML応答とタイトルを確認済み。
-- 本番Pagesのスマホ実機相当テスト: 320px / 390pxで HAKU の1→2タップ遷移成功。
-- 48pxスワイプでは選択・カード表示・遷移なし。
-- アートディレクター: RELEASE PASS（公開停止級の視覚・世界観問題なし）。
-- レスポンシブ／UX担当: RELEASE PASS。
-- 編集ゲート: 語中改行の残存によりかつてBLOCK扱いだったが、**オーナー判断（2026-07-24）で「現時点で気にならない、改善不要」と確定**。以後この項目はブロッカーとして扱わない。
+- **色は国旗から取らない。その国で実際に撮った映像のサムネイルから採る。** 抽出スクリプトは §4 に記載。
+- 必ずコントラストを計算して AA 以上を確認する（§4 のスクリプト）。
+
+2. `src/features/ports/PortVignette.tsx` — 風景を1つ追加
+
+- シーン関数を書き、`SCENES` と `SCENE_LABELS` に slug を登録する。
+- **矩形と直線ポリゴンのみ・整数座標のみ**（地図と同じ規則）。有機的な曲線を描こうとすると必ず安っぽくなる。
+- 題材は**実際に行った場所だけ**。国旗・民族柄・行っていない名所は禁止。
+- 主役は中央に置く（スマホでは左右がトリミングされるため）。上下端ギリギリに要素を置かない（広い画面で切れる）。
+
+**(c) 前の国の扱い**
+
+特に作業不要。`journey` の status を `done` にすれば、系統図・索引・ページの状態表記が自動で切り替わる。
+
+---
+
+# 3. 作業の進め方（重要な教訓）
+
+## 3-1. デザインは必ず実際に見る
+
+CSS を読んで判断すると必ず失敗する。**ヘッドレス Chrome でスクリーンショットを撮る**こと。
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=4000 \
+  --window-size=1440,2600 --screenshot=shot.png \
+  "http://localhost:3000/places/city-01-central"
+```
+
+余白やベースラインのズレは、PIL でピクセルを直接測ると確実に詰められる（文字の下端行を検出して差分を取る）。CENTRALヘッダーの調整はこの方法で 1px まで追い込んだ。
+
+## 3-2. 開発サーバーのCSSキャッシュに注意
+
+Next の CSS チャンク名は**内容ではなくファイルパスから決まる**ため、CSS を書き換えても URL が変わらず、ブラウザが古い CSS を使い続ける。「HTMLは新しいのに見た目が古い」状態になる。
+
+- 対策: 開発サーバー再起動 + `rm -rf .next/cache`、ブラウザは Cmd+Shift+R。
+- 本番でも GitHub Pages は HTML に `max-age=600` を付ける。確認は `?v=2` のようにクエリを変えると確実（数字を毎回変える）。
+
+## 3-3. 検証コマンド
+
+```bash
+npx tsc --noEmit && npm run lint && npm run build
+```
+
+公開前は 320 / 390 / 820 / 1300 / 1440px を確認する（CENTRALヘッダーと寄港地の帯はこの境界で挙動が変わる）。
+
+---
+
+# 4. 色を決めるときのスクリプト
+
+**実サムネイルから支配色を抽出**（インドネシアはこれで決めた。17枚中40%が土色だった）:
+
+```python
+from PIL import Image
+import colorsys, os
+ids = ["FILM_ID", ...]
+buckets = {}
+for i in ids:
+    im = Image.open(f"public/media/cinema/{i}.jpg").convert("RGB").resize((80, 45))
+    for r, g, b in im.getdata():
+        h, s, v = colorsys.rgb_to_hsv(r/255, g/255, b/255)
+        if s < .25 or v < .12: continue
+        d = buckets.setdefault(int(h*24) % 24, [0, 0, 0, 0])
+        d[0] += r; d[1] += g; d[2] += b; d[3] += 1
+tot = sum(v[3] for v in buckets.values())
+for n, k, r, g, b in sorted(((v[3]/tot, k, *[c//v[3] for c in v[:3]])
+                             for k, v in buckets.items()), reverse=True)[:8]:
+    print(f"{n*100:5.1f}%  #{r:02X}{g:02X}{b:02X}")
+```
+
+**コントラスト比の検算**:
+
+```python
+def lin(c):
+    c /= 255
+    return c/12.92 if c <= .04045 else ((c+.055)/1.055)**2.4
+def L(h):
+    h = h.lstrip('#'); r, g, b = (int(h[i:i+2], 16) for i in (0, 2, 4))
+    return .2126*lin(r) + .7152*lin(g) + .0722*lin(b)
+def cr(a, b):
+    x, y = sorted((L(a), L(b)), reverse=True)
+    return (x + .05) / (y + .05)
+```
+
+---
+
+# 5. 触るときに壊しやすい箇所
+
+- **CENTRAL の出発案内ヘッダー**（`central.module.css`）。見出しは1行に収まる前提で、説明文と高さを揃えている。見出しのフォントサイズを上げると2行になり、右側に大きな空洞が復活する。挙動は幅で3段階（1300px以上=説明文1行 / 821–1299px=一文一行・右端揃え / 820px以下=縦積み・左揃え）。
+- **`.departuresLead` の `margin-bottom: -5px`** は横並び時のベースライン補正。実測値なので、フォントサイズを変えたら測り直す。
+- **地図（`CityScene.tsx`）のフォーカス枠は3px**。ART_DIRECTION も3pxで整合済み（2pxに戻さない）。
+- **`filmStill()` を経由せずにサムネイルのパスを直書きしない**。サイズ欠損で404になる。
+- **Central の氏名 h1 は2分割**（`さとう` / `しょうすけ`）。3分割に戻すと変な位置で折れる。
+- **B2 の帯の左24pxが CENTRAL の判定に入る**件と **`station` の影が bounds を24px超える**件は、オーナー判断で**対応不要**（2026-07-24 確定）。
+- 語中改行（禁則処理）も**対応不要**で確定済み。ブロッカー扱いしない。
+
+---
+
+# 6. 直近の変更（2026-07-24）
+
+- 旅人SHOSUKE化。アバター → `/shosuke`。CENTRAL は中央駅ハブへ（伝言板でプロフィールへ繋ぐ）。
+- `/shosuke` 新設（人生路線図 LIFE LINE / 職歴7件 / みなとみらい＝街の原風景 / 連絡先）。
+- 世界地図を廃止し **Beck式航路系統図**へ。旅程を12停泊地に拡張。PORT LOG は寄港索引に減量。
+- `/ports/{tokyo,indonesia,sri-lanka}` 新設。国別パレット＋ピクセル風景。入港ワイプ 520ms。
+- 欠落していた `IR-GR-u0kMM` のサムネイルを復旧し、VOYAGE CINEMA の除外フィルタを撤去。
+- CENTRAL 出発案内ヘッダーのレイアウトを実測ベースで再設計。
