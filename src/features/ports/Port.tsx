@@ -14,8 +14,6 @@ import PixelIcon from "@/features/city/PixelIcon";
 import SemanticText from "@/features/shared/SemanticText";
 import shell from "../facilities/facility-shell.module.css";
 import PortVignette from "./PortVignette";
-// ── TRIPVLOG 宝探しイベント 2026-07（撤去手順: docs/TREASURE_EVENT.md）──
-import IndonesiaTreasure from "./IndonesiaTreasure";
 import styles from "./port.module.css";
 
 const ROUTE_TERMINAL_PATH = "/places/route-terminal";
@@ -73,19 +71,7 @@ export default function Port({ port }: { port: PortData }) {
       </header>
 
       <main>
-        {/* ── TRIPVLOG 宝探しイベント 2026-07-25〜08-01・短期 ──
-             インドネシアの火口に永久無料コードを隠す。失効後はこの分岐を
-             `<PortVignette slug={port.slug} />` の1行に戻すだけでよい。
-             撤去手順: docs/TREASURE_EVENT.md */}
-        {port.slug === "indonesia" ? (
-          <div style={{ position: "relative" }}>
-            <PortVignette slug={port.slug} />
-            <IndonesiaTreasure />
-          </div>
-        ) : (
-          <PortVignette slug={port.slug} />
-        )}
-        {/* ── 宝探しイベントここまで ── */}
+        <PortVignette slug={port.slug} />
 
         <header className={styles.portHead}>
           <div className={styles.portIntro}>

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import type { CityPlace } from "@/data/city";
-import { featuredArticle } from "@/data/content";
+import { featuredArticle, membership } from "@/data/content";
 import archiveNotes from "@/data/note-archive.json";
 import PixelIcon from "@/features/city/PixelIcon";
 import SemanticText from "@/features/shared/SemanticText";
@@ -85,22 +85,31 @@ export default function Archive({ place }: { place: CityPlace }) {
           <ClientCatalogue notes={archiveNotes} />
         </section>
 
-        <section className={styles.restricted} aria-labelledby="restricted-title">
-          <div className={styles.archiveDoor} aria-hidden="true">
+        <section className={styles.vault} aria-labelledby="vault-title">
+          <div className={`${styles.archiveDoor} ${styles.doorOpen}`} aria-hidden="true">
             <div className={styles.doorRecess}>
               <span className={styles.doorLeaf} />
               <span className={styles.doorLeaf} />
-              <span className={styles.doorHandles}><i /><i /></span>
             </div>
             <span className={styles.threshold} />
           </div>
-          <div className={styles.restrictedCopy}>
-            <div className={styles.restrictedMeta}>
+          <div className={styles.vaultCopy}>
+            <div className={styles.vaultMeta}>
               <p>MEMBERS&apos; STACK</p>
-              <span>開庫準備中</span>
+              <span>開庫</span>
             </div>
-            <h2 id="restricted-title">秘密の書庫</h2>
-            <p>noteメンバーシップの開始に向けて、この奥に書庫を準備しています。開庫までは入れません。</p>
+            <h2 id="vault-title">秘密の書庫</h2>
+            <p>
+              {`noteメンバーシップ「${membership.name}」を開きました。この街をどう建てたのか、何をどう作り、何に失敗したのか。公開目録には出さない制作と生活の裏側を、この奥に置いていきます。`}
+            </p>
+            <div className={styles.vaultDoors}>
+              <a className={styles.join} href={membership.href} target="_blank" rel="noreferrer">
+                <span>メンバーシップ「{membership.name}」に入る</span><PixelIcon name="external" />
+              </a>
+              <a className={styles.aboutMembership} href={membership.aboutHref} target="_blank" rel="noreferrer">
+                <span>開庫の挨拶「{membership.aboutTitle}」を読む</span><PixelIcon name="external" />
+              </a>
+            </div>
           </div>
         </section>
       </main>

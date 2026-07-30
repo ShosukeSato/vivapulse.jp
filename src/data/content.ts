@@ -403,6 +403,19 @@ export const featuredArticle = {
   ],
 } satisfies Article;
 
+/**
+ * noteメンバーシップ「まちづくりの裏側」。2026年7月開始、THE ARCHIVE の
+ * 奥にある「秘密の書庫」がその入口になる。金額はnote側の表示を唯一の
+ * 出典とするため、ここには持たない。
+ */
+export const membership = {
+  name: "まちづくりの裏側",
+  href: "https://note.com/shosuke240557/membership",
+  /** 開庫の挨拶にあたる、メンバーシップの説明記事。 */
+  aboutTitle: "何もないところから、街をひとつ建てた話。",
+  aboutHref: "https://note.com/shosuke240557/n/n3a7fdbb0cf65",
+} as const;
+
 export const articles: Article[] = [
   {
     title: "個人開発で初収益が出たのでこれまでやったことを全て振り返るとともに、これからの作戦会議をしよう",

@@ -169,24 +169,15 @@ export default function Central({ place }: { place: CityPlace }) {
             <div className={styles.boardTop}>
               <span>旅人の伝言板</span><span>STATION NOTE</span>
             </div>
-            {/* ── TRIPVLOG 宝探しイベント 2026-07-25〜08-01・短期（撤去手順: docs/TREASURE_EVENT.md）──
-                 撤去時は、この h2 と noteSign を元の伝言に戻すこと:
-                   <span className={styles.noteSentence}><SemanticText phrases={["「世界の", "どこかに", "います。"]} /></span>
-                   <span className={styles.noteSentence}><SemanticText phrases={["連絡は", "いつでも。」"]} /></span>
-                 ─────────────────────────────────────────────────────────────────── */}
             <h2 id="note-title">
               <span className={styles.noteSentence}>
-                <SemanticText phrases={["「TripVlogの", "永久無料", "コードか？"]} />
+                <SemanticText phrases={["「世界の", "どこかに", "います。"]} />
               </span>
               <span className={styles.noteSentence}>
-                <SemanticText phrases={["欲しけりゃ", "くれてやる。"]} />
-              </span>
-              <span className={styles.noteSentence}>
-                <SemanticText phrases={["探してみろ——", "この世界の", "どこかに", "置いてきた。」"]} />
+                <SemanticText phrases={["連絡は", "いつでも。」"]} />
               </span>
             </h2>
             <p className={styles.noteSign}>— SHOSUKE</p>
-            {/* ── 宝探しイベントここまで ── */}
             <dl>
               <div>
                 <dt>いまの現在地</dt>
