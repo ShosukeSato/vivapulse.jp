@@ -5,7 +5,7 @@ import { ports } from "@/data/content";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const updatedAt = new Date("2026-07-23T00:00:00+09:00");
+  const updatedAt = new Date("2026-08-18T00:00:00+09:00");
   return [
     {
       url: "https://vivapulse.jp",
@@ -15,6 +15,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: "https://vivapulse.jp/shosuke",
+      lastModified: updatedAt,
+      changeFrequency: "monthly",
+      priority: .9,
+    },
+    {
+      url: "https://vivapulse.jp/field-office",
       lastModified: updatedAt,
       changeFrequency: "monthly",
       priority: .9,

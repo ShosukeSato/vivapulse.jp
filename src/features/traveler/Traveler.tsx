@@ -19,7 +19,7 @@ const cinema = cityPlaces.find((place) => place.id === "cinema")!;
 const archive = cityPlaces.find((place) => place.id === "library")!;
 const yard = cityPlaces.find((place) => place.id === "construction")!;
 const harbor = cityPlaces.find((place) => place.id === "harbor")!;
-const FIELD_OFFICE_URL = process.env.NEXT_PUBLIC_FIELD_OFFICE_URL ?? "https://shosuke-field-office.shosuke-s.chatgpt.site/";
+const FIELD_OFFICE_URL = "/field-office";
 
 /**
  * The traveler page. SHOSUKE is the one person of CITY 01, not a tenth

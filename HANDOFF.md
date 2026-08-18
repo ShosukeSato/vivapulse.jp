@@ -254,7 +254,7 @@ def cr(a, b):
 
 - ホームから事業サイトへの導線を追加。事業は施設ではないため地図上の建物にはせず、旅人SHOSUKEの `FIELD OFFICE / WEB制作の相談` という「街の外への出口」として扱う。
 - 導線はホーム左ペイン、上部バー、モバイルの案内、施設一覧の「街の外へ」、`/shosuke` の冒頭と連絡先に配置。
-- FIELD OFFICEの本番URL `https://shosuke-field-office.shosuke-s.chatgpt.site/` へ接続。環境別に切り替える場合だけ `NEXT_PUBLIC_FIELD_OFFICE_URL` を使用する。
+- FIELD OFFICEをCITY 01本体の正式ルート `https://vivapulse.jp/field-office` に統合。同一ドメイン内の `/field-office` へ接続する。
 - `THE LIVING ROOM` の地図ラベル幅を264pxから288pxへ拡張。24pxタイルを1つ足し、末尾Mと道路の間に余白を確保。
 - `/places/machizukuri-nikki` の室内画を再編集。意味のない棚・植物を削除し、窓、机、記録ノート、開局準備中の表示、椅子を同じ床基準で接地させた。
 - ホーム左ペインのFIELD OFFICE案内標識を `.primaryActions` の外へ移動。代表作CTAとプロフィール導線の横幅を圧縮しない独立配置にした。

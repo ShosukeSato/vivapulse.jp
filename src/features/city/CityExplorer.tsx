@@ -21,7 +21,7 @@ import styles from "./city.module.css";
 const PRIMARY_PLACE_IDS = ["tripvlog", "haku", "stocka"];
 const GUIDE_ID = "city-guide";
 const LOWER_MAP_IDS = new Set(["cinema", "harbor", GUIDE_ID]);
-const FIELD_OFFICE_URL = process.env.NEXT_PUBLIC_FIELD_OFFICE_URL ?? "https://shosuke-field-office.shosuke-s.chatgpt.site/";
+const FIELD_OFFICE_URL = "/field-office";
 
 export default function CityExplorer() {
   const router = useRouter();
