@@ -191,6 +191,36 @@ function YardLandmark() {
   );
 }
 
+function LivingRoomLandmark() {
+  return (
+    <g>
+      <CastShadow x={768} y={96} width={216} height={144} />
+      <rect x="780" y="96" width="192" height="144" fill={P.lightStone} stroke={P.outline} />
+      <Mass x={792} y={216} width={156} depth={24} height={60} roof={P.haze} south={P.brick} east={P.stoneShadow} />
+
+      <rect x="804" y="174" width="84" height="42" fill={P.blackDepth} stroke={P.outline} />
+      <rect x="816" y="186" width="12" height="12" fill={P.selection} stroke={P.outline} />
+      <path d="M840 180v30M852 180v30M864 180v30M876 180v30" stroke={P.glassShadow} />
+
+      <rect x="900" y="180" width="36" height="60" fill={P.blackDepth} stroke={P.outline} />
+      <rect x="906" y="186" width="24" height="10" fill={P.warmLight} stroke={P.outline} />
+      <rect x="906" y="204" width="24" height="24" fill={P.glassShadow} stroke={P.outline} />
+
+      <path d="M816 150h108" stroke={P.outline} strokeWidth="6" />
+      <path d="M828 144h84" stroke={P.selection} strokeWidth="6" />
+      <rect x="852" y="112" width="48" height="24" fill={P.blackDepth} stroke={P.outline} />
+      <rect x="860" y="120" width="8" height="8" fill={P.selection} />
+      <path d="M876 124h16" stroke={P.lightStone} strokeWidth="3" />
+      <path d="M876 112V92M864 92h24" stroke={P.outline} />
+
+      <rect x="804" y="224" width="144" height="12" fill={P.lightStone} stroke={P.outline} />
+      <rect x="816" y="228" width="24" height="12" fill={P.foliage} stroke={P.outline} />
+      <path d="M820 228v-10M828 228v-14M836 228v-8" stroke={P.foliageLight} />
+      <rect x="852" y="222" width="36" height="6" fill={P.warmLight} stroke={P.outline} />
+    </g>
+  );
+}
+
 function TripVlogLandmark() {
   return (
     <g>
@@ -473,6 +503,7 @@ function LandmarkArtwork({ id, brickPatternId }: {
 }) {
   switch (id) {
     case "construction": return <YardLandmark />;
+    case "diary": return <LivingRoomLandmark />;
     case "tripvlog": return <TripVlogLandmark />;
     case "stocka": return <StockaLandmark />;
     case "haku": return <HakuLandmark />;
@@ -723,21 +754,6 @@ function FocusLayer({ selectedId, guideSelected, preview }: {
   );
 }
 
-function ReservedSite() {
-  return (
-    <g transform="translate(840 96)" aria-hidden="true">
-      <rect width="120" height="120" fill={P.midStone} stroke={P.outline} />
-      <path d="M0 24H120M0 96H120M24 0V120M96 0V120" stroke={P.stoneShadow} />
-      {[8, 32, 56, 80, 104].map((x) => (
-        <rect key={x} x={x} y="8" width="5" height="104" fill={P.lightStone} stroke={P.outline} />
-      ))}
-      <rect x="20" y="38" width="80" height="48" fill={P.stoneShadow} stroke={P.outline} />
-      <text x="31" y="57" fill={P.lightStone} className="city-scene__reserved-code">計画区画</text>
-      <text x="31" y="76" fill={P.midStone} className="city-scene__reserved-name">PLANNING</text>
-    </g>
-  );
-}
-
 function CityGround({ pavingPatternId }: { pavingPatternId: string }) {
   const promenadeLamps = [432, 528, 624, 816, 912, 1008];
 
@@ -867,13 +883,6 @@ ${CITY_SCENE_ORDER.map((id) => `
           .city-scene__code,
           .city-scene__guide-role { font-size: 22px; }
         }
-        .city-scene__reserved-code,
-        .city-scene__reserved-name {
-          font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: .04em;
-        }
         .city-scene__water-frame { animation-duration: 1800ms; animation-iteration-count: infinite; animation-timing-function: steps(1, end); }
         .city-scene__water-frame--one { animation-name: city-water-one; }
         .city-scene__water-frame--two { animation-name: city-water-two; }
@@ -902,7 +911,6 @@ ${CITY_SCENE_ORDER.map((id) => `
 
       <CityGround pavingPatternId={pavingPatternId} />
       <Water />
-      <ReservedSite />
 
       {CITY_SCENE_ORDER.map((id) => {
         const place = PLACE_BY_ID.get(id);

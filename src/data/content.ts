@@ -488,6 +488,9 @@ export type PodcastEpisode = {
 
 export const niwakaPhilosophyChannelUrl = "https://www.youtube.com/@niwaka_tetsugaku";
 
+/** 開局準備中。動画を公開するまでは、架空のエピソードを置かない。 */
+export const machizukuriNikkiChannelUrl = "https://www.youtube.com/@machizukuri_nikki";
+
 /** Official channel feed, newest first. Last verified 2026-07-23. */
 export const niwakaPhilosophyEpisodes: PodcastEpisode[] = [
   {

@@ -19,6 +19,7 @@ const cinema = cityPlaces.find((place) => place.id === "cinema")!;
 const archive = cityPlaces.find((place) => place.id === "library")!;
 const yard = cityPlaces.find((place) => place.id === "construction")!;
 const harbor = cityPlaces.find((place) => place.id === "harbor")!;
+const FIELD_OFFICE_URL = process.env.NEXT_PUBLIC_FIELD_OFFICE_URL ?? "https://shosuke-field-office.shosuke-s.chatgpt.site/";
 
 /**
  * The traveler page. SHOSUKE is the one person of CITY 01, not a tenth
@@ -60,6 +61,7 @@ export default function Traveler() {
           <div className={styles.primaryRoutes}>
             <a href="#life-line">ここまでの各駅を見る</a>
             <a href="#contact">連絡先へ</a>
+            <a href={FIELD_OFFICE_URL} target="_blank" rel="noreferrer">Web制作の相談 <PixelIcon name="external" /></a>
           </div>
         </section>
 
@@ -217,6 +219,7 @@ export default function Traveler() {
       <footer className={styles.footer} id="contact">
         <div><span>CONTACT &amp; LINKS</span><p>制作、旅、文章の続きを、それぞれの場所で公開しています。</p></div>
         <nav aria-label="連絡先とリンク">
+          <a href={FIELD_OFFICE_URL} target="_blank" rel="noreferrer">FIELD OFFICE / Web制作 <PixelIcon name="external" /></a>
           <a href="mailto:shosuke240557@gmail.com">メールを送る</a>
           {socials.map((social) => (
             <a href={social.href} target="_blank" rel="noreferrer" key={social.label}>

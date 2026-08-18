@@ -97,8 +97,12 @@
 
 .cityTime > span:first-child { color: var(--city-light-core); }
 
+.cityActions { justify-self: end; display: flex; align-items: center; gap: 8px; }
+.fieldOfficeGate { min-height: 44px; display: inline-flex; align-items: center; gap: 9px; border-bottom: 1px solid #6f8991; color: var(--city-light-core); font-family: var(--font-mono); font-size: 12px; font-weight: 700; text-decoration: none; }
+.fieldOfficeGate svg { width: 14px; }
+.fieldOfficeGate:hover { border-color: var(--city-coral); color: #fff; }
+
 .directoryTrigger {
-  justify-self: end;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -113,6 +117,12 @@
 
 .directoryTrigger svg { width: 16px; }
 .directoryTrigger:hover { border-color: var(--city-light); color: var(--city-light-core); }
+
+.fieldOfficeSign { width: min(100%, 330px); min-height: 58px; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 18px; border: 1px solid #6b8188; padding: 9px 12px; color: #d6e1df; text-decoration: none; }
+.fieldOfficeSign > span { display: grid; gap: 5px; font-size: 13px; font-weight: 700; }
+.fieldOfficeSign small { color: var(--city-light-core); font-family: var(--font-mono); font-size: 10px; letter-spacing: .06em; }
+.fieldOfficeSign svg { width: 15px; flex: none; }
+.fieldOfficeSign:hover { border-color: var(--city-coral); background: #132d39; }
 
 .gameBody {
   min-height: 0;
@@ -387,6 +397,8 @@
 .directory nav a:hover { padding-inline: 8px; background: #d2d2c6; }
 .directoryGroup { margin: 0; padding: 22px 0 8px; border-bottom: 1px solid #9aa39c; color: #526567; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .06em; }
 .directory nav .directoryTraveler > span:first-child { background: #ed6a55; color: #fff; }
+.directory nav .directoryOffice > span:first-child { background: #0e4054; color: var(--city-light-core); }
+.directory nav .directoryOffice { border-bottom: 2px solid var(--city-deep); }
 
 @media (min-width: 1221px) and (max-width: 1360px) {
   .gameBody { grid-template-columns: 360px minmax(0, 1fr); }
@@ -416,6 +428,7 @@
   .cityBar { grid-template-columns: 1fr auto; padding: 0 14px; }
   .brandMark { width: 30px; height: 30px; }
   .brand small, .cityTime { display: none; }
+  .fieldOfficeGate { display: none; }
   .directoryTrigger { min-width: 44px; padding: 0 12px; }
   .directoryTrigger span { display: none; }
   .gameBody { display: flex; flex-direction: column; }
@@ -427,6 +440,7 @@
   .identity > p:not(.kicker) { margin-top: 18px; font-size: 16px; line-height: 1.8; }
   .primaryActions { margin-top: 24px; }
   .identity .textAction,
+  .identity .fieldOfficeSign,
   .identity .currentQuest { display: none; }
   .mapFrame { order: 2; min-height: 304px; }
   .desktopScene { display: none; }

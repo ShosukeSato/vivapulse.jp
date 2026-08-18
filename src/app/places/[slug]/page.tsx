@@ -7,6 +7,7 @@ import Central from "@/features/facilities/central/Central";
 import Cinema from "@/features/facilities/cinema/Cinema";
 import Haku from "@/features/facilities/haku/Haku";
 import Harbor from "@/features/facilities/harbor/Harbor";
+import MachizukuriNikki from "@/features/facilities/machizukuri-nikki/MachizukuriNikki";
 import Stocka from "@/features/facilities/stocka/Stocka";
 import TripVlog from "@/features/facilities/tripvlog/TripVlog";
 import Yard from "@/features/facilities/yard/Yard";
@@ -62,6 +63,8 @@ function Facility({ place }: { place: CityPlace }) {
   switch (place.id) {
     case "construction":
       return <Yard place={place} />;
+    case "diary":
+      return <MachizukuriNikki place={place} />;
     case "tripvlog":
       return <TripVlog place={place} />;
     case "haku":

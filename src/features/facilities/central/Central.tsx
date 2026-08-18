@@ -9,7 +9,7 @@ import CurrentLocationName from "@/features/shared/CurrentLocationName";
 import SemanticText from "@/features/shared/SemanticText";
 import styles from "./central.module.css";
 
-const departureOrder = ["tripvlog", "haku", "stocka", "cinema", "library", "harbor", "construction", "strategy"];
+const departureOrder = ["tripvlog", "haku", "stocka", "cinema", "library", "harbor", "construction", "strategy", "diary"];
 const departures = departureOrder.map((id) => cityPlaces.find((place) => place.id === id)!);
 const harbor = cityPlaces.find((place) => place.id === "harbor")!;
 const facilityType: Record<CityPlace["kind"], string> = {
@@ -20,6 +20,7 @@ const facilityType: Record<CityPlace["kind"], string> = {
   library: "文章",
   cinema: "映像",
   strategy: "ビデオポッドキャスト",
+  diary: "ビデオポッドキャスト",
   harbor: "旅程",
   construction: "制作一覧",
 };

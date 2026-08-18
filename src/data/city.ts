@@ -7,6 +7,7 @@ export type CityPlaceKind =
   | "cinema"
   | "strategy"
   | "harbor"
+  | "diary"
   | "construction";
 
 export type CityPlace = {
@@ -63,6 +64,24 @@ export const cityPlaces: CityPlace[] = [
     path: "/places/01-yard",
     action: "施設に入る",
     summary: "小さなアプリと実験が生まれ続ける工事区画。",
+  },
+  {
+    id: "diary",
+    code: "N-02",
+    name: "THE LIVING ROOM",
+    shortName: "LIVING ROOM",
+    district: "NORTH YARD",
+    destination: "「まちづくり日記」/ 開局準備中",
+    kind: "diary",
+    x: 4.7,
+    y: 1.2,
+    labelDx: 0,
+    labelDy: 0,
+    status: "building",
+    path: "/places/machizukuri-nikki",
+    externalHref: "https://www.youtube.com/@machizukuri_nikki",
+    action: "施設に入る",
+    summary: "ビデオポッドキャスト「まちづくり日記」を準備している、一人の生活と思考の記録室。",
   },
   {
     id: "tripvlog",

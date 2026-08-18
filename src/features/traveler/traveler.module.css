@@ -112,6 +112,7 @@
   font-weight: 700;
   text-decoration: none;
 }
+.primaryRoutes a svg { width: 15px; margin-left: 10px; }
 .primaryRoutes a:first-child { background: #102b3b; color: #fff; }
 .primaryRoutes a:hover { border-color: #ed6a55; background: #ed6a55; color: #102b3b; }
 

@@ -32,6 +32,7 @@ export const CITY_SCENE_PALETTE = {
 
 export const CITY_SCENE_ORDER = [
   "construction",
+  "diary",
   "tripvlog",
   "stocka",
   "haku",
@@ -86,6 +87,11 @@ export const CITY_SCENE_PLACEMENTS = {
     bounds: { x: 48, y: 48, width: 312, height: 216 },
     desktopHitBounds: { x: 48, y: 48, width: 312, height: 244 },
     label: { x: 48, y: 228, width: 168 },
+  },
+  diary: {
+    bounds: { x: 744, y: 48, width: 264, height: 216 },
+    desktopHitBounds: { x: 720, y: 48, width: 312, height: 244 },
+    label: { x: 744, y: 228, width: 288 },
   },
   tripvlog: {
     bounds: { x: 420, y: 48, width: 240, height: 216 },

@@ -21,6 +21,7 @@ import styles from "./city.module.css";
 const PRIMARY_PLACE_IDS = ["tripvlog", "haku", "stocka"];
 const GUIDE_ID = "city-guide";
 const LOWER_MAP_IDS = new Set(["cinema", "harbor", GUIDE_ID]);
+const FIELD_OFFICE_URL = process.env.NEXT_PUBLIC_FIELD_OFFICE_URL ?? "https://shosuke-field-office.shosuke-s.chatgpt.site/";
 
 export default function CityExplorer() {
   const router = useRouter();
@@ -162,18 +163,23 @@ export default function CityExplorer() {
             <span>JOURNEY DAY <DayCounter /></span>
           </div>
 
-          <button
-            className={styles.directoryTrigger}
-            type="button"
-            ref={directoryButtonRef}
-            aria-expanded={directoryOpen}
-            aria-controls="city-directory"
-            aria-label="施設一覧を開く"
-            onClick={(event) => openDirectory(event.currentTarget)}
-          >
-            <PixelIcon name="directory" />
-            <span>施設一覧</span>
-          </button>
+          <div className={styles.cityActions}>
+            <a className={styles.fieldOfficeGate} href={FIELD_OFFICE_URL} target="_blank" rel="noreferrer">
+              <span>WEB制作の相談</span><PixelIcon name="external" />
+            </a>
+            <button
+              className={styles.directoryTrigger}
+              type="button"
+              ref={directoryButtonRef}
+              aria-expanded={directoryOpen}
+              aria-controls="city-directory"
+              aria-label="施設一覧を開く"
+              onClick={(event) => openDirectory(event.currentTarget)}
+            >
+              <PixelIcon name="directory" />
+              <span>施設一覧</span>
+            </button>
+          </div>
         </header>
 
         <div className={styles.gameBody}>
@@ -191,6 +197,9 @@ export default function CityExplorer() {
               </a>
               <Link className={styles.textAction} href={traveler.path} prefetch={false}>旅人SHOSUKEのプロフィール</Link>
             </div>
+            <a className={styles.fieldOfficeSign} href={FIELD_OFFICE_URL} target="_blank" rel="noreferrer">
+              <span><small>OUTSIDE CITY 01</small>FIELD OFFICE / WEB制作の相談</span><PixelIcon name="external" />
+            </a>
 
             {selectedPlace || guideSelected ? (
               <aside className={styles.placeInspector} aria-live="polite" data-map-selection-ui>
@@ -301,6 +310,7 @@ export default function CityExplorer() {
               <span><small><PixelIcon name="location" />現在地</small><strong>{currentJourneyStop.place}</strong></span>
               <span><small>次の街</small><strong>{nextJourneyStop.place}</strong></span>
               <Link href={traveler.path} prefetch={false}>旅人SHOSUKEのプロフィール <PixelIcon name="enter" /></Link>
+              <a href={FIELD_OFFICE_URL} target="_blank" rel="noreferrer">FIELD OFFICE / WEB制作の相談 <PixelIcon name="external" /></a>
             </div>
             <nav aria-label="施設から作品を選ぶ">
               <p>街の施設</p>
@@ -435,6 +445,12 @@ export default function CityExplorer() {
                   <PixelIcon name="enter" />
                 </Link>
               ))}
+              <p className={styles.directoryGroup}>街の外へ</p>
+              <a className={styles.directoryOffice} href={FIELD_OFFICE_URL} target="_blank" rel="noreferrer">
+                <span>OUT</span>
+                <span><strong>FIELD OFFICE</strong><small>Web制作の相談窓口</small></span>
+                <PixelIcon name="external" />
+              </a>
             </nav>
           </aside>
         </>

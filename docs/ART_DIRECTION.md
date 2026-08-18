@@ -8,8 +8,8 @@ CITY 01 is a 32-bit-style urban exploration RPG portfolio set in an original Jap
 
 ```text
 NORTH
-01 YARD —— TRIPVLOG —— STOCKA
-                   │ TERMINAL RAIL
+01 YARD —— TRIPVLOG —— THE LIVING ROOM —— STOCKA
+                              │ TERMINAL RAIL
 HAKU —— CITY 01 CENTRAL / B2 —— THE ARCHIVE
 VOYAGE CINEMA —— WATERFRONT PROMENADE —— ROUTE TERMINAL → SEA
 SOUTH
@@ -123,6 +123,7 @@ Touch targets are at least `44 × 44` CSS px. A visible keyboard focus state is 
 - Stocka: green-glass learning building and compact courtyard
 - B2: stairs descending below grade and a ventilation tower; the interior uses one real podcast thumbnail as its illuminated monitor, never an ON AIR prop
 - 01 Yard: fence, containers, crane and one in-progress module
+- The Living Room: a compact, domestic-scale personal recording room with one red record light, monitor window, planted stoop and rooftop antenna; never a giant microphone or play icon
 
 Buildings are recognizable through architecture and use, not giant play, book, camera or alphabet symbols.
 
@@ -184,6 +185,10 @@ Present the real video podcast “一笑瓶のにわか哲学” as a featured c
 
 Show ten real projects with real icon or honest text identity, status, role and date where known. Never generate fictional objects. Palette: `#E6DDCE`, `#262C2C`, `#E37334`, `#79927D`.
 
+### The Living Room
+
+This is the facility; `まちづくり日記` is the programme recorded inside it. Present the real personal video-podcast channel and the creator's stated intent: documenting the ongoing attempts and struggles involved in living a richer daily life. While the channel has no published videos, the interior must say `開局準備中`, link to the real channel, and contain no episode grid, thumbnail, date, duration, waveform or release promise. The page is a warm field-notebook room, distinct from B2's dark two-person conversation studio. Palette: `#F4F0E7`, `#102B3B`, `#ED6A55`, `#F3C85E`.
+
 ## Rejection conditions
 
 Any of the following blocks release:
@@ -205,5 +210,5 @@ Any of the following blocks release:
 - Milestones are reviewed as screenshots, not code
 - New color, typeface, projection or motion requires review
 - Passing lint and build is not visual approval
-- Release requires both individual-page review and nine-page side-by-side review
+- Release requires both individual-page review and ten-page side-by-side review
 - Any rejection condition blocks deployment
